@@ -4,7 +4,7 @@
 <img src="rsquadacademy.jpg" alt="RSquad Academy"/>
 </p>
 
-## Project with Laravel 12 and Docker wuth Laravel Pint, PEST, Debugar, AdminLTE3, DataTables server side and Spatie ACL
+## Project with Laravel 12 and Docker with Laravel Pint, PEST, Debugar, AdminLTE3, DataTables server side and Spatie ACL
 
 ## **1. Modelagem de Casos de Uso (Use Case)**
 
@@ -51,79 +51,9 @@
 
 ## **2. Modelagem do Banco de Dados (entidades principais)**
 
-```mermaid
-erDiagram
-    USER ||--o{ COURSE_ENROLLMENT : has
-    USER {
-        int id PK
-        string name
-        string email
-        string password
-        string role (admin/aluno)
-        timestamp created_at
-    }
-
-    COURSE ||--|{ MODULE : contains
-    MODULE ||--|{ LESSON : contains
-    COURSE {
-        int id PK
-        string title
-        text description
-        timestamp created_at
-    }
-
-    MODULE {
-        int id PK
-        int course_id FK
-        string title
-    }
-
-    LESSON {
-        int id PK
-        int module_id FK
-        string title
-        string video_link
-        date release_date
-    }
-
-    COURSE_ENROLLMENT {
-        int id PK
-        int user_id FK
-        int course_id FK
-        timestamp enrolled_at
-    }
-
-    POST {
-        int id PK
-        string title
-        text content
-        int author_id FK
-        timestamp created_at
-    }
-
-    CHEATSHEET {
-        int id PK
-        string title
-        text content
-        int author_id FK
-        timestamp created_at
-    }
-
-    TESTIMONIAL {
-        int id PK
-        string author
-        string role
-        text content
-    }
-
-    TEAM_MEMBER {
-        int id PK
-        string name
-        string role
-        string image_url
-        string bio
-    }
-```
+<p align="center">
+<img src="Mermaid.png" alt="Modelagem do Banco de Dados"/>
+</p>
 
 ---
 
