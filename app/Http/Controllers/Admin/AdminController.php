@@ -2,21 +2,30 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\CheckPermission;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Views\User as ViewsUser;
 use App\Models\Views\Visit;
 use App\Models\Views\VisitYesterday;
-use DataTables;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use stdClass;
+use Yajra\DataTables\Facades\DataTables;
 
 class AdminController extends Controller
 {
     public function index(Request $request)
     {
+        if (auth()->user()->hasRole('Aluno')) {
+            return redirect()->route('academy.home');
+        }
+
+        CheckPermission::checkAuth('Acessar Administração');
+
         $administrators = ViewsUser::where('type', 'Administrador')->count();
+        $instructors = ViewsUser::where('type', 'Instrutor')->count();
+        $students = ViewsUser::where('type', 'Aluno')->count();
 
         $visits = Visit::where('url', '!=', route('admin.home.chart'))
             ->where('url', 'NOT LIKE', '%columns%')
@@ -25,10 +34,11 @@ class AdminController extends Controller
             ->where('url', 'NOT LIKE', '%offline%')
             ->where('url', 'NOT LIKE', '%manifest.json%')
             ->where('url', 'NOT LIKE', '%.png%')
-            ->get();
+            ->where('url', 'NOT LIKE', '%serviceworker.js%')
+            ->get(['id', 'created_at', 'url', 'ip', 'method', 'languages', 'useragent', 'platform', 'browser', 'name']);
 
         if ($request->ajax()) {
-            return Datatables::of($visits)
+            return DataTables::of($visits)
                 ->addColumn('time', function ($row) {
                     return date(('H:i:s'), strtotime($row->created_at));
                 })
@@ -46,6 +56,8 @@ class AdminController extends Controller
 
         return view('admin.home.index', compact(
             'administrators',
+            'instructors',
+            'students',
             'onlineUsers',
             'percent',
             'access',
@@ -81,6 +93,7 @@ class AdminController extends Controller
             ->where('url', 'NOT LIKE', '%offline%')
             ->where('url', 'NOT LIKE', '%manifest.json%')
             ->where('url', 'NOT LIKE', '%.png%')
+            ->where('url', 'NOT LIKE', '%serviceworker.js%')
             ->where('method', 'GET')
             ->get();
         $accessYesterday = VisitYesterday::where('url', '!=', route('admin.home.chart'))
@@ -90,6 +103,7 @@ class AdminController extends Controller
             ->where('url', 'NOT LIKE', '%offline%')
             ->where('url', 'NOT LIKE', '%manifest.json%')
             ->where('url', 'NOT LIKE', '%.png%')
+            ->where('url', 'NOT LIKE', '%serviceworker.js%')
             ->where('method', 'GET')
             ->count();
 

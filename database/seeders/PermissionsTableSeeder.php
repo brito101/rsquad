@@ -105,6 +105,50 @@ class PermissionsTableSeeder extends Seeder
                 'guard_name' => 'web',
                 'created_at' => new DateTime('now'),
             ],
+            /** Administration Dashboard 18 */
+            [
+                'name' => 'Acessar Administração',
+                'guard_name' => 'web',
+                'created_at' => new DateTime('now'),
+            ],
+            /** Academy Dashboard 19 */
+            [
+                'name' => 'Acessar Academia',
+                'guard_name' => 'web',
+                'created_at' => new DateTime('now'),
+            ],
+            /** Course Categories 20*/
+            [
+                'name' => 'Acessar Configurações',
+                'guard_name' => 'web',
+                'created_at' => new DateTime('now'),
+            ],
+            /** Course Categories from 21 to 25*/
+            [
+                'name' => 'Acessar Categorias de Cursos',
+                'guard_name' => 'web',
+                'created_at' => new DateTime('now'),
+            ],
+            [
+                'name' => 'Listar Categorias de Cursos',
+                'guard_name' => 'web',
+                'created_at' => new DateTime('now'),
+            ],
+            [
+                'name' => 'Criar Categorias de Cursos',
+                'guard_name' => 'web',
+                'created_at' => new DateTime('now'),
+            ],
+            [
+                'name' => 'Editar Categorias de Cursos',
+                'guard_name' => 'web',
+                'created_at' => new DateTime('now'),
+            ],
+            [
+                'name' => 'Excluir Categorias de Cursos',
+                'guard_name' => 'web',
+                'created_at' => new DateTime('now'),
+            ],
         ]);
     }
 }

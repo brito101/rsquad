@@ -1,0 +1,14 @@
+body {
+  background-color: #f2f2f2 !important;
+}
+body h1 {
+  font-size: 2.5rem;
+  color: #030303;
+  text-align: center;
+}
+body #particles-container {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  overflow: hidden;
+}

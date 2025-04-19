@@ -48,7 +48,7 @@ return [
     */
 
     'logo' => env('APP_NAME'),
-    'logo_img' => 'vendor/adminlte/dist/img/logo.png',
+    'logo_img' => 'img/logo-50.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
@@ -242,6 +242,7 @@ return [
             'text' => 'Dashboard',
             'url' => '/admin',
             'icon' => 'fa fa-fw fa-digital-tachograph mr-2',
+            'can' => 'Acessar Administração',
         ],
         [
             'text' => 'Usuários',
@@ -260,6 +261,33 @@ return [
                     'url' => 'admin/users/create',
                     'icon' => 'fas fa-fw fa-chevron-right',
                     'can' => 'Criar Usuários',
+                ],
+            ],
+        ],
+        [
+            'text' => 'Configurações',
+            'icon' => 'fas fa-fw fa-cogs mr-2',
+            'can' => 'Acessar Configurações',
+            'submenu' => [
+                [
+                    'text' => 'Categorias de Cursos',
+                    'url' => '#',
+                    'icon' => 'fas fa-fw fa-tags mr-2',
+                    'can' => 'Acessar Categorias de Cursos',
+                    'submenu' => [
+                        [
+                            'text' => 'Listagem de Categorias',
+                            'url' => 'admin/course-categories',
+                            'icon' => 'fas fa-fw fa-chevron-right',
+                            'can' => 'Listar Categorias de Cursos',
+                        ],
+                        [
+                            'text' => 'Cadastro de Categorias',
+                            'url' => 'admin/course-categories/create',
+                            'icon' => 'fas fa-fw fa-chevron-right',
+                            'can' => 'Criar Categorias de Cursos',
+                        ],
+                    ],
                 ],
             ],
         ],
@@ -298,6 +326,7 @@ return [
             'text' => 'Changelog',
             'url' => 'admin/changelog',
             'icon' => 'fas fa-fw fa-code mr-2',
+            'can' => 'Acessar Administração',
         ],
         [
             'text' => 'Site',

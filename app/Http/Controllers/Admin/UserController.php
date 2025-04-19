@@ -8,7 +8,6 @@ use App\Http\Requests\Admin\Google2faRequest;
 use App\Http\Requests\Admin\UserRequest;
 use App\Models\User;
 use App\Models\Views\User as ViewsUser;
-use DataTables;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -20,6 +19,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Image;
 use Spatie\Permission\Models\Role;
+use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
 {
@@ -34,14 +34,14 @@ class UserController extends Controller
             if (Auth::user()->hasRole('Programador')) {
                 $users = ViewsUser::all('id', 'name', 'email', 'type', 'photo');
             } elseif (Auth::user()->hasRole('Administrador')) {
-                $users = ViewsUser::whereIn('type', ['Administrador', 'Usuário'])->get(['id', 'name', 'email', 'type', 'photo']);
+                $users = ViewsUser::whereIn('type', ['Administrador', 'Instrutor'])->get(['id', 'name', 'email', 'type', 'photo']);
             } else {
                 $users = null;
             }
 
             $token = csrf_token();
 
-            return Datatables::of($users)
+            return DataTables::of($users)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) use ($token) {
                     return '<a class="btn btn-xs btn-primary mx-1 shadow" title="Editar" href="users/'.$row->id.'/edit"><i class="fa fa-lg fa-fw fa-pen"></i></a>'.'<form method="POST" action="users/'.$row->id.'" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="'.$token.'"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão deste usuário?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>';
@@ -86,13 +86,12 @@ class UserController extends Controller
         if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
             $name = Str::slug(mb_substr($data['name'], 0, 100)).time();
             $data = $this->saveImage($request, $name, $data);
-
         }
 
         $user = User::create($data);
 
         if ($user->save()) {
-            if (! empty($request->role)) {
+            if (! empty($request->role) && Auth::user()->hasPermissionTo('Atribuir Perfis')) {
                 $user->syncRoles($request->role);
                 $user->save();
             }
@@ -113,6 +112,8 @@ class UserController extends Controller
      */
     public function edit(?int $id = null): View|\Illuminate\Foundation\Application|Factory|Application
     {
+        CheckPermission::checkAuth('Acessar Administração');
+
         if ($id) {
             CheckPermission::checkAuth('Editar Usuários');
         } else {
@@ -176,11 +177,10 @@ class UserController extends Controller
             }
 
             $data = $this->saveImage($request, $name, $data);
-
         }
 
         if ($user->update($data)) {
-            if (! empty($request->role)) {
+            if (! empty($request->role) && Auth::user()->hasPermissionTo('Atribuir Perfis')) {
                 $user->syncRoles($request->role);
                 $user->save();
             }

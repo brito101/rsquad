@@ -15,7 +15,6 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
                         <li class="breadcrumb-item active">Dashboard</li>
                     </ol>
                 </div>
@@ -35,6 +34,25 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-12 col-sm-6 col-md-4">
+                        <div class="info-box mb-3">
+                            <span class="info-box-icon bg-primary elevation-1"><i
+                                    class="fas fa-chalkboard-teacher"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Instrutores</span>
+                                <span class="info-box-number">{{ $instructors }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-4">
+                        <div class="info-box mb-3">
+                            <span class="info-box-icon bg-success elevation-1"><i class="fas fa-user-graduate"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Alunos</span>
+                                <span class="info-box-number">{{ $students }}</span>
+                            </div>
+                        </div>
+                    </div>
                 @endif
 
             </div>
@@ -48,10 +66,26 @@
                     </div>
 
                     @php
-                        $heads = [['label' => 'Hora', 'width' => 10], 'Página', 'IP', 'User-Agent', 'Plataforma', 'Navegador', 'Usuário', 'Método', 'Requisição'];
+                        $heads = [
+                            ['label' => 'Hora', 'width' => 10],
+                            'Usuário',
+                            'Página',
+                            'IP',
+                            'User-Agent',
+                            'Plataforma',
+                            'Navegador',
+                        ];
                         $config = [
                             'ajax' => url('/admin'),
-                            'columns' => [['data' => 'time', 'name' => 'time'], ['data' => 'url', 'name' => 'url'], ['data' => 'ip', 'name' => 'ip'], ['data' => 'useragent', 'name' => 'useragent'], ['data' => 'platform', 'name' => 'platform'], ['data' => 'browser', 'name' => 'browser'], ['data' => 'name', 'name' => 'name'], ['data' => 'method', 'name' => 'method'], ['data' => 'request', 'name' => 'request']],
+                            'columns' => [
+                                ['data' => 'time', 'name' => 'time'],
+                                ['data' => 'name', 'name' => 'name'],
+                                ['data' => 'url', 'name' => 'url'],
+                                ['data' => 'ip', 'name' => 'ip'],
+                                ['data' => 'useragent', 'name' => 'useragent'],
+                                ['data' => 'platform', 'name' => 'platform'],
+                                ['data' => 'browser', 'name' => 'browser'],
+                            ],
                             'language' => ['url' => asset('vendor/datatables/js/pt-BR.json')],
                             'order' => [0, 'desc'],
                             'destroy' => true,
@@ -63,11 +97,41 @@
                             'dom' => '<"d-flex flex-wrap col-12 justify-content-between"Bf>rtip',
                             'buttons' => [
                                 ['extend' => 'pageLength', 'className' => 'btn-default'],
-                                ['extend' => 'copy', 'className' => 'btn-default', 'text' => '<i class="fas fa-fw fa-lg fa-copy text-secondary"></i>', 'titleAttr' => 'Copiar', 'exportOptions' => ['columns' => ':not([dt-no-export])']],
-                                ['extend' => 'print', 'className' => 'btn-default', 'text' => '<i class="fas fa-fw fa-lg fa-print text-info"></i>', 'titleAttr' => 'Imprimir', 'exportOptions' => ['columns' => ':not([dt-no-export])']],
-                                ['extend' => 'csv', 'className' => 'btn-default', 'text' => '<i class="fas fa-fw fa-lg fa-file-csv text-primary"></i>', 'titleAttr' => 'Exportar para CSV', 'exportOptions' => ['columns' => ':not([dt-no-export])']],
-                                ['extend' => 'excel', 'className' => 'btn-default', 'text' => '<i class="fas fa-fw fa-lg fa-file-excel text-success"></i>', 'titleAttr' => 'Exportar para Excel', 'exportOptions' => ['columns' => ':not([dt-no-export])']],
-                                ['extend' => 'pdf', 'className' => 'btn-default', 'text' => '<i class="fas fa-fw fa-lg fa-file-pdf text-danger"></i>', 'titleAttr' => 'Exportar para PDF', 'exportOptions' => ['columns' => ':not([dt-no-export])']],
+                                [
+                                    'extend' => 'copy',
+                                    'className' => 'btn-default',
+                                    'text' => '<i class="fas fa-fw fa-lg fa-copy text-secondary"></i>',
+                                    'titleAttr' => 'Copiar',
+                                    'exportOptions' => ['columns' => ':not([dt-no-export])'],
+                                ],
+                                [
+                                    'extend' => 'print',
+                                    'className' => 'btn-default',
+                                    'text' => '<i class="fas fa-fw fa-lg fa-print text-info"></i>',
+                                    'titleAttr' => 'Imprimir',
+                                    'exportOptions' => ['columns' => ':not([dt-no-export])'],
+                                ],
+                                [
+                                    'extend' => 'csv',
+                                    'className' => 'btn-default',
+                                    'text' => '<i class="fas fa-fw fa-lg fa-file-csv text-primary"></i>',
+                                    'titleAttr' => 'Exportar para CSV',
+                                    'exportOptions' => ['columns' => ':not([dt-no-export])'],
+                                ],
+                                [
+                                    'extend' => 'excel',
+                                    'className' => 'btn-default',
+                                    'text' => '<i class="fas fa-fw fa-lg fa-file-excel text-success"></i>',
+                                    'titleAttr' => 'Exportar para Excel',
+                                    'exportOptions' => ['columns' => ':not([dt-no-export])'],
+                                ],
+                                [
+                                    'extend' => 'pdf',
+                                    'className' => 'btn-default',
+                                    'text' => '<i class="fas fa-fw fa-lg fa-file-pdf text-danger"></i>',
+                                    'titleAttr' => 'Exportar para PDF',
+                                    'exportOptions' => ['columns' => ':not([dt-no-export])'],
+                                ],
                             ],
                         ];
                     @endphp
@@ -78,10 +142,8 @@
                     </div>
                 </div>
 
-
                 <div class="row px-0">
-
-                    <div class="col-12 col-lg-6">
+                    <div class="col-12">
                         <div class="card">
                             <div class="card-header border-0">
                                 <div class="d-flex justify-content-between">
@@ -137,10 +199,14 @@
                 const myChart = new Chart(ctx, {
                     type: 'line',
                     data: {
-                        labels: ({!! json_encode($chart->labels) !!}),
+                        labels: ({
+                            !!json_encode($chart - > labels) !!
+                        }),
                         datasets: [{
                             label: 'Acessos por horário',
-                            data: {!! json_encode($chart->dataset) !!},
+                            data: {
+                                !!json_encode($chart - > dataset) !!
+                            },
                             borderWidth: 1,
                             borderColor: '#007bff',
                             backgroundColor: 'transparent'

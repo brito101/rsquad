@@ -12,7 +12,9 @@
 
 -   Visitante
 -   Aluno
+-   Instrutor
 -   Administrador
+-   Programador
 
 ### **Casos de Uso:**
 
@@ -35,6 +37,16 @@
 -   Visualizar cheatsheets
 -   Visualizar posts
 -   Editar dados do perfil
+
+#### Instrutor
+
+-   Autenticar/Login
+-   Gerenciar alunos
+-   Gerenciar cursos
+-   Gerenciar módulos e aulas (com liberação por data)
+-   Gerenciar posts/artigos
+-   Gerenciar cheatsheets
+-   Acompanhar progresso dos alunos (opcional)
 
 #### Administrador
 
@@ -102,6 +114,7 @@
 -   2FA authentication
 -   Visitors log
 -   API routes with JWT auth
+-   Course categories module
 
 ### Usage in development environment
 
@@ -115,7 +128,13 @@
 -   `sail artisan migrate --seed`
 -   `sail npm install && npm run dev`
 
-### Programmer login
+### Test login
 
 -   user: <programador@base.com>
+-   pass: 12345678
+-   user: <admin@base.com>
+-   pass: 12345678
+-   user: <instructor@base.com>
+-   pass: 12345678
+-   user: <student@base.com>
 -   pass: 12345678

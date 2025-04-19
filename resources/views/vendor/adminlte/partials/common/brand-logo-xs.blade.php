@@ -1,6 +1,12 @@
 @inject('layoutHelper', 'JeroenNoten\LaravelAdminLte\Helpers\LayoutHelper')
 
-@php($dashboard_url = View::getSection('dashboard_url') ?? config('adminlte.dashboard_url', 'home'))
+@if (auth()->user()->roles->pluck('name')[0] == 'Aluno')
+    @php($dashboard_url = route('academy.home'))
+@else
+    @php($dashboard_url = View::getSection('dashboard_url') ?? config('adminlte.dashboard_url', 'home'))
+@endif
+
+{{-- If the dashboard URL is not set, use the default URL --}}
 
 @if (config('adminlte.use_route_url', false))
     @php($dashboard_url = $dashboard_url ? route($dashboard_url) : '')
@@ -11,7 +17,7 @@
 <a href="{{ $dashboard_url }}"
     @if ($layoutHelper->isLayoutTopnavEnabled()) class="navbar-brand {{ config('adminlte.classes_brand') }}"
     @else
-        class="brand-link {{ config('adminlte.classes_brand') }}" @endif>
+    class="brand-link {{ config('adminlte.classes_brand') }}" @endif>
 
     {{-- Small brand logo --}}
     <img src="{{ asset(config('adminlte.logo_img', 'vendor/adminlte/dist/img/logo.png')) }}"
