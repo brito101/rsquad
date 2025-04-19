@@ -5,7 +5,7 @@
 @section('adminlte_css')
     <style>
         .callout-primary {
-            border-color: #007bff;
+            border-color: #024BA9;
         }
     </style>
 @endsection

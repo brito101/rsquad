@@ -208,7 +208,7 @@
                                 !!json_encode($chart - > dataset) !!
                             },
                             borderWidth: 1,
-                            borderColor: '#007bff',
+                            borderColor: '#024BA9',
                             backgroundColor: 'transparent'
                         }]
                     },
