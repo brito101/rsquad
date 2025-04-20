@@ -265,6 +265,26 @@ return [
             ],
         ],
         [
+            'text' => 'Cursos',
+            'url' => '#',
+            'icon' => 'fas fa-fw fa-newspaper mr-2',
+            'can' => 'Acessar Cursos',
+            'submenu' => [
+                [
+                    'text' => 'Listagem de Cursos',
+                    'url' => 'admin/courses',
+                    'icon' => 'fas fa-fw fa-chevron-right',
+                    'can' => 'Listar Cursos',
+                ],
+                [
+                    'text' => 'Cadastro de Curso',
+                    'url' => 'admin/courses/create',
+                    'icon' => 'fas fa-fw fa-chevron-right',
+                    'can' => 'Criar Cursos',
+                ],
+            ],
+        ],
+        [
             'text' => 'Configurações',
             'icon' => 'fas fa-fw fa-cogs mr-2',
             'can' => 'Acessar Configurações',
@@ -282,7 +302,7 @@ return [
                             'can' => 'Listar Categorias de Cursos',
                         ],
                         [
-                            'text' => 'Cadastro de Categorias',
+                            'text' => 'Cadastro de Categoria',
                             'url' => 'admin/course-categories/create',
                             'icon' => 'fas fa-fw fa-chevron-right',
                             'can' => 'Criar Categorias de Cursos',
@@ -446,18 +466,38 @@ return [
                 ],
             ],
         ],
-        'Select2' => [
+        'select2' => [
             'active' => false,
             'files' => [
                 [
                     'type' => 'js',
-                    'asset' => false,
-                    'location' => '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js',
+                    'asset' => true,
+                    'location' => 'vendor/select2/js/select2.full.min.js',
                 ],
                 [
                     'type' => 'css',
-                    'asset' => false,
-                    'location' => '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.css',
+                    'asset' => true,
+                    'location' => 'vendor/select2/css/select2.min.css',
+                ],
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => 'vendor/select2-bootstrap4-theme/select2-bootstrap4.min.css',
+                ],
+            ],
+        ],
+        'BootstrapSelect' => [
+            'active' => false,
+            'files' => [
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => 'vendor/bootstrap-select-1.13.14/dist/css/bootstrap-select.min.css',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/bootstrap-select-1.13.14/dist/js/bootstrap-select.min.js',
                 ],
             ],
         ],

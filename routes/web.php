@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\ACL\RoleController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\ChangelogController;
 use App\Http\Controllers\Admin\CourseCategoryController;
+use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Site\HomeController;
 use Illuminate\Support\Facades\Auth;
@@ -44,6 +45,9 @@ Route::group(['middleware' => ['auth', 'access']], function () {
 
         /** Course Categories */
         Route::resource('course-categories', CourseCategoryController::class)->except(['show']);
+
+        /** Courses */
+        Route::resource('courses', CourseController::class)->except(['show']);
 
         /**
          * ACL

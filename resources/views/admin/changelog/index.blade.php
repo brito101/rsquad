@@ -54,7 +54,8 @@
                                         <li>Módulo de Usuários</li>
                                         <li>Duplo fator de autenticação (2FA)</li>
                                         <li>Changelog</li>
-                                        <li>Categorias de Cursos</li>
+                                        <li>Módulo de Categorias de Cursos</li>
+                                        <li>Módulo de Cursos</li>
                                     </ul>
                                 </x-adminlte-callout>
 

@@ -115,6 +115,7 @@
 -   Visitors log
 -   API routes with JWT auth
 -   Course categories module
+-   Courses module
 
 ### Usage in development environment
 

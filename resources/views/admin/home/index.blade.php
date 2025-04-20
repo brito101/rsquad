@@ -199,14 +199,12 @@
                 const myChart = new Chart(ctx, {
                     type: 'line',
                     data: {
-                        labels: ({
-                            !!json_encode($chart - > labels) !!
-                        }),
+                        labels: (
+                            {!! json_encode($chart->labels) !!}
+                        ),
                         datasets: [{
                             label: 'Acessos por horário',
-                            data: {
-                                !!json_encode($chart - > dataset) !!
-                            },
+                            data: {!! json_encode($chart->dataset) !!},
                             borderWidth: 1,
                             borderColor: '#024BA9',
                             backgroundColor: 'transparent'

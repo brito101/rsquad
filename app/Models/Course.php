@@ -4,10 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class CategoryCourse extends Model
+class Course extends Model
 {
     use SoftDeletes;
 
@@ -22,6 +21,7 @@ class CategoryCourse extends Model
         'name',
         'cover',
         'description',
+        'active',
         'user_id',
     ];
 
@@ -33,8 +33,8 @@ class CategoryCourse extends Model
         ]);
     }
 
-    public function courses(): HasMany
+    public function categories()
     {
-        return $this->hasMany(CourseCategoryPivot::class, '');
+        return $this->hasMany(CourseCategoryPivot::class, 'course_id');
     }
 }

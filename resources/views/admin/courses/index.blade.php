@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', '- Categorias de Cursos')
+@section('title', '- Cursos')
 @section('plugins.Datatables', true)
 @section('plugins.DatatablesPlugins', true)
 
@@ -10,12 +10,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1><i class="fas fa-fw fa-tags"></i> Categorias de Cursos</h1>
+                    <h1><i class="fas fa-fw fa-newspaper"></i> Cursos</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ route('admin.home') }}">Home</a></li>
-                        <li class="breadcrumb-item active">Categorias de Cursos</li>
+                        <li class="breadcrumb-item active">Cursos</li>
                     </ol>
                 </div>
             </div>
@@ -31,10 +31,10 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="d-flex flex-wrap justify-content-between col-12 align-content-center">
-                                <h3 class="card-title align-self-center">Categorias Cadastradas</h3>
-                                @can('Criar Categorias de Cursos')
-                                    <a href="{{ route('admin.course-categories.create') }}" title="Nova Categoria"
-                                        class="btn btn-success"><i class="fas fa-fw fa-plus"></i>Nova Categoria</a>
+                                <h3 class="card-title align-self-center">Cursos Cadastrados</h3>
+                                @can('Criar Cursos')
+                                    <a href="{{ route('admin.courses.create') }}" title="Novo Curso" class="btn btn-success"><i
+                                            class="fas fa-fw fa-plus"></i>Novo Curso</a>
                                 @endcan
                             </div>
                         </div>
@@ -44,16 +44,18 @@
                                 ['label' => 'ID', 'width' => 10],
                                 ['label' => 'Foto', 'no-export' => true],
                                 'Nome',
-                                'Cursos',
+                                'Categorias',
+                                'Ativo',
                                 ['label' => 'Ações', 'no-export' => true, 'width' => 10],
                             ];
                             $config = [
-                                'ajax' => route('admin.course-categories.index'),
+                                'ajax' => route('admin.courses.index'),
                                 'columns' => [
                                     ['data' => 'id', 'name' => 'id'],
                                     ['data' => 'cover', 'name' => 'cover', 'orderable' => false],
                                     ['data' => 'name', 'name' => 'name'],
-                                    ['data' => 'courses', 'name' => 'courses'],
+                                    ['data' => 'categories', 'name' => 'categories'],
+                                    ['data' => 'active', 'name' => 'active'],
                                     [
                                         'data' => 'action',
                                         'name' => 'action',
