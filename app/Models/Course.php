@@ -21,7 +21,9 @@ class Course extends Model
         'name',
         'cover',
         'description',
+        'status',
         'active',
+        'sales_link',
         'user_id',
     ];
 
@@ -36,5 +38,10 @@ class Course extends Model
     public function categories()
     {
         return $this->hasMany(CourseCategoryPivot::class, 'course_id');
+    }
+
+    public function authors()
+    {
+        return $this->hasMany(CourseAuthor::class, 'course_id');
     }
 }

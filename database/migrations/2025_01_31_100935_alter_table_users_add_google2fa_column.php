@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->boolean('google2fa_secret_enabled')->default(false);
             $table->text('google2fa_secret')->nullable();
+            $table->boolean('first_access')->default(false);
         });
     }
 
@@ -23,7 +24,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['google2fa_secret_enabled', 'google2fa_secret']);
+            $table->dropColumn(['google2fa_secret_enabled', 'google2fa_secret', 'first_access']);
         });
     }
 };

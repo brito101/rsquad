@@ -25,7 +25,7 @@
         <div class="container-fluid">
             <div class="row">
                 @if (Auth::user()->hasRole('Programador|Administrador'))
-                    <div class="col-12 col-sm-6 col-md-4">
+                    <div class="col-12 col-sm-6 col-md-3">
                         <div class="info-box mb-3">
                             <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-user-shield"></i></span>
                             <div class="info-box-content">
@@ -34,7 +34,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 col-sm-6 col-md-4">
+                    <div class="col-12 col-sm-6 col-md-3">
                         <div class="info-box mb-3">
                             <span class="info-box-icon bg-primary elevation-1"><i
                                     class="fas fa-chalkboard-teacher"></i></span>
@@ -44,7 +44,16 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 col-sm-6 col-md-4">
+                    <div class="col-12 col-sm-6 col-md-3">
+                        <div class="info-box mb-3">
+                            <span class="info-box-icon bg-info elevation-1"><i class="fas fa-newspaper"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Cursos</span>
+                                <span class="info-box-number">{{ $courses }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-3">
                         <div class="info-box mb-3">
                             <span class="info-box-icon bg-success elevation-1"><i class="fas fa-user-graduate"></i></span>
                             <div class="info-box-content">
@@ -199,12 +208,14 @@
                 const myChart = new Chart(ctx, {
                     type: 'line',
                     data: {
-                        labels: (
-                            {!! json_encode($chart->labels) !!}
-                        ),
+                        labels: ({
+                            !!json_encode($chart - > labels) !!
+                        }),
                         datasets: [{
                             label: 'Acessos por horário',
-                            data: {!! json_encode($chart->dataset) !!},
+                            data: {
+                                !!json_encode($chart - > dataset) !!
+                            },
                             borderWidth: 1,
                             borderColor: '#024BA9',
                             backgroundColor: 'transparent'

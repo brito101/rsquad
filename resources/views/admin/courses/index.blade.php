@@ -45,6 +45,8 @@
                                 ['label' => 'Foto', 'no-export' => true],
                                 'Nome',
                                 'Categorias',
+                                'Autores',
+                                'Status',
                                 'Ativo',
                                 ['label' => 'Ações', 'no-export' => true, 'width' => 10],
                             ];
@@ -55,6 +57,8 @@
                                     ['data' => 'cover', 'name' => 'cover', 'orderable' => false],
                                     ['data' => 'name', 'name' => 'name'],
                                     ['data' => 'categories', 'name' => 'categories'],
+                                    ['data' => 'authors', 'name' => 'authors'],
+                                    ['data' => 'status', 'name' => 'status'],
                                     ['data' => 'active', 'name' => 'active'],
                                     [
                                         'data' => 'action',

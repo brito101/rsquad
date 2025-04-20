@@ -44,17 +44,16 @@
                             <div class="card-body">
 
                                 <div class="d-flex flex-wrap justify-content-between">
-                                    <div class="col-12 col-md-6 form-group px-0 pr-md-2">
+                                    <div class="col-12 form-group px-0">
                                         <label for="name">Título</label>
                                         <input type="text" class="form-control" id="name"
                                             placeholder="Título da Categoria" name="name"
                                             value="{{ old('name') ?? $category->name }}" required>
                                     </div>
-                                    <div class="col-12 col-md-6 form-group px-0 pl-md-2">
-                                        <label for="description">Descrição</label>
-                                        <input type="text" class="form-control" id="description"
-                                            placeholder="Descrição da Categoria" name="description"
-                                            value="{{ old('description') ?? $category->description }}" required>
+                                    <div class="col-12 form-group px-0 mb-0">
+                                        <x-adminlte-textarea name="description" label="Descrição" rows=5 igroup-size="md"
+                                            placeholder="Insira uma descrição opcional..." maxlength="10000">{{ old('description') ?? $category->description }}
+                                        </x-adminlte-textarea>
                                     </div>
                                 </div>
 

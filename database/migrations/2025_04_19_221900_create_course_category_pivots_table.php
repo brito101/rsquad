@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('course_category_pivots', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('course_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('course_id')->constrained()->onDelete('cascade');
             $table->foreignId('category_course_id')->constrained()->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();

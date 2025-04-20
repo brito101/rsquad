@@ -45,11 +45,21 @@
                             <input type="hidden" name="id" value="{{ $user->id }}">
                             <div class="card-body">
                                 <div class="d-flex flex-wrap justify-content-between">
-                                    <div class="col-12 form-group px-0">
+                                    <div class="col-12 col-md-6 form-group px-0 pr-md-2 mb-0">
                                         <label for="name">Nome</label>
                                         <input type="text" class="form-control" id="name"
                                             placeholder="Nome Completo" name="name"
                                             value="{{ old('name') ?? $user->name }}" required>
+                                    </div>
+                                    <div class="col-12 col-md-6 form-group px-0 pl-md-2 mb-0">
+                                        <x-adminlte-input-file name="photo" label="Foto"
+                                            placeholder="Selecione uma imagem..." legend="Selecionar" />
+                                    </div>
+
+                                    <div class="col-12 form-group px-0 mb-0">
+                                        <x-adminlte-textarea name="bio" label="Bio" rows=5 igroup-size="md"
+                                            placeholder="Insira uma descrição opcional sobre você..." maxlength="10000">{{ old('bio') ?? $user->bio }}
+                                        </x-adminlte-textarea>
                                     </div>
                                 </div>
 
@@ -57,31 +67,12 @@
                                     <div class="col-12 col-md-6 form-group px-0 pr-md-2">
                                         <label for="telephone">Telefone</label>
                                         <input type="tel" class="form-control" id="telephone" placeholder="Telefone"
-                                            name="telephone" value="{{ old('telephone') ?? $user->telephone }}" required>
+                                            name="telephone" value="{{ old('telephone') ?? $user->telephone }}">
                                     </div>
                                     <div class="col-12 col-md-6 form-group px-0 pl-md-2">
                                         <label for="cell">Celular</label>
                                         <input type="tel" class="form-control" id="cell" placeholder="Celular"
                                             name="cell" value="{{ old('cell') ?? $user->cell }}">
-                                    </div>
-                                </div>
-
-                                <div class="d-flex flex-wrap justify-content-between">
-                                    <div class="col-12 col-md-6 form-group px-0 pr-md-2 d-flex flex-wrap">
-
-                                        <div class="{{ $user->photo != null ? 'col-md-9' : 'col-md-12' }} px-0">
-                                            <x-adminlte-input-file name="photo" label="Foto"
-                                                placeholder="Selecione uma imagem..." legend="Selecionar" />
-                                        </div>
-
-                                        @if ($user->photo != null)
-                                            <div
-                                                class='col-12 col-md-3 align-self-center mt-3 d-flex justify-content-center justify-content-md-end px-0'>
-                                                <img src="{{ url('storage/users/' . $user->photo) }}"
-                                                    alt="{{ $user->name }}" style="max-width: 80%;"
-                                                    class="img-thumbnail d-block">
-                                            </div>
-                                        @endif
                                     </div>
                                 </div>
 
@@ -96,6 +87,39 @@
                                         <input type="password" class="form-control" id="password" placeholder="Senha"
                                             minlength="8" name="password" value="">
                                     </div>
+                                </div>
+
+                                <div class="d-flex flex-wrap justify-content-between">
+                                    <div class="col-12 col-md-4 form-group px-0 pr-md-2">
+                                        <label for="linkedin">Linkedin</label>
+                                        <input type="text" class="form-control" id="linkedin" placeholder="URL do Linkedin"
+                                            name="linkedin" value="{{ old('linkedin') ?? $user->linkedin }}">
+                                    </div>
+                                    <div class="col-12 col-md-4 form-group px-0 px-md-2">
+                                        <label for="instagram">Instagram</label>
+                                        <input type="text" class="form-control" id="instagram" placeholder="URL do Instagram"
+                                            name="instagram" value="{{ old('instagram') ?? $user->instagram }}">
+                                    </div>
+                                    <div class="col-12 col-md-4 form-group px-0 pl-md-2">
+                                        <label for="youtube">Youtube</label>
+                                        <input type="text" class="form-control" id="youtube" placeholder="URL do Youtube"
+                                            name="youtube" value="{{ old('youtube') ?? $user->youtube }}">
+                                    </div>
+                                </div>
+
+                                <div class="d-flex flex-wrap justify-content-between">
+                                    @can('Atribuir Perfis')
+                                        <div class="col-12 col-md-6 form-group px-0 pr-md-2">
+                                            <label for="role">Tipo de Usuário</label>
+                                            <x-adminlte-select2 name="role">
+                                                @foreach ($roles as $role)
+                                                    <option
+                                                        {{ old('role') == $role->name ? 'selected' : ($user->roles->first()->id == $role->id ? 'selected' : '') }}
+                                                        value="{{ $role->name }}">{{ $role->name }}</option>
+                                                @endforeach
+                                            </x-adminlte-select2>
+                                        </div>
+                                    @endcan
                                 </div>
 
                                 <div
@@ -114,7 +138,7 @@
                                             data-user="{{ $user->id }}" />
                                     @endif
 
-                                    <div class="col-12 px-0" id="seed-container">
+                                    <div class="col-12 px-0 px-0 pr-md-2" id="seed-container">
                                         <div>
                                             @if (
                                                 ($user->google2fa_secret_enabled && Auth::user()->id == $user->id) ||
@@ -130,26 +154,10 @@
                                     </div>
                                 </div>
 
-                                <div class="d-flex flex-wrap justify-content-between">
-                                    @can('Atribuir Perfis')
-                                        <div class="col-12 col-md-6 form-group px-0 pr-md-2">
-                                            <label for="role">Tipo de Usuário</label>
-                                            <x-adminlte-select2 name="role">
-                                                @foreach ($roles as $role)
-                                                    <option
-                                                        {{ old('role') == $role->name ? 'selected' : ($user->roles->first()->id == $role->id ? 'selected' : '') }}
-                                                        value="{{ $role->name }}">{{ $role->name }}</option>
-                                                @endforeach
-                                            </x-adminlte-select2>
-                                        </div>
-                                    @endcan
-
-                                </div>
-
                                 @can('Atribuir Perfis')
                                     @if ($user->id != Auth::user()->id)
                                         <div
-                                            class="col-12 col-md-6 form-group px-0 pl-md-2 d-flex flex-wrap justify-content-start">
+                                            class="col-12 col-md-6 form-group px-0 pr-md-2 d-flex flex-wrap justify-content-start">
                                             @if ($user->first_access)
                                                 <x-adminlte-input-switch name="first_access" label="Primeiro Acesso"
                                                     data-on-text="Sim" data-off-text="Não" data-on-color="teal" checked
@@ -162,7 +170,6 @@
                                         </div>
                                     @endif
                                 @endcan
-
 
                             </div>
 

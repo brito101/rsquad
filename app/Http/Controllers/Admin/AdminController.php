@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Helpers\CheckPermission;
 use App\Http\Controllers\Controller;
+use App\Models\Course;
 use App\Models\User;
+use App\Models\Views\Course as ViewsCourse;
 use App\Models\Views\User as ViewsUser;
 use App\Models\Views\Visit;
 use App\Models\Views\VisitYesterday;
@@ -26,6 +28,7 @@ class AdminController extends Controller
         $administrators = ViewsUser::where('type', 'Administrador')->count();
         $instructors = ViewsUser::where('type', 'Instrutor')->count();
         $students = ViewsUser::where('type', 'Aluno')->count();
+        $courses = ViewsCourse::where('active', true)->count();
 
         $visits = Visit::where('url', '!=', route('admin.home.chart'))
             ->where('url', 'NOT LIKE', '%columns%')
@@ -58,6 +61,7 @@ class AdminController extends Controller
         return view('admin.home.index', compact(
             'administrators',
             'instructors',
+            'courses',
             'students',
             'onlineUsers',
             'percent',
@@ -124,7 +128,7 @@ class AdminController extends Controller
 
         $dataList = [];
         foreach ($data as $key => $value) {
-            $dataList[$key.'H'] = count($value);
+            $dataList[$key . 'H'] = count($value);
         }
 
         $chart = new stdClass;

@@ -223,6 +223,13 @@ return [
         'activities' => 'atividades',
         'photo' => 'foto',
         'first_access' => 'primeiro acesso',
+        'active' => 'ativo',
+        'cover' => 'imagem de capa',
+        'sales_link' => 'link de vendas',
+        'course_id' => 'curso',
+        'user_id' => 'usuário',
+        'category_id' => 'categoria',
+        'course_category_id' => 'categoria de curso',
     ],
 
 ];

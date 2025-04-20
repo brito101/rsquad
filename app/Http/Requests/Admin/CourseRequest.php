@@ -30,9 +30,11 @@ class CourseRequest extends FormRequest
     {
         return [
             'name' => "required|max:191|unique:courses,name,{$this->id},id,deleted_at,NULL",
-            'description' => 'required|max:191',
+            'description' => 'required|max:4294967295',
             'cover' => 'required_if:cover,null|image|mimes:jpg,png,jpeg,gif,bmp,webp|max:4096|dimensions:max_width=4000,max_height=4000',
+            'status' => 'required|in:Publicado,Rascunho,Suspenso,Cancelado,Arquivado',
             'active' => 'nullable|boolean',
+            'sales_link' => 'nullable|url|max:191',
         ];
     }
 }

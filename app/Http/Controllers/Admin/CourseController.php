@@ -3,13 +3,17 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Helpers\CheckPermission;
+use App\Helpers\TextProcessor;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\CourseRequest;
 use App\Models\CategoryCourse;
 use App\Models\Course;
+use App\Models\CourseAuthor;
 use App\Models\CourseCategoryPivot;
+use App\Models\User;
 use App\Models\Views\CategoryCourse as ViewsCategoryCourse;
-use App\Models\Views\Course as ViewsCourse;
+use App\Models\Views\User as ViewsUser;
+use Dom\Text;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -40,8 +44,13 @@ class CourseController extends Controller
                     return '<div class="d-flex justify-content-center align-items-center"><img src="' . ($row->cover ? url('storage/courses/min/' . $row->cover) : asset('img/defaults/min/courses.webp')) . '" class="img-thumbnail d-block" width="360" height="207" alt="' . $row->name . '" title="' . $row->name . '"/></div>';
                 })
                 ->addColumn('categories', function ($row) {
-                    return $row->categories->map(function ($category) {
-                        return $category->category->name;
+                    return $row->categories->map(function ($pivot) {
+                        return $pivot->category->name;
+                    })->implode(' - ');
+                })
+                ->addColumn('authors', function ($row) {
+                    return $row->authors->map(function ($pivot) {
+                        return $pivot->user->name;
                     })->implode(' - ');
                 })
                 ->addColumn('active', function ($row) {
@@ -52,9 +61,16 @@ class CourseController extends Controller
                     }
                 })
                 ->addColumn('action', function ($row) use ($token) {
-                    return '<a class="btn btn-xs btn-primary mx-1 shadow" title="Editar" href="courses/' . $row->id . '/edit"><i class="fa fa-lg fa-fw fa-pen"></i></a>' . '<form method="POST" action="courses/' . $row->id . '" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="' . $token . '"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão deste curso?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>';
+                    if ($row->sales_link) {
+                        $sales_link = '<a class="btn btn-xs btn-success mx-1 shadow" title="Link de vendas" href="' . $row->sales_link . '" target="_blank"><i class="fa fa-lg fa-fw fa-dollar-sign"></i></a>';
+                    } else {
+                        $sales_link = '';
+                    }
+                    $edit = '<a class="btn btn-xs btn-primary mx-1 shadow" title="Editar" href="courses/' . $row->id . '/edit"><i class="fa fa-lg fa-fw fa-pen"></i></a>';
+                    $delete = '<form method="POST" action="courses/' . $row->id . '" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="' . $token . '"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão deste curso?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>';
+                    return '<div class="d-flex justify-content-center align-items-center">' . $sales_link . $edit . $delete . '</div>';
                 })
-                ->rawColumns(['cover', 'categories', 'active', 'action'])
+                ->rawColumns(['cover', 'categories', 'authors', 'active', 'action'])
                 ->make(true);
         }
 
@@ -70,7 +86,9 @@ class CourseController extends Controller
 
         $categories = ViewsCategoryCourse::orderBy('name')->get();
 
-        return view('admin.courses.create', compact('categories'));
+        $authors = ViewsUser::whereNotIn('type', ['Programador', 'Aluno'])->orderBy('name')->get();
+
+        return view('admin.courses.create', compact('categories', 'authors'));
     }
 
     /**
@@ -92,6 +110,7 @@ class CourseController extends Controller
             $destinationPath = storage_path() . '/app/public/courses';
             $destinationPathMedium = storage_path() . '/app/public/courses/medium';
             $destinationPathMin = storage_path() . '/app/public/courses/min';
+            $descriptionPath = storage_path() . '/app/public/courses/description';
 
             if (! file_exists($destinationPath)) {
                 mkdir($destinationPath, 755, true);
@@ -128,6 +147,11 @@ class CourseController extends Controller
             }
         }
 
+        if ($request->description) {
+            $data['description'] = TextProcessor::store($request->name, 'courses/description', $request->description);
+        }
+
+
         $data['user_id'] = auth()->user()->id;
 
         $course = Course::create($data);
@@ -141,6 +165,18 @@ class CourseController extends Controller
                     $pivot->create([
                         'course_id' => $course->id,
                         'category_course_id' => $category,
+                    ]);
+                }
+            }
+
+            $authors = $request->authors;
+            if ($authors && count($authors) > 0) {
+                $users = ViewsUser::whereIn('id', $authors)->whereNotIn('type', ['Programador', 'Aluno'])->pluck('id');
+                foreach ($users as $user) {
+                    $pivot = new CourseAuthor;
+                    $pivot->create([
+                        'course_id' => $course->id,
+                        'user_id' => $user,
                     ]);
                 }
             }
@@ -170,7 +206,9 @@ class CourseController extends Controller
 
         $categories = ViewsCategoryCourse::orderBy('name')->get();
 
-        return view('admin.courses.edit', compact('course', 'categories'));
+        $authors = ViewsUser::whereNotIn('type', ['Programador', 'Aluno'])->orderBy('name')->get();
+
+        return view('admin.courses.edit', compact('course', 'categories', 'authors'));
     }
 
     /**
@@ -250,6 +288,10 @@ class CourseController extends Controller
             }
         }
 
+        if ($request->description) {
+            $data['description'] = TextProcessor::store($request->name, 'courses/description', $request->description);
+        }
+
         $data['user_id'] = auth()->user()->id;
 
         if ($course->update($data)) {
@@ -266,6 +308,21 @@ class CourseController extends Controller
                     ]);
                 }
             }
+
+            CourseAuthor::where('course_id', $course->id)->delete();
+
+            $authors = $request->authors;
+            if ($authors && count($authors) > 0) {
+                $users = ViewsUser::whereIn('id', $authors)->whereNotIn('type', ['Programador', 'Aluno'])->pluck('id');
+                foreach ($users as $user) {
+                    $pivot = new CourseAuthor;
+                    $pivot->firstOrCreate([
+                        'course_id' => $course->id,
+                        'user_id' => $user,
+                    ]);
+                }
+            }
+
             return redirect()
                 ->route('admin.courses.index')
                 ->with('success', 'Atualização realizada!');
@@ -308,6 +365,7 @@ class CourseController extends Controller
             }
 
             CourseCategoryPivot::where('course_id', $course->id)->delete();
+            CourseAuthor::where('course_id', $course->id)->delete();
             $course->cover = null;
             $course->update();
 

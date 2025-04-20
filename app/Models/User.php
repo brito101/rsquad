@@ -45,6 +45,10 @@ class User extends Authenticatable implements JWTSubject
         'google2fa_secret_enabled',
         'google2fa_secret',
         'first_access',
+        'bio',
+        'linkedin',
+        'instagram',
+        'youtube',
     ];
 
     /**

@@ -16,8 +16,10 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('cover')->nullable();
-            $table->string('description')->nullable();
+            $table->longText('description')->nullable();
+            $table->string('status')->default('Rascunho');
             $table->boolean('active')->default(true);
+            $table->string('sales_link')->nullable();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->softDeletes();
             $table->timestamps();
@@ -25,7 +27,7 @@ return new class extends Migration
 
         DB::statement('
         CREATE OR REPLACE VIEW `courses_view` AS
-        SELECT c.id, c.name, c.cover, c.description, c.user_id, c.active, u.name as editor
+        SELECT c.id, c.name, c.cover, c.description, c.user_id, c.status, c.active, c.sales_link, u.name as editor
         FROM courses as c
         LEFT JOIN users as u ON c.user_id = u.id
         WHERE c.deleted_at IS NULL
