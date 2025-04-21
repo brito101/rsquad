@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', '- Cursos')
+@section('title', '- Aulas do Curso ' . $course->name)
 @section('plugins.Datatables', true)
 @section('plugins.DatatablesPlugins', true)
 
@@ -10,12 +10,14 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1><i class="fas fa-fw fa-newspaper"></i> Cursos</h1>
+                    <h1><i class="fas fa-fw fa-chalkboard-teacher"></i> Aulas do Curso {{ $course->name }}</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ route('admin.home') }}">Home</a></li>
-                        <li class="breadcrumb-item active">Cursos</li>
+                        <li class="breadcrumb-item"><a href="{{ route('admin.courses.index') }}">Cursos</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('admin.classes.index') }}">Aulas</a></li>
+                        <li class="breadcrumb-item active">Aulas por Curso</li>
                     </ol>
                 </div>
             </div>
@@ -31,10 +33,10 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="d-flex flex-wrap justify-content-between col-12 align-content-center">
-                                <h3 class="card-title align-self-center">Cursos Cadastrados</h3>
-                                @can('Criar Cursos')
-                                    <a href="{{ route('admin.courses.create') }}" title="Novo Curso" class="btn btn-success"><i
-                                            class="fas fa-fw fa-plus"></i>Novo Curso</a>
+                                <h3 class="card-title align-self-center">Aulas Cadastradas</h3>
+                                @can('Criar Aulas')
+                                    <a href="{{ route('admin.classes.create') }}" title="Nova Aula" class="btn btn-success"><i
+                                            class="fas fa-fw fa-plus"></i>Nova Aula</a>
                                 @endcan
                             </div>
                         </div>
@@ -42,26 +44,25 @@
                         @php
                             $heads = [
                                 ['label' => 'ID', 'width' => 10],
-                                ['label' => 'Foto', 'no-export' => true],
                                 'Nome',
-                                'Categorias',
-                                'Aulas',
-                                'Autores',
                                 'Status',
                                 'Ativo',
+                                'Data liberação',
+                                ['label' => 'Data_BR', 'no-export' => true],
                                 ['label' => 'Ações', 'no-export' => true, 'width' => 10],
                             ];
                             $config = [
-                                'ajax' => route('admin.courses.index'),
+                                'ajax' => route('admin.courses.classes', ['course' => $course->id]),
                                 'columns' => [
                                     ['data' => 'id', 'name' => 'id'],
-                                    ['data' => 'cover', 'name' => 'cover', 'orderable' => false],
                                     ['data' => 'name', 'name' => 'name'],
-                                    ['data' => 'categories', 'name' => 'categories'],
-                                    ['data' => 'classes', 'name' => 'classes'],
-                                    ['data' => 'authors', 'name' => 'authors'],
                                     ['data' => 'status', 'name' => 'status'],
                                     ['data' => 'active', 'name' => 'active'],
+                                    [
+                                        'data' => 'release_date_br',
+                                        'name' => 'release_date',
+                                    ],
+                                    ['data' => 'release_date_br', 'name' => 'release_date_br', 'visible' => false],
                                     [
                                         'data' => 'action',
                                         'name' => 'action',

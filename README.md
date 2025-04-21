@@ -116,6 +116,7 @@
 -   API routes with JWT auth
 -   Course categories module
 -   Courses module
+-   Classroom module
 
 ### Usage in development environment
 

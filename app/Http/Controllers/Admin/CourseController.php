@@ -7,21 +7,17 @@ use App\Helpers\TextProcessor;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\CourseRequest;
 use App\Models\CategoryCourse;
+use App\Models\Classroom;
 use App\Models\Course;
 use App\Models\CourseAuthor;
 use App\Models\CourseCategoryPivot;
-use App\Models\User;
 use App\Models\Views\CategoryCourse as ViewsCategoryCourse;
 use App\Models\Views\User as ViewsUser;
-use Dom\Text;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
-use Illuminate\Http\JsonResponse;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
-use Image;
+use Intervention\Image\Facades\Image;
 use Yajra\DataTables\Facades\DataTables;
 
 class CourseController extends Controller
@@ -29,49 +25,79 @@ class CourseController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request): View|Factory|Application|JsonResponse
+    public function index(Request $request)
     {
         CheckPermission::checkAuth('Listar Cursos');
 
         if ($request->ajax()) {
-            $courses = Course::all();
+            if (auth()->user()->hasRole(['Programador', 'Administrador'])) {
+                $courses = Course::with(['classes', 'authors'])->get();
+            } elseif (auth()->user()->hasRole('Instrutor')) {
+                $courses = Course::where(function ($query) {
+                    $query->where('user_id', auth()->user()->id)
+                        ->orWhereHas('authors', function ($q) {
+                            $q->where('user_id', auth()->user()->id);
+                        });
+                })->with(['classes', 'authors'])->get();
+            } else {
+                $courses = new Course;
+            }
 
             $token = csrf_token();
 
-            return DataTables::of($courses)
-                ->addIndexColumn()
-                ->addColumn('cover', function ($row) {
-                    return '<div class="d-flex justify-content-center align-items-center"><img src="' . ($row->cover ? url('storage/courses/min/' . $row->cover) : asset('img/defaults/min/courses.webp')) . '" class="img-thumbnail d-block" width="360" height="207" alt="' . $row->name . '" title="' . $row->name . '"/></div>';
-                })
-                ->addColumn('categories', function ($row) {
-                    return $row->categories->map(function ($pivot) {
-                        return $pivot->category->name;
-                    })->implode(' - ');
-                })
-                ->addColumn('authors', function ($row) {
-                    return $row->authors->map(function ($pivot) {
-                        return $pivot->user->name;
-                    })->implode(' - ');
-                })
-                ->addColumn('active', function ($row) {
-                    if ($row->active == 0) {
-                        return '<span class="text-danger"><i class="fa fa-lg fa-fw fa-thumbs-down"></i></span>';
-                    } else {
-                        return '<span class="text-success"><i class="fa fa-lg fa-fw fa-thumbs-up"></i></span>';
-                    }
-                })
-                ->addColumn('action', function ($row) use ($token) {
-                    if ($row->sales_link) {
-                        $sales_link = '<a class="btn btn-xs btn-success mx-1 shadow" title="Link de vendas" href="' . $row->sales_link . '" target="_blank"><i class="fa fa-lg fa-fw fa-dollar-sign"></i></a>';
-                    } else {
-                        $sales_link = '';
-                    }
-                    $edit = '<a class="btn btn-xs btn-primary mx-1 shadow" title="Editar" href="courses/' . $row->id . '/edit"><i class="fa fa-lg fa-fw fa-pen"></i></a>';
-                    $delete = '<form method="POST" action="courses/' . $row->id . '" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="' . $token . '"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão deste curso?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>';
-                    return '<div class="d-flex justify-content-center align-items-center">' . $sales_link . $edit . $delete . '</div>';
-                })
-                ->rawColumns(['cover', 'categories', 'authors', 'active', 'action'])
-                ->make(true);
+            try {
+                return DataTables::of($courses)
+                    ->addIndexColumn()
+                    ->addColumn('cover', function ($row) {
+                        return '<div class="d-flex justify-content-center align-items-center"><img src="'.($row->cover ? url('storage/courses/min/'.$row->cover) : asset('img/defaults/min/courses.webp')).'" class="img-thumbnail d-block" width="360" height="207" alt="'.$row->name.'" title="'.$row->name.'"/></div>';
+                    })
+                    ->addColumn('categories', function ($row) {
+                        return $row->categories->map(function ($pivot) {
+                            return $pivot->category->name;
+                        })->implode(' - ');
+                    })
+                    ->addColumn('classes', function ($row) {
+                        return $row->classes->count();
+                    })
+                    ->addColumn('authors', function ($row) {
+                        return $row->authors->map(function ($pivot) {
+                            return $pivot->user->name;
+                        })->implode(' - ');
+                    })
+                    ->addColumn('active', function ($row) {
+                        if ($row->active == 0) {
+                            return '<span class="text-danger"><i class="fa fa-lg fa-fw fa-thumbs-down"></i></span>';
+                        } else {
+                            return '<span class="text-success"><i class="fa fa-lg fa-fw fa-thumbs-up"></i></span>';
+                        }
+                    })
+                    ->addColumn('action', function ($row) use ($token) {
+                        if ($row->sales_link) {
+                            $sales_link = '<a class="btn btn-xs btn-success mx-1 shadow" title="Link de vendas" href="'.$row->sales_link.'" target="_blank"><i class="fa fa-lg fa-fw fa-dollar-sign"></i></a>';
+                        } else {
+                            $sales_link = '';
+                        }
+                        if ($row->classes->count() > 0) {
+                            $classes_link = '<a class="btn btn-xs btn-warning mx-1 shadow" title="Aulas" href="courses/'.$row->id.'/classes"><i class="fa fa-lg fa-fw fa-chalkboard-teacher"></i></a>';
+                        } else {
+                            $classes_link = '';
+                        }
+                        $edit = '<a class="btn btn-xs btn-primary mx-1 shadow" title="Editar" href="courses/'.$row->id.'/edit"><i class="fa fa-lg fa-fw fa-pen"></i></a>';
+                        $delete = '<form method="POST" action="courses/'.$row->id.'" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="'.$token.'"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão deste curso?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>';
+
+                        return '<div class="d-flex justify-content-center align-items-center">'.$sales_link.$classes_link.$edit.$delete.'</div>';
+                    })
+                    ->rawColumns(['cover', 'categories', 'classes', 'authors', 'active', 'action'])
+                    ->make(true);
+            } catch (Exception $e) {
+                return response([
+                    'draw' => 0,
+                    'recordsTotal' => 0,
+                    'recordsFiltered' => 0,
+                    'data' => [],
+                    'error' => $e->getMessage(),
+                ]);
+            }
         }
 
         return view('admin.courses.index');
@@ -101,16 +127,15 @@ class CourseController extends Controller
         $data = $request->all();
 
         if ($request->hasFile('cover') && $request->file('cover')->isValid()) {
-            $name = Str::slug(mb_substr($data['name'], 0, 100)) . time();
+            $name = Str::slug(mb_substr($data['name'], 0, 100)).time();
             $extension = $request->cover->extension();
             $nameFile = "{$name}.{$extension}";
 
             $data['cover'] = $nameFile;
 
-            $destinationPath = storage_path() . '/app/public/courses';
-            $destinationPathMedium = storage_path() . '/app/public/courses/medium';
-            $destinationPathMin = storage_path() . '/app/public/courses/min';
-            $descriptionPath = storage_path() . '/app/public/courses/description';
+            $destinationPath = storage_path().'/app/public/courses';
+            $destinationPathMedium = storage_path().'/app/public/courses/medium';
+            $destinationPathMin = storage_path().'/app/public/courses/min';
 
             if (! file_exists($destinationPath)) {
                 mkdir($destinationPath, 755, true);
@@ -127,17 +152,17 @@ class CourseController extends Controller
             $img = Image::make($request->cover)->resize(null, 490, function ($constraint) {
                 $constraint->aspectRatio();
                 $constraint->upsize();
-            })->crop(860, 490)->save($destinationPath . '/' . $nameFile);
+            })->crop(860, 490)->save($destinationPath.'/'.$nameFile);
 
             $imgMedium = Image::make($request->cover)->resize(null, 385, function ($constraint) {
                 $constraint->aspectRatio();
                 $constraint->upsize();
-            })->crop(675, 385)->save($destinationPathMedium . '/' . $nameFile);
+            })->crop(675, 385)->save($destinationPathMedium.'/'.$nameFile);
 
             $imgMin = Image::make($request->cover)->resize(null, 207, function ($constraint) {
                 $constraint->aspectRatio();
                 $constraint->upsize();
-            })->crop(360, 207)->save($destinationPathMin . '/' . $nameFile);
+            })->crop(360, 207)->save($destinationPathMin.'/'.$nameFile);
 
             if (! $img && ! $imgMedium && ! $imgMin) {
                 return redirect()
@@ -150,7 +175,6 @@ class CourseController extends Controller
         if ($request->description) {
             $data['description'] = TextProcessor::store($request->name, 'courses/description', $request->description);
         }
-
 
         $data['user_id'] = auth()->user()->id;
 
@@ -199,7 +223,19 @@ class CourseController extends Controller
     {
         CheckPermission::checkAuth(auth: 'Editar Cursos');
 
-        $course = Course::find($id);
+        if (auth()->user()->hasRole(['Programador', 'Administrador'])) {
+            $course = Course::find($id);
+        } elseif (auth()->user()->hasRole('Instrutor')) {
+            $course = Course::where(function ($query) {
+                $query->where('user_id', auth()->user()->id)
+                    ->orWhereHas('authors', function ($q) {
+                        $q->where('user_id', auth()->user()->id);
+                    });
+            })->find($id);
+        } else {
+            $course = null;
+        }
+
         if (! $course) {
             abort(403, 'Acesso não autorizado');
         }
@@ -218,7 +254,18 @@ class CourseController extends Controller
     {
         CheckPermission::checkAuth(auth: 'Editar Cursos');
 
-        $course = Course::find($id);
+        if (auth()->user()->hasRole(['Programador', 'Administrador'])) {
+            $course = Course::find($id);
+        } elseif (auth()->user()->hasRole('Instrutor')) {
+            $course = Course::where(function ($query) {
+                $query->where('user_id', auth()->user()->id)
+                    ->orWhereHas('authors', function ($q) {
+                        $q->where('user_id', auth()->user()->id);
+                    });
+            })->find($id);
+        } else {
+            $course = null;
+        }
 
         if (! $course) {
             abort(403, 'Acesso não autorizado');
@@ -227,10 +274,10 @@ class CourseController extends Controller
         $data = $request->all();
 
         if ($request->hasFile('cover') && $request->file('cover')->isValid()) {
-            $name = Str::slug(mb_substr($data['name'], 0, 100)) . time();
-            $imagePath = storage_path() . '/app/public/courses/' . $course->cover;
-            $imagePathMedium = storage_path() . '/app/public/courses/medium/' . $course->cover;
-            $imagePathMin = storage_path() . '/app/public/courses/min/' . $course->cover;
+            $name = Str::slug(mb_substr($data['name'], 0, 100)).time();
+            $imagePath = storage_path().'/app/public/courses/'.$course->cover;
+            $imagePathMedium = storage_path().'/app/public/courses/medium/'.$course->cover;
+            $imagePathMin = storage_path().'/app/public/courses/min/'.$course->cover;
 
             if (File::isFile($imagePath)) {
                 unlink($imagePath);
@@ -249,9 +296,9 @@ class CourseController extends Controller
 
             $data['cover'] = $nameFile;
 
-            $destinationPath = storage_path() . '/app/public/courses';
-            $destinationPathMedium = storage_path() . '/app/public/courses/medium';
-            $destinationPathMin = storage_path() . '/app/public/courses/min';
+            $destinationPath = storage_path().'/app/public/courses';
+            $destinationPathMedium = storage_path().'/app/public/courses/medium';
+            $destinationPathMin = storage_path().'/app/public/courses/min';
 
             if (! file_exists($destinationPath)) {
                 mkdir($destinationPath, 755, true);
@@ -268,17 +315,17 @@ class CourseController extends Controller
             $img = Image::make($request->cover)->resize(null, 490, function ($constraint) {
                 $constraint->aspectRatio();
                 $constraint->upsize();
-            })->crop(860, 490)->save($destinationPath . '/' . $nameFile);
+            })->crop(860, 490)->save($destinationPath.'/'.$nameFile);
 
             $imgMedium = Image::make($request->cover)->resize(null, 385, function ($constraint) {
                 $constraint->aspectRatio();
                 $constraint->upsize();
-            })->crop(675, 385)->save($destinationPathMedium . '/' . $nameFile);
+            })->crop(675, 385)->save($destinationPathMedium.'/'.$nameFile);
 
             $imgMin = Image::make($request->cover)->resize(null, 207, function ($constraint) {
                 $constraint->aspectRatio();
                 $constraint->upsize();
-            })->crop(360, 207)->save($destinationPathMin . '/' . $nameFile);
+            })->crop(360, 207)->save($destinationPathMin.'/'.$nameFile);
 
             if (! $img && ! $imgMedium && ! $imgMin) {
                 return redirect()
@@ -341,15 +388,26 @@ class CourseController extends Controller
     {
         CheckPermission::checkAuth(auth: 'Excluir Cursos');
 
-        $course = Course::find($id);
+        if (auth()->user()->hasRole(['Programador', 'Administrador'])) {
+            $course = Course::find($id);
+        } elseif (auth()->user()->hasRole('Instrutor')) {
+            $course = Course::where(function ($query) {
+                $query->where('user_id', auth()->user()->id)
+                    ->orWhereHas('authors', function ($q) {
+                        $q->where('user_id', auth()->user()->id);
+                    });
+            })->find($id);
+        } else {
+            $course = null;
+        }
 
         if (! $course) {
             abort(403, 'Acesso não autorizado');
         }
 
-        $imagePath = storage_path() . '/app/public/courses/' . $course->cover;
-        $imagePathMedium = storage_path() . '/app/public/courses/medium/' . $course->cover;
-        $imagePathMin = storage_path() . '/app/public/courses/min/' . $course->cover;
+        $imagePath = storage_path().'/app/public/courses/'.$course->cover;
+        $imagePathMedium = storage_path().'/app/public/courses/medium/'.$course->cover;
+        $imagePathMin = storage_path().'/app/public/courses/min/'.$course->cover;
 
         if ($course->delete()) {
             if (File::isFile($imagePath)) {
@@ -366,6 +424,8 @@ class CourseController extends Controller
 
             CourseCategoryPivot::where('course_id', $course->id)->delete();
             CourseAuthor::where('course_id', $course->id)->delete();
+            Classroom::where('course_id', $course->id)->delete();
+
             $course->cover = null;
             $course->update();
 
@@ -377,5 +437,84 @@ class CourseController extends Controller
                 ->back()
                 ->with('error', 'Erro ao excluir!');
         }
+    }
+
+    public function classes(Request $request, $id)
+    {
+        CheckPermission::checkAuth('Listar Aulas');
+
+        if (auth()->user()->hasRole(['Programador', 'Administrador'])) {
+            $course = Course::find($id);
+        } elseif (auth()->user()->hasRole('Instrutor')) {
+            $course = Course::where(function ($query) {
+                $query->where('user_id', auth()->user()->id)
+                    ->orWhereHas('authors', function ($q) {
+                        $q->where('user_id', auth()->user()->id);
+                    });
+            })->find($id);
+        } else {
+            $course = null;
+        }
+
+        if (! $course) {
+            abort(403, 'Acesso não autorizado');
+        }
+
+        if ($request->ajax()) {
+            if (auth()->user()->hasRole(['Programador', 'Administrador'])) {
+                $classes = Classroom::where('course_id', $course->id)->get();
+            } elseif (auth()->user()->hasRole('Instrutor')) {
+                $classes = Classroom::where(function ($query) {
+                    $query->where('user_id', auth()->user()->id)
+                        ->orWhereHas('course', function ($q) {
+                            $q->whereHas('authors', function ($q) {
+                                $q->where('user_id', auth()->user()->id);
+                            });
+                        });
+                })->where('course_id', $course->id)->get();
+            } else {
+                $classes = new Classroom;
+            }
+
+            $token = csrf_token();
+
+            try {
+                return DataTables::of($classes)
+                    ->addIndexColumn()
+                    ->addColumn('course', function ($row) {
+                        return $row->course->name;
+                    })
+                    ->addColumn('active', function ($row) {
+                        if ($row->active == 0) {
+                            return '<span class="text-danger"><i class="fa fa-lg fa-fw fa-thumbs-down"></i></span>';
+                        } else {
+                            return '<span class="text-success"><i class="fa fa-lg fa-fw fa-thumbs-up"></i></span>';
+                        }
+                    })
+                    ->addColumn('action', function ($row) use ($token) {
+                        if ($row->link) {
+                            $link = '<a class="btn btn-xs btn-success mx-1 shadow" title="Link da aula" href="'.$row->link.'" target="_blank"><i class="fa fa-lg fa-fw fa-link"></i></a>';
+                        } else {
+                            $link = '';
+                        }
+                        $edit = '<a class="btn btn-xs btn-primary mx-1 shadow" title="Editar" href="classes/'.$row->id.'/edit"><i class="fa fa-lg fa-fw fa-pen"></i></a>';
+                        $delete = '<form method="POST" action="classes/'.$row->id.'" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="'.$token.'"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão desta aula?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>';
+
+                        return '<div class="d-flex justify-content-center align-items-center">'.$link.$edit.$delete.'</div>';
+                    })
+                    ->rawColumns(['course', 'active', 'action'])
+                    ->make(true);
+            } catch (Exception $e) {
+                return response([
+                    'draw' => 0,
+                    'recordsTotal' => 0,
+                    'recordsFiltered' => 0,
+                    'data' => [],
+                    'error' => $e->getMessage(),
+                ]);
+            }
+        }
+
+        return view('admin.courses.classes', compact('course'));
     }
 }

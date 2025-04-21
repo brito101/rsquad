@@ -56,6 +56,7 @@
                                         <li>Changelog</li>
                                         <li>Módulo de Categorias de Cursos</li>
                                         <li>Módulo de Cursos</li>
+                                        <li>Módulo de Aulas</li>
                                     </ul>
                                 </x-adminlte-callout>
 

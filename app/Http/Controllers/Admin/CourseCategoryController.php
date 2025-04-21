@@ -14,7 +14,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
-use Image;
+use Intervention\Image\Facades\Image;
 use Yajra\DataTables\Facades\DataTables;
 
 class CourseCategoryController extends Controller
@@ -27,7 +27,7 @@ class CourseCategoryController extends Controller
         CheckPermission::checkAuth('Listar Categorias de Cursos');
 
         if ($request->ajax()) {
-            $categories = CategoryCourse::all();
+            $categories = CategoryCourse::with('courses')->get();
 
             $token = csrf_token();
 

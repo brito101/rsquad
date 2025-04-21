@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Course extends Model
+class Classroom extends Model
 {
     use SoftDeletes;
 
@@ -19,12 +19,16 @@ class Course extends Model
      */
     protected $fillable = [
         'name',
-        'cover',
-        'description',
         'status',
         'active',
-        'sales_link',
+        'link',
+        'release_date',
+        'course_id',
         'user_id',
+    ];
+
+    protected $appends = [
+        'release_date_br',
     ];
 
     /** Relationships */
@@ -35,18 +39,20 @@ class Course extends Model
         ]);
     }
 
-    public function categories()
+    public function course(): BelongsTo
     {
-        return $this->hasMany(CourseCategoryPivot::class, 'course_id');
+        return $this->belongsTo(Course::class)->withDefault([
+            'name' => 'Curso excluído',
+        ]);
     }
 
-    public function authors()
+    /** Accessors */
+    public function getReleaseDateBrAttribute(): ?string
     {
-        return $this->hasMany(CourseAuthor::class, 'course_id');
-    }
-
-    public function classes()
-    {
-        return $this->hasMany(Classroom::class, 'course_id');
+        if ($this->release_date) {
+            return date('d/m/Y', strtotime($this->release_date));
+        } else {
+            return null;
+        }
     }
 }

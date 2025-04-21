@@ -23,7 +23,7 @@ return new class extends Migration
             $table->text('bio')->nullable();
             $table->string('linkedin')->nullable();
             $table->string('instagram')->nullable();
-            $table->string('youtube')->nullable();            
+            $table->string('youtube')->nullable();
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();

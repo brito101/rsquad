@@ -12,7 +12,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
-use Image;
+use Intervention\Image\Facades\Image;
 
 class UserController extends Controller
 {

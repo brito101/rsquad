@@ -282,6 +282,18 @@ return [
                     'icon' => 'fas fa-fw fa-chevron-right',
                     'can' => 'Criar Cursos',
                 ],
+                [
+                    'text' => 'Listagem de Aulas',
+                    'url' => 'admin/classes',
+                    'icon' => 'fas fa-fw fa-chevron-right',
+                    'can' => 'Listar Aulas',
+                ],
+                [
+                    'text' => 'Cadastro de Aulas',
+                    'url' => 'admin/classes/create',
+                    'icon' => 'fas fa-fw fa-chevron-right',
+                    'can' => 'Criar Aulas',
+                ],
             ],
         ],
         [

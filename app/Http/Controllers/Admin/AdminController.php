@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Helpers\CheckPermission;
 use App\Http\Controllers\Controller;
-use App\Models\Course;
 use App\Models\User;
 use App\Models\Views\Course as ViewsCourse;
 use App\Models\Views\User as ViewsUser;
@@ -128,7 +127,7 @@ class AdminController extends Controller
 
         $dataList = [];
         foreach ($data as $key => $value) {
-            $dataList[$key . 'H'] = count($value);
+            $dataList[$key.'H'] = count($value);
         }
 
         $chart = new stdClass;
