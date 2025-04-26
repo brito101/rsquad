@@ -117,6 +117,7 @@
 -   Course categories module
 -   Courses module
 -   Classroom module
+-   Students module
 
 ### Usage in development environment
 

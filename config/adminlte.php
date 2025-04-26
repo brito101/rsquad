@@ -265,6 +265,26 @@ return [
             ],
         ],
         [
+            'text' => 'Alunos',
+            'url' => '#',
+            'icon' => 'fas fa-fw fa-graduation-cap mr-2',
+            'can' => 'Acessar Alunos',
+            'submenu' => [
+                [
+                    'text' => 'Listagem de Alunos',
+                    'url' => 'admin/students',
+                    'icon' => 'fas fa-fw fa-chevron-right',
+                    'can' => 'Listar Alunos',
+                ],
+                [
+                    'text' => 'Cadastro de Alunos',
+                    'url' => 'admin/students/create',
+                    'icon' => 'fas fa-fw fa-chevron-right',
+                    'can' => 'Criar Alunos',
+                ],
+            ],
+        ],
+        [
             'text' => 'Cursos',
             'url' => '#',
             'icon' => 'fas fa-fw fa-newspaper mr-2',

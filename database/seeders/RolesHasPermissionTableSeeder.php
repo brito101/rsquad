@@ -314,6 +314,55 @@ class RolesHasPermissionTableSeeder extends Seeder
                 'permission_id' => 35,
                 'role_id' => 3,
             ],
+            /** Students from 36 to 40 (programmers, Administrators, Instructors (list and show))*/
+            [
+                'permission_id' => 36,
+                'role_id' => 1,
+            ],
+            [
+                'permission_id' => 36,
+                'role_id' => 2,
+            ],
+            [
+                'permission_id' => 36,
+                'role_id' => 3,
+            ],
+            [
+                'permission_id' => 37,
+                'role_id' => 1,
+            ],
+            [
+                'permission_id' => 37,
+                'role_id' => 2,
+            ],
+            [
+                'permission_id' => 37,
+                'role_id' => 3,
+            ],
+            [
+                'permission_id' => 38,
+                'role_id' => 1,
+            ],
+            [
+                'permission_id' => 38,
+                'role_id' => 2,
+            ],
+            [
+                'permission_id' => 39,
+                'role_id' => 1,
+            ],
+            [
+                'permission_id' => 39,
+                'role_id' => 2,
+            ],
+            [
+                'permission_id' => 40,
+                'role_id' => 1,
+            ],
+            [
+                'permission_id' => 40,
+                'role_id' => 2,
+            ],
         ]);
     }
 }

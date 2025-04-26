@@ -33,7 +33,7 @@ class UserController extends Controller
 
         if ($request->ajax()) {
             if (Auth::user()->hasRole('Programador')) {
-                $users = ViewsUser::all('id', 'name', 'email', 'type', 'photo');
+                $users = ViewsUser::whereNot('type', 'Aluno')->get(['id', 'name', 'email', 'type', 'photo']);
             } elseif (Auth::user()->hasRole('Administrador')) {
                 $users = ViewsUser::whereIn('type', ['Administrador', 'Instrutor'])->get(['id', 'name', 'email', 'type', 'photo']);
             } else {
@@ -93,8 +93,13 @@ class UserController extends Controller
 
         if ($user->save()) {
             if (! empty($request->role) && Auth::user()->hasPermissionTo('Atribuir Perfis')) {
-                $user->syncRoles($request->role);
-                $user->save();
+                if (Auth::user()->hasRole('Programador')) {
+                    $user->syncRoles($request->role);
+                    $user->save();
+                } elseif ($request->role != 'Programador' || $request->role != 'Aluno') {
+                    $user->syncRoles($request->role);
+                    $user->save();
+                }
             }
 
             return redirect()
@@ -122,7 +127,12 @@ class UserController extends Controller
             $id = Auth::user()->id;
         }
 
-        $user = User::find($id);
+        if (Auth::user()->hasRole('Programador')) {
+            $user = ViewsUser::find($id);
+        } else {
+            $user = ViewsUser::whereNotIn('type', ['Programador', 'Aluno'])->find($id);
+        }
+
         if (! $user) {
             abort(403, 'Acesso não autorizado');
         }
@@ -148,7 +158,12 @@ class UserController extends Controller
         if (! Auth::user()->hasPermissionTo('Editar Usuários') && Auth::user()->hasPermissionTo('Editar Usuário')) {
             $user = User::where('id', Auth::user()->id)->first();
         } else {
-            $user = User::find($id);
+            if (Auth::user()->hasRole('Programador')) {
+                $viewUser = ViewsUser::find($id);
+            } else {
+                $viewUser = ViewsUser::whereNotIn('type', ['Programador', 'Aluno'])->find($id);
+            }
+            $user = User::where('id', $viewUser->id)->first();
         }
 
         if (! $user) {
@@ -182,8 +197,13 @@ class UserController extends Controller
 
         if ($user->update($data)) {
             if (! empty($request->role) && Auth::user()->hasPermissionTo('Atribuir Perfis')) {
-                $user->syncRoles($request->role);
-                $user->save();
+                if (Auth::user()->hasRole('Programador')) {
+                    $user->syncRoles($request->role);
+                    $user->save();
+                } elseif ($request->role != 'Programador' || $request->role != 'Aluno') {
+                    $user->syncRoles($request->role);
+                    $user->save();
+                }
             }
 
             if (Auth::user()->hasPermissionTo('Editar Usuários')) {
@@ -210,7 +230,13 @@ class UserController extends Controller
     {
         CheckPermission::checkAuth('Excluir Usuários');
 
-        $user = User::find($id);
+        if (Auth::user()->hasRole('Programador')) {
+            $viewUser = ViewsUser::find($id);
+        } else {
+            $viewUser = ViewsUser::whereNotIn('type', ['Programador', 'Aluno'])->find($id);
+        }
+
+        $user = User::where('id', $viewUser->id)->first();
 
         if (! $user) {
             abort(403, 'Acesso não autorizado');
@@ -265,7 +291,12 @@ class UserController extends Controller
         if (! Auth::user()->hasPermissionTo('Editar Usuários') && Auth::user()->hasPermissionTo('Editar Usuário')) {
             $user = User::where('id', Auth::user()->id)->first();
         } else {
-            $user = User::find($request->user);
+            if (Auth::user()->hasRole('Programador')) {
+                $viewUser = ViewsUser::find($id);
+            } else {
+                $viewUser = ViewsUser::whereNotIn('type', ['Programador', 'Aluno'])->find($id);
+            }
+            $user = User::where('id', $viewUser->id)->first();
         }
 
         if (! $user) {

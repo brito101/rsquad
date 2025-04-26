@@ -1,6 +1,7 @@
 @extends('adminlte::page')
 
-@section('title', '- Editar Usuário')
+@section('title', '- Editar Aluno')
+@section('plugins.BootstrapSelect', true)
 @section('plugins.select2', true)
 @section('plugins.BsCustomFileInput', true)
 @section('plugins.BootstrapSwitch', true)
@@ -11,15 +12,15 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1><i class="fas fa-fw fa-user"></i> Editar Usuário</h1>
+                    <h1><i class="fas fa-fw fa-graduation-cap"></i> Editar Aluno</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ route('admin.home') }}">Home</a></li>
-                        @can('Listar Usuários')
-                            <li class="breadcrumb-item"><a href="{{ route('admin.users.index') }}">Usuários</a></li>
+                        @can('Listar Alunos')
+                            <li class="breadcrumb-item"><a href="{{ route('admin.students.index') }}">Alunos</a></li>
                         @endcan
-                        <li class="breadcrumb-item active">Editar Usuário</li>
+                        <li class="breadcrumb-item active">Editar Aluno</li>
                     </ol>
                 </div>
             </div>
@@ -35,10 +36,10 @@
 
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Dados Cadastrais do Usuário</h3>
+                            <h3 class="card-title">Dados Cadastrais do Aluno</h3>
                         </div>
 
-                        <form method="POST" action="{{ route('admin.users.update', ['user' => $user->id]) }}"
+                        <form method="POST" action="{{ route('admin.students.update', ['student' => $user->id]) }}"
                             enctype="multipart/form-data">
                             @method('PUT')
                             @csrf
@@ -58,7 +59,8 @@
 
                                     <div class="col-12 form-group px-0 mb-0">
                                         <x-adminlte-textarea name="bio" label="Bio" rows=5 igroup-size="md"
-                                            placeholder="Insira uma descrição opcional sobre você..." maxlength="10000">{{ old('bio') ?? $user->bio }}
+                                            placeholder="Insira uma descrição opcional sobre você..."
+                                            maxlength="10000">{{ old('bio') ?? $user->bio }}
                                         </x-adminlte-textarea>
                                     </div>
                                 </div>
@@ -92,34 +94,45 @@
                                 <div class="d-flex flex-wrap justify-content-between">
                                     <div class="col-12 col-md-4 form-group px-0 pr-md-2">
                                         <label for="linkedin">Linkedin</label>
-                                        <input type="text" class="form-control" id="linkedin" placeholder="URL do Linkedin"
-                                            name="linkedin" value="{{ old('linkedin') ?? $user->linkedin }}">
+                                        <input type="text" class="form-control" id="linkedin"
+                                            placeholder="URL do Linkedin" name="linkedin"
+                                            value="{{ old('linkedin') ?? $user->linkedin }}">
                                     </div>
                                     <div class="col-12 col-md-4 form-group px-0 px-md-2">
                                         <label for="instagram">Instagram</label>
-                                        <input type="text" class="form-control" id="instagram" placeholder="URL do Instagram"
-                                            name="instagram" value="{{ old('instagram') ?? $user->instagram }}">
+                                        <input type="text" class="form-control" id="instagram"
+                                            placeholder="URL do Instagram" name="instagram"
+                                            value="{{ old('instagram') ?? $user->instagram }}">
                                     </div>
                                     <div class="col-12 col-md-4 form-group px-0 pl-md-2">
                                         <label for="youtube">Youtube</label>
-                                        <input type="text" class="form-control" id="youtube" placeholder="URL do Youtube"
-                                            name="youtube" value="{{ old('youtube') ?? $user->youtube }}">
+                                        <input type="text" class="form-control" id="youtube"
+                                            placeholder="URL do Youtube" name="youtube"
+                                            value="{{ old('youtube') ?? $user->youtube }}">
                                     </div>
                                 </div>
 
-                                <div class="d-flex flex-wrap justify-content-between">
-                                    @can('Atribuir Perfis')
-                                        <div class="col-12 col-md-6 form-group px-0 pr-md-2">
-                                            <label for="role">Tipo de Usuário</label>
-                                            <x-adminlte-select2 name="role">
-                                                @foreach ($roles as $role)
-                                                    <option
-                                                        {{ old('role') == $role->name ? 'selected' : ($user->role_id == $role->id ? 'selected' : '') }}
-                                                        value="{{ $role->name }}">{{ $role->name }}</option>
-                                                @endforeach
-                                            </x-adminlte-select2>
-                                        </div>
-                                    @endcan
+                                @php
+                                    $config = [
+                                        'title' => 'Selecione múltiplos...',
+                                        'liveSearch' => true,
+                                        'liveSearchPlaceholder' => 'Pesquisar...',
+                                        'showTick' => true,
+                                        'actionsBox' => true,
+                                    ];
+                                @endphp
+
+                                <div class="col-12 col-md-6 form-group px-0 pr-md-2 mb-0">
+                                    <x-adminlte-select-bs id="courses" name="courses[]" label="Autores"
+                                        label-class="text-dark" igroup-size="md" :config="$config" multiple
+                                        class="border">
+                                        @foreach ($courses as $course)
+                                            <option value="{{ $course->id }}"
+                                                {{ in_array($course->id, $pivot->pluck('course_id')->toArray()) ? 'selected' : '' }}>
+                                                {{ $course->name }}
+                                            </option>
+                                        @endforeach
+                                    </x-adminlte-select-bs>
                                 </div>
 
                                 <div

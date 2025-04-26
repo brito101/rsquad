@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\ChangelogController;
 use App\Http\Controllers\Admin\ClassroomController;
 use App\Http\Controllers\Admin\CourseCategoryController;
 use App\Http\Controllers\Admin\CourseController;
+use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Site\HomeController;
 use Illuminate\Support\Facades\Auth;
@@ -44,11 +45,15 @@ Route::group(['middleware' => ['auth', 'access']], function () {
         Route::post('user/google2fa', [UserController::class, 'google2fa'])->name('user.google2fa');
         Route::resource('users', UserController::class)->except(['show']);
 
+        /** Sutendts */
+        Route::resource('students', StudentController::class);
+
         /** Course Categories */
         Route::resource('course-categories', CourseCategoryController::class)->except(['show']);
 
         /** Courses */
         Route::get('courses/{course}/classes', [CourseController::class, 'classes'])->name('courses.classes');
+        Route::get('courses/{course}/students', [CourseController::class, 'students'])->name('courses.students');
         Route::resource('courses', CourseController::class)->except(['show']);
 
         /** Classes */

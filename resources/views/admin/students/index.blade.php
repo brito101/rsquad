@@ -1,7 +1,7 @@
 @extends('adminlte::page')
 
-@section('title', '- Cursos')
-@section('plugins.Datatables', true)
+@section('title', '- Alunos')
+@section('plugins.Datatables', content: true)
 @section('plugins.DatatablesPlugins', true)
 
 @section('content')
@@ -10,12 +10,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1><i class="fas fa-fw fa-newspaper"></i> Cursos</h1>
+                    <h1><i class="fas fa-fw fa-graduation-cap"></i> Alunos</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ route('admin.home') }}">Home</a></li>
-                        <li class="breadcrumb-item active">Cursos</li>
+                        <li class="breadcrumb-item active">Alunos</li>
                     </ol>
                 </div>
             </div>
@@ -31,10 +31,10 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="d-flex flex-wrap justify-content-between col-12 align-content-center">
-                                <h3 class="card-title align-self-center">Cursos Cadastrados</h3>
-                                @can('Criar Cursos')
-                                    <a href="{{ route('admin.courses.create') }}" title="Novo Curso" class="btn btn-success"><i
-                                            class="fas fa-fw fa-plus"></i>Novo Curso</a>
+                                <h3 class="card-title align-self-center">Alunos Cadastrados</h3>
+                                @can('Criar Alunos')
+                                    <a href="{{ route('admin.students.create') }}" title="Novo Aluno" class="btn btn-success"><i
+                                            class="fas fa-fw fa-plus"></i>Novo Aluno</a>
                                 @endcan
                             </div>
                         </div>
@@ -44,26 +44,18 @@
                                 ['label' => 'ID', 'width' => 10],
                                 ['label' => 'Foto', 'no-export' => true],
                                 'Nome',
-                                'Categorias',
-                                'Aulas',
-                                'Autores',
-                                'Alunos',
-                                'Status',
-                                'Ativo',
+                                'E-mail',
+                                'Cursos',
                                 ['label' => 'Ações', 'no-export' => true, 'width' => 10],
                             ];
                             $config = [
-                                'ajax' => route('admin.courses.index'),
+                                'ajax' => route('admin.students.index'),
                                 'columns' => [
                                     ['data' => 'id', 'name' => 'id'],
-                                    ['data' => 'cover', 'name' => 'cover', 'orderable' => false],
+                                    ['data' => 'photo', 'name' => 'photo', 'orderable' => false],
                                     ['data' => 'name', 'name' => 'name'],
-                                    ['data' => 'categories', 'name' => 'categories'],
-                                    ['data' => 'classes', 'name' => 'classes'],
-                                    ['data' => 'authors', 'name' => 'authors'],
-                                    ['data' => 'students', 'name' => 'students'],
-                                    ['data' => 'status', 'name' => 'status'],
-                                    ['data' => 'active', 'name' => 'active'],
+                                    ['data' => 'email', 'name' => 'email'],
+                                    ['data' => 'courses', 'name' => 'courses'],
                                     [
                                         'data' => 'action',
                                         'name' => 'action',

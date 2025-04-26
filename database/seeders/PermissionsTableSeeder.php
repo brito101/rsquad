@@ -201,6 +201,32 @@ class PermissionsTableSeeder extends Seeder
                 'guard_name' => 'web',
                 'created_at' => new DateTime('now'),
             ],
+            /** Students from 36 to 40*/
+            [
+                'name' => 'Acessar Alunos',
+                'guard_name' => 'web',
+                'created_at' => new DateTime('now'),
+            ],
+            [
+                'name' => 'Listar Alunos',
+                'guard_name' => 'web',
+                'created_at' => new DateTime('now'),
+            ],
+            [
+                'name' => 'Criar Alunos',
+                'guard_name' => 'web',
+                'created_at' => new DateTime('now'),
+            ],
+            [
+                'name' => 'Editar Alunos',
+                'guard_name' => 'web',
+                'created_at' => new DateTime('now'),
+            ],
+            [
+                'name' => 'Excluir Alunos',
+                'guard_name' => 'web',
+                'created_at' => new DateTime('now'),
+            ],
         ]);
     }
 }

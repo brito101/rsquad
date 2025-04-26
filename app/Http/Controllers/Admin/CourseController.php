@@ -11,10 +11,13 @@ use App\Models\Classroom;
 use App\Models\Course;
 use App\Models\CourseAuthor;
 use App\Models\CourseCategoryPivot;
+use App\Models\CourseStudent;
 use App\Models\Views\CategoryCourse as ViewsCategoryCourse;
+use App\Models\Views\Student;
 use App\Models\Views\User as ViewsUser;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
@@ -64,6 +67,9 @@ class CourseController extends Controller
                             return $pivot->user->name;
                         })->implode(' - ');
                     })
+                    ->addColumn('students', function ($row) {
+                        return $row->students->count();
+                    })
                     ->addColumn('active', function ($row) {
                         if ($row->active == 0) {
                             return '<span class="text-danger"><i class="fa fa-lg fa-fw fa-thumbs-down"></i></span>';
@@ -82,12 +88,17 @@ class CourseController extends Controller
                         } else {
                             $classes_link = '';
                         }
+                        if ($row->classes->count() > 0) {
+                            $students = '<a class="btn btn-xs brn-light mx-1 shadow" title="Alunos" href="'.route('admin.courses.students', ['course' => $row->id]).'"><i class="fa fa-lg fa-fw fa-graduation-cap"></i></a>';
+                        } else {
+                            $students = '';
+                        }
                         $edit = '<a class="btn btn-xs btn-primary mx-1 shadow" title="Editar" href="courses/'.$row->id.'/edit"><i class="fa fa-lg fa-fw fa-pen"></i></a>';
                         $delete = '<form method="POST" action="courses/'.$row->id.'" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="'.$token.'"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão deste curso?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>';
 
-                        return '<div class="d-flex justify-content-center align-items-center">'.$sales_link.$classes_link.$edit.$delete.'</div>';
+                        return '<div class="d-flex justify-content-center align-items-center">'.$sales_link.$students.$classes_link.$edit.$delete.'</div>';
                     })
-                    ->rawColumns(['cover', 'categories', 'classes', 'authors', 'active', 'action'])
+                    ->rawColumns(['cover', 'categories', 'classes', 'authors', 'students', 'active', 'action'])
                     ->make(true);
             } catch (Exception $e) {
                 return response([
@@ -424,6 +435,7 @@ class CourseController extends Controller
 
             CourseCategoryPivot::where('course_id', $course->id)->delete();
             CourseAuthor::where('course_id', $course->id)->delete();
+            CourseStudent::where('course_id', $course->id)->delete();
             Classroom::where('course_id', $course->id)->delete();
 
             $course->cover = null;
@@ -497,8 +509,8 @@ class CourseController extends Controller
                         } else {
                             $link = '';
                         }
-                        $edit = '<a class="btn btn-xs btn-primary mx-1 shadow" title="Editar" href="classes/'.$row->id.'/edit"><i class="fa fa-lg fa-fw fa-pen"></i></a>';
-                        $delete = '<form method="POST" action="classes/'.$row->id.'" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="'.$token.'"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão desta aula?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>';
+                        $edit = '<a class="btn btn-xs btn-primary mx-1 shadow" title="Editar" href="'.route('admin.classes.edit', ['class' => $row->id]).'"><i class="fa fa-lg fa-fw fa-pen"></i></a>';
+                        $delete = '<form method="POST" action="'.route('admin.classes.destroy', ['class' => $row->id]).'" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="'.$token.'"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão desta aula?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>';
 
                         return '<div class="d-flex justify-content-center align-items-center">'.$link.$edit.$delete.'</div>';
                     })
@@ -516,5 +528,53 @@ class CourseController extends Controller
         }
 
         return view('admin.courses.classes', compact('course'));
+    }
+
+    public function students(Request $request, $id)
+    {
+
+        CheckPermission::checkAuth('Listar Alunos');
+
+        if (auth()->user()->hasRole(['Programador', 'Administrador'])) {
+            $course = Course::find($id);
+        } elseif (auth()->user()->hasRole('Instrutor')) {
+            $course = Course::where(function ($query) {
+                $query->where('user_id', auth()->user()->id)
+                    ->orWhereHas('authors', function ($q) {
+                        $q->where('user_id', auth()->user()->id);
+                    });
+            })->find($id);
+        } else {
+            $course = null;
+        }
+
+        if (! $course) {
+            abort(403, 'Acesso não autorizado');
+        }
+
+        $users = CourseStudent::where('course_id', $course->id)->get();
+
+        if ($request->ajax()) {
+
+            $students = Student::whereIn('id', $users)->get(['id', 'name', 'email', 'type', 'photo']);
+
+            $token = csrf_token();
+
+            return DataTables::of($students)
+                ->addIndexColumn()
+                ->addColumn('action', function ($row) use ($token) {
+                    return '<a class="btn btn-xs btn-success mx-1 shadow" title="Visualizar" href="'.route('admin.students.show', ['student' => $row->id]).'"><i class="fa fa-lg fa-fw fa-eye"></i></a>'.
+                        (Auth::user()->hasPermissionTo('Editar Alunos') ? '<a class="btn btn-xs btn-primary mx-1 shadow" title="Editar" href="'.route('admin.students.edit', ['student' => $row->id]).'"><i class="fa fa-lg fa-fw fa-pen"></i></a>' : '').
+                        (Auth::user()->hasPermissionTo('Excluir Alunos') ? '<form method="POST" action="'.route('admin.students.destroy', ['student' => $row->id]).'" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="'.$token.'"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão deste usuário?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>' : '');
+                })
+                ->addColumn('photo', function ($row) {
+                    return '<img src="'.($row->photo ? url('storage/users/'.$row->photo) : asset('vendor/adminlte/dist/img/avatar.png')).'"
+                    alt="'.$row->name.'" class="img-circle img-size-32 mr-2 border" style="object-fit: cover; width:75px; height: 75px; aspect-ratio: 1;">';
+                })
+                ->rawColumns(['action', 'photo'])
+                ->make(true);
+        }
+
+        return view('admin.courses.students', compact('course'));
     }
 }

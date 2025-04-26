@@ -57,6 +57,7 @@
                                         <li>Módulo de Categorias de Cursos</li>
                                         <li>Módulo de Cursos</li>
                                         <li>Módulo de Aulas</li>
+                                        <li>Módulo de Alunos</li>
                                     </ul>
                                 </x-adminlte-callout>
 
