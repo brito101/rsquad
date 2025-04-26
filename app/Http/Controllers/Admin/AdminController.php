@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Helpers\CheckPermission;
 use App\Http\Controllers\Controller;
+use App\Models\Blog;
 use App\Models\User;
 use App\Models\Views\Course as ViewsCourse;
 use App\Models\Views\User as ViewsUser;
@@ -11,6 +12,7 @@ use App\Models\Views\Visit;
 use App\Models\Views\VisitYesterday;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use stdClass;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -28,6 +30,7 @@ class AdminController extends Controller
         $instructors = ViewsUser::where('type', 'Instrutor')->count();
         $students = ViewsUser::where('type', 'Aluno')->count();
         $courses = ViewsCourse::where('active', true)->count();
+        $posts = Blog::select('id', 'status', 'title', 'views', 'created_at')->orderBy('created_at', 'desc')->get();
 
         $visits = Visit::where('url', '!=', route('admin.home.chart'))
             ->where('url', 'NOT LIKE', '%columns%')
@@ -50,6 +53,12 @@ class AdminController extends Controller
                 ->make(true);
         }
 
+        // $postsList = $posts->orderBy('views', 'desc')->limit(25);
+        $postsChart = ['label' => [], 'data' => []];
+        foreach ($posts->sortBy('views')->reverse()->take(10) as $p) {
+            $postsChart['label'][] = Str::limit($p->title, 25);
+            $postsChart['data'][] = (int) $p->views;
+        }
         /** Statistics */
         $statistics = $this->accessStatistics();
         $onlineUsers = $statistics['onlineUsers'];
@@ -66,6 +75,7 @@ class AdminController extends Controller
             'percent',
             'access',
             'chart',
+            'postsChart',
         ));
     }
 

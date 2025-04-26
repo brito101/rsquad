@@ -5,12 +5,15 @@ use App\Http\Controllers\Academy\UserController as AcademyUserController;
 use App\Http\Controllers\Admin\ACL\PermissionController;
 use App\Http\Controllers\Admin\ACL\RoleController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\BlogCategoryController;
+use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\ChangelogController;
 use App\Http\Controllers\Admin\ClassroomController;
 use App\Http\Controllers\Admin\CourseCategoryController;
 use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Site\BlogController as SiteBlogController;
 use App\Http\Controllers\Site\HomeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -30,6 +33,12 @@ Route::group(['middleware' => ['access']], function () {
     /** Site */
     Route::name('site.')->group(function () {
         Route::get('/', [HomeController::class, 'index'])->name('home');
+
+        /** Blog */
+        Route::get('/blog/buscar/{s?}', [SiteBlogController::class, 'search'])->name('blog.search');
+        Route::get('/blog/{uri}', [SiteBlogController::class, 'post'])->name('blog.post');
+        Route::get('/blog', [SiteBlogController::class, 'index'])->name('blog');
+        Route::get('/blog/em/{category}', [SiteBlogController::class, 'category'])->name('blog.category');
     });
 });
 
@@ -58,6 +67,10 @@ Route::group(['middleware' => ['auth', 'access']], function () {
 
         /** Classes */
         Route::resource('classes', ClassroomController::class)->except(['show']);
+
+        /** Blog */
+        Route::resource('blog', BlogController::class)->except('show');
+        Route::resource('blog-categories', BlogCategoryController::class)->except('show');
 
         /**
          * ACL

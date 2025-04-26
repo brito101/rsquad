@@ -227,6 +227,54 @@ class PermissionsTableSeeder extends Seeder
                 'guard_name' => 'web',
                 'created_at' => new DateTime('now'),
             ],
+            /** Blog 41 */
+            [
+                'name' => 'Acessar Blog',
+                'guard_name' => 'web',
+                'created_at' => new DateTime('now'),
+            ],
+            /** Blog Categories from 42 to 45 */
+            [
+                'name' => 'Listar Categorias do Blog',
+                'guard_name' => 'web',
+                'created_at' => new DateTime('now'),
+            ],
+            [
+                'name' => 'Criar Categorias do Blog',
+                'guard_name' => 'web',
+                'created_at' => new DateTime('now'),
+            ],
+            [
+                'name' => 'Editar Categorias do Blog',
+                'guard_name' => 'web',
+                'created_at' => new DateTime('now'),
+            ],
+            [
+                'name' => 'Excluir Categorias do Blog',
+                'guard_name' => 'web',
+                'created_at' => new DateTime('now'),
+            ],
+            /** Blog Posts from 46 to 49 */
+            [
+                'name' => 'Listar Posts',
+                'guard_name' => 'web',
+                'created_at' => new DateTime('now'),
+            ],
+            [
+                'name' => 'Criar Posts',
+                'guard_name' => 'web',
+                'created_at' => new DateTime('now'),
+            ],
+            [
+                'name' => 'Editar Posts',
+                'guard_name' => 'web',
+                'created_at' => new DateTime('now'),
+            ],
+            [
+                'name' => 'Excluir Posts',
+                'guard_name' => 'web',
+                'created_at' => new DateTime('now'),
+            ],
         ]);
     }
 }

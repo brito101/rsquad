@@ -317,6 +317,38 @@ return [
             ],
         ],
         [
+            'text' => 'Blog',
+            'url' => '#',
+            'icon' => 'fas fa-fw fa-blog mr-2',
+            'can' => 'Acessar Blog',
+            'submenu' => [
+                [
+                    'text' => 'Listagem de Postagens',
+                    'url' => 'admin/blog',
+                    'icon' => 'fas fa-fw fa-chevron-right mr-2',
+                    'can' => 'Listar Posts',
+                ],
+                [
+                    'text' => 'Cadastro de Postagem',
+                    'url' => 'admin/blog/create',
+                    'icon' => 'fas fa-fw fa-chevron-right mr-2',
+                    'can' => 'Criar Posts',
+                ],
+                [
+                    'text' => 'Listagem de Categorias',
+                    'url' => 'admin/blog-categories',
+                    'icon' => 'fas fa-fw fa-chevron-right mr-2',
+                    'can' => 'Listar Categorias do Blog',
+                ],
+                [
+                    'text' => 'Cadastro de Categoria',
+                    'url' => 'admin/blog-categories/create',
+                    'icon' => 'fas fa-fw fa-chevron-right mr-2',
+                    'can' => 'Criar Categorias do Blog',
+                ],
+            ],
+        ],
+        [
             'text' => 'Configurações',
             'icon' => 'fas fa-fw fa-cogs mr-2',
             'can' => 'Acessar Configurações',

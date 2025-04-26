@@ -66,11 +66,43 @@
 
             </div>
 
+            <div class="row px-2">
+                <div class="card col-12">
+                    <div class="card-header">
+                       <i class="fa fa-chart-bar mr-2"></i> Gráficos
+                    </div>
+                    <div class="card-body px-0 pb-0 d-flex flex-wrap justify-content-center">
+                        <div class="col-12 col-md-6">
+                            <div class="card">
+                                <div class="card-header border-0">
+                                    <p class="mb-0">Posts</p>
+                                </div>
+                                <div class="cardy-body py-2">
+                                    <div class="chart-responsive">
+                                        <div class="chartjs-size-monitor">
+                                            <div class="chartjs-size-monitor-expand">
+                                                <div class=""></div>
+                                            </div>
+                                            <div class="chartjs-size-monitor-shrink">
+                                                <div class=""></div>
+                                            </div>
+                                        </div>
+                                        <canvas id="posts-chart" style="display: block; width: 203px; height: 100px;"
+                                            class="chartjs-render-monitor" width="203" height="100"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
             @if (Auth::user()->hasRole('Programador|Administrador'))
                 <div class="card">
                     <div class="card-header">
                         <div class="d-flex flex-wrap justify-content-between col-12 align-content-center">
-                            <h3 class="card-title align-self-center">Acessos Diário</h3>
+                            <h3 class="card-title align-self-center"><i class="fa fa-eye mr-2"></i> Acessos Diário</h3>
                         </div>
                     </div>
 
@@ -156,7 +188,7 @@
                         <div class="card">
                             <div class="card-header border-0">
                                 <div class="d-flex justify-content-between">
-                                    <h3 class="card-title">Usuários Online: <span
+                                    <h3 class="card-title"><i class="fa fa-signal mr-2"></i> Usuários Online: <span
                                             id="onlineusers">{{ $onlineUsers }}</span></h3>
                                 </div>
                             </div>
@@ -200,72 +232,8 @@
 @endsection
 
 @section('custom_js')
+    @include('admin.home.components.posts')
     @if (Auth::user()->hasRole('Programador|Administrador'))
-        <script>
-            const ctx = document.getElementById('visitors-chart');
-            if (ctx) {
-                ctx.getContext('2d');
-                const myChart = new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: ({
-                            !!json_encode($chart - > labels) !!
-                        }),
-                        datasets: [{
-                            label: 'Acessos por horário',
-                            data: {
-                                !!json_encode($chart - > dataset) !!
-                            },
-                            borderWidth: 1,
-                            borderColor: '#024BA9',
-                            backgroundColor: 'transparent'
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        scales: {
-                            y: {
-                                beginAtZero: true
-                            }
-                        },
-                        legend: {
-                            labels: {
-                                boxWidth: 0,
-                            }
-                        },
-                    },
-                });
-
-                let getData = function() {
-
-                    $.ajax({
-                        url: "{{ route('admin.home.chart') }}",
-                        type: "GET",
-                        success: function(data) {
-                            myChart.data.labels = data.chart.labels;
-                            myChart.data.datasets[0].data = data.chart.dataset;
-                            myChart.update();
-                            $("#onlineusers").text(data.onlineUsers);
-                            $("#accessdaily").text(data.access);
-                            $("#percentvalue").text(data.percent);
-                            const percentclass = $("#percentclass");
-                            const percenticon = $("#percenticon");
-                            percentclass.removeClass('text-success');
-                            percentclass.removeClass('text-danger');
-                            percenticon.removeClass('fa-arrow-up');
-                            percenticon.removeClass('fa-arrow-down');
-                            if (parseInt(data.percent) > 0) {
-                                percentclass.addClass('text-success');
-                                percenticon.addClass('fa-arrow-up');
-                            } else {
-                                percentclass.addClass('text-danger');
-                                percenticon.addClass('fa-arrow-down');
-                            }
-                        }
-                    });
-                };
-                setInterval(getData, 10000);
-            }
-        </script>
+        @include('admin.home.components.access')
     @endif
 @endsection
