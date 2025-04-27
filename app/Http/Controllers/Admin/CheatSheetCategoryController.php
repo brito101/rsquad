@@ -28,8 +28,8 @@ class CheatSheetCategoryController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) use ($token) {
                     $btn =
-                        '<a class="btn btn-xs btn-primary mx-1 shadow" title="Editar" href="' . route('admin.cheat-sheets-categories.edit', ['cheat_sheets_category' => $row->id]) . '"><i class="fa fa-lg fa-fw fa-pen"></i></a>' .
-                        '<form method="POST" action="' . route('admin.cheat-sheets-categories.destroy', ['cheat_sheets_category' => $row->id]) . '" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="' . $token . '"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão desta categoria?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>';
+                        '<a class="btn btn-xs btn-primary mx-1 shadow" title="Editar" href="'.route('admin.cheat-sheets-categories.edit', ['cheat_sheets_category' => $row->id]).'"><i class="fa fa-lg fa-fw fa-pen"></i></a>'.
+                        '<form method="POST" action="'.route('admin.cheat-sheets-categories.destroy', ['cheat_sheets_category' => $row->id]).'" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="'.$token.'"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão desta categoria?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>';
 
                     return $btn;
                 })

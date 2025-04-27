@@ -33,9 +33,10 @@ class CheatSheetController extends Controller
                     return $row->category->title;
                 })
                 ->addColumn('action', function ($row) use ($token) {
-                    $btn = '<a class="btn btn-xs btn-success mx-1 shadow" title="Visualizar" target="_blank" href="' . route('site.cheat-sheets.post', ['uri' => $row->uri]) . '"><i class="fa fa-lg fa-fw fa-eye"></i></a>' .
-                        ((auth()->user()->hasRole(['Programador', 'Administrador']) || auth()->user()->id == $row->user_id) ? '<a class="btn btn-xs btn-primary mx-1 shadow" title="Editar" href="cheat-sheets/' . $row->id . '/edit"><i class="fa fa-lg fa-fw fa-pen"></i></a>' .
-                            '<form method="POST" action="cheat-sheets/' . $row->id . '" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="' . $token . '"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão deste cheat sheet?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>' : '');
+                    $btn = '<a class="btn btn-xs btn-success mx-1 shadow" title="Visualizar" target="_blank" href="'.route('site.cheat-sheets.post', ['uri' => $row->uri]).'"><i class="fa fa-lg fa-fw fa-eye"></i></a>'.
+                        ((auth()->user()->hasRole(['Programador', 'Administrador']) || auth()->user()->id == $row->user_id) ? '<a class="btn btn-xs btn-primary mx-1 shadow" title="Editar" href="cheat-sheets/'.$row->id.'/edit"><i class="fa fa-lg fa-fw fa-pen"></i></a>'.
+                            '<form method="POST" action="cheat-sheets/'.$row->id.'" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="'.$token.'"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão deste cheat sheet?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>' : '');
+
                     return $btn;
                 })
                 ->rawColumns(['action', 'category'])

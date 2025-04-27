@@ -145,7 +145,7 @@ class AdminController extends Controller
 
         $dataList = [];
         foreach ($data as $key => $value) {
-            $dataList[$key . 'H'] = count($value);
+            $dataList[$key.'H'] = count($value);
         }
 
         $chart = new stdClass;

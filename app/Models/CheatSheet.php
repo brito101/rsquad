@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class CheatSheet extends Model
 {
-
     use HasFactory, SoftDeletes;
 
     protected $dates = ['deleted_at'];
