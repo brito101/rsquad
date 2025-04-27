@@ -135,6 +135,9 @@ class CheatSheetCategoryController extends Controller
         }
 
         if ($category->delete()) {
+            
+            $category->cheats()->delete();
+
             return redirect()
                 ->route('admin.cheat-sheets-categories.index')
                 ->with('success', 'Exclusão realizada!');
