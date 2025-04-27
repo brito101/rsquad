@@ -275,6 +275,54 @@ class PermissionsTableSeeder extends Seeder
                 'guard_name' => 'web',
                 'created_at' => new DateTime('now'),
             ],
+            /** Cheat Sheet 50 */
+            [
+                'name' => 'Acessar Cheat Sheet',
+                'guard_name' => 'web',
+                'created_at' => new DateTime('now'),
+            ],
+            /** Cheat Sheet Categories from 51 to 54 */
+            [
+                'name' => 'Listar Categorias do Cheat Sheet',
+                'guard_name' => 'web',
+                'created_at' => new DateTime('now'),
+            ],
+            [
+                'name' => 'Criar Categorias do Cheat Sheet',
+                'guard_name' => 'web',
+                'created_at' => new DateTime('now'),
+            ],
+            [
+                'name' => 'Editar Categorias do Cheat Sheet',
+                'guard_name' => 'web',
+                'created_at' => new DateTime('now'),
+            ],
+            [
+                'name' => 'Excluir Categorias do Cheat Sheet',
+                'guard_name' => 'web',
+                'created_at' => new DateTime('now'),
+            ],
+            /** Cheat Sheet Posts from 55 to 58 */
+            [
+                'name' => 'Listar Cheat Sheet',
+                'guard_name' => 'web',
+                'created_at' => new DateTime('now'),
+            ],
+            [
+                'name' => 'Criar Cheat Sheet',
+                'guard_name' => 'web',
+                'created_at' => new DateTime('now'),
+            ],
+            [
+                'name' => 'Editar Cheat Sheet',
+                'guard_name' => 'web',
+                'created_at' => new DateTime('now'),
+            ],
+            [
+                'name' => 'Excluir Cheat Sheet',
+                'guard_name' => 'web',
+                'created_at' => new DateTime('now'),
+            ],
         ]);
     }
 }

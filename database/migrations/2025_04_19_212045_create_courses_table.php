@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('cover')->nullable();
             $table->longText('description')->nullable();
-            $table->string('status')->default('Rascunho');
+            $table->string('status')->default('Planejamento');
             $table->boolean('active')->default(true);
             $table->string('sales_link')->nullable();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');

@@ -458,6 +458,101 @@ class RolesHasPermissionTableSeeder extends Seeder
                 'permission_id' => 49,
                 'role_id' => 3,
             ],
+            /** Cheat Sheet 50 (Programmer, Administrator and Instructors) */
+            [
+                'permission_id' => 50,
+                'role_id' => 1,
+            ],
+            [
+                'permission_id' => 50,
+                'role_id' => 2,
+            ],
+            [
+                'permission_id' => 50,
+                'role_id' => 3,
+            ],
+            /** Cheat Sheet Posts from 51 to 54 (Programmer and Administrator)*/
+            [
+                'permission_id' => 51,
+                'role_id' => 1,
+            ],
+            [
+                'permission_id' => 51,
+                'role_id' => 2,
+            ],
+            [
+                'permission_id' => 52,
+                'role_id' => 1,
+            ],
+            [
+                'permission_id' => 52,
+                'role_id' => 2,
+            ],
+            [
+                'permission_id' => 53,
+                'role_id' => 1,
+            ],
+            [
+                'permission_id' => 53,
+                'role_id' => 2,
+            ],
+            [
+                'permission_id' => 54,
+                'role_id' => 1,
+            ],
+            [
+                'permission_id' => 54,
+                'role_id' => 2,
+            ],
+            /** Cheat Sheet Posts from 46 to 49 (Programmer, Administrator and Instructors)*/
+            [
+                'permission_id' => 55,
+                'role_id' => 1,
+            ],
+            [
+                'permission_id' => 55,
+                'role_id' => 2,
+            ],
+            [
+                'permission_id' => 55,
+                'role_id' => 3,
+            ],
+            [
+                'permission_id' => 56,
+                'role_id' => 1,
+            ],
+            [
+                'permission_id' => 56,
+                'role_id' => 2,
+            ],
+            [
+                'permission_id' => 56,
+                'role_id' => 3,
+            ],
+            [
+                'permission_id' => 57,
+                'role_id' => 1,
+            ],
+            [
+                'permission_id' => 57,
+                'role_id' => 2,
+            ],
+            [
+                'permission_id' => 57,
+                'role_id' => 3,
+            ],
+            [
+                'permission_id' => 58,
+                'role_id' => 1,
+            ],
+            [
+                'permission_id' => 58,
+                'role_id' => 2,
+            ],
+            [
+                'permission_id' => 58,
+                'role_id' => 3,
+            ],
         ]);
     }
 }

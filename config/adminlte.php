@@ -349,6 +349,38 @@ return [
             ],
         ],
         [
+            'text' => 'Cheat Sheets',
+            'url' => '#',
+            'icon' => 'fas fa-fw fa-th-list mr-2',
+            'can' => 'Acessar Cheat Sheet',
+            'submenu' => [
+                [
+                    'text' => 'Listagem de Cheats',
+                    'url' => 'admin/cheat-sheets',
+                    'icon' => 'fas fa-fw fa-chevron-right mr-2',
+                    'can' => 'Listar Cheat Sheet',
+                ],
+                [
+                    'text' => 'Cadastro de Cheat',
+                    'url' => 'admin/cheat-sheets/create',
+                    'icon' => 'fas fa-fw fa-chevron-right mr-2',
+                    'can' => 'Criar Cheat Sheet',
+                ],
+                [
+                    'text' => 'Listagem de Categorias',
+                    'url' => 'admin/cheat-sheets-categories',
+                    'icon' => 'fas fa-fw fa-chevron-right mr-2',
+                    'can' => 'Listar Categorias do Cheat Sheet',
+                ],
+                [
+                    'text' => 'Cadastro de Categoria',
+                    'url' => 'admin/cheat-sheets-categories/create',
+                    'icon' => 'fas fa-fw fa-chevron-right mr-2',
+                    'can' => 'Criar Categorias do Cheat Sheet',
+                ],
+            ],
+        ],
+        [
             'text' => 'Configurações',
             'icon' => 'fas fa-fw fa-cogs mr-2',
             'can' => 'Acessar Configurações',

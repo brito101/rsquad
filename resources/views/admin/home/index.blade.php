@@ -69,7 +69,7 @@
             <div class="row px-2">
                 <div class="card col-12">
                     <div class="card-header">
-                       <i class="fa fa-chart-bar mr-2"></i> Gráficos
+                        <i class="fa fa-chart-bar mr-2"></i> Gráficos
                     </div>
                     <div class="card-body px-0 pb-0 d-flex flex-wrap justify-content-center">
                         <div class="col-12 col-md-6">
@@ -93,7 +93,27 @@
                                 </div>
                             </div>
                         </div>
-
+                        <div class="col-12 col-md-6">
+                            <div class="card">
+                                <div class="card-header border-0">
+                                    <p class="mb-0">Cheats</p>
+                                </div>
+                                <div class="cardy-body py-2">
+                                    <div class="chart-responsive">
+                                        <div class="chartjs-size-monitor">
+                                            <div class="chartjs-size-monitor-expand">
+                                                <div class=""></div>
+                                            </div>
+                                            <div class="chartjs-size-monitor-shrink">
+                                                <div class=""></div>
+                                            </div>
+                                        </div>
+                                        <canvas id="cheats-chart" style="display: block; width: 203px; height: 100px;"
+                                            class="chartjs-render-monitor" width="203" height="100"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -233,6 +253,7 @@
 
 @section('custom_js')
     @include('admin.home.components.posts')
+    @include('admin.home.components.cheats')
     @if (Auth::user()->hasRole('Programador|Administrador'))
         @include('admin.home.components.access')
     @endif

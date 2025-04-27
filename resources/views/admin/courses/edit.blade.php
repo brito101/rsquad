@@ -55,32 +55,15 @@
 
                                     <div class="col-12 col-md-4 form-group px-0 pl-md-2 mb-0">
                                         <label for="status">Status</label>
+                                        @php $coursesStatus = ['Planejamento','Previsto','Em Andamento','Concluído','Disponível','Sob Demanda','Suspenso','Cancelado','Arquivado'] @endphp
                                         <x-adminlte-select2 name="status" required>
-                                            <option
-                                                {{ old('status') == 'Publicado' ? 'selected' : ($course->status == 'Publicado' ? 'selected' : '') }}
-                                                value="Publicado">
-                                                Publicado
-                                            </option>
-                                            <option
-                                                {{ old('status') == 'Rascunho' ? 'selected' : ($course->status == 'Rascunho' ? 'selected' : '') }}
-                                                value="Rascunho">
-                                                Rascunho
-                                            </option>
-                                            <option
-                                                {{ old('status') == 'Suspenso' ? 'selected' : ($course->status == 'Suspenso' ? 'selected' : '') }}
-                                                value="Suspenso">
-                                                Suspenso
-                                            </option>
-                                            <option
-                                                {{ old('status') == 'Cancelado' ? 'selected' : ($course->status == 'Cancelado' ? 'selected' : '') }}
-                                                value="Cancelado">
-                                                Cancelado
-                                            </option>
-                                            <option
-                                                {{ old('status') == 'Arquivado' ? 'selected' : ($course->status == 'Arquivado' ? 'selected' : '') }}
-                                                value="Arquivado">
-                                                Arquivado
-                                            </option>
+                                            @foreach ($coursesStatus as $item)
+                                                <option
+                                                    {{ old('status') == $item ? 'selected' : ($course->status == $item ? 'selected' : '') }}
+                                                    value="{{ $item }}">
+                                                    {{ $item }}
+                                                </option>
+                                            @endforeach
                                         </x-adminlte-select2>
                                     </div>
 

@@ -8,12 +8,15 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\BlogCategoryController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\ChangelogController;
+use App\Http\Controllers\Admin\CheatSheetCategoryController;
+use App\Http\Controllers\Admin\CheatSheetController;
 use App\Http\Controllers\Admin\ClassroomController;
 use App\Http\Controllers\Admin\CourseCategoryController;
 use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Site\BlogController as SiteBlogController;
+use App\Http\Controllers\Site\CheatSheetController as SiteCheatSheetController;
 use App\Http\Controllers\Site\HomeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -39,6 +42,12 @@ Route::group(['middleware' => ['access']], function () {
         Route::get('/blog/{uri}', [SiteBlogController::class, 'post'])->name('blog.post');
         Route::get('/blog', [SiteBlogController::class, 'index'])->name('blog');
         Route::get('/blog/em/{category}', [SiteBlogController::class, 'category'])->name('blog.category');
+
+        /** Cheat Sheet */
+        Route::get('/cheat-sheets/buscar/{s?}', [SiteCheatSheetController::class, 'search'])->name('cheat-sheets.search');
+        Route::get('/cheat-sheets/{uri}', [SiteCheatSheetController::class, 'post'])->name('cheat-sheets.post');
+        Route::get('/cheat-sheets', [SiteCheatSheetController::class, 'index'])->name('cheat-sheets');
+        Route::get('/cheat-sheets/em/{category}', [SiteCheatSheetController::class, 'category'])->name('cheat-sheets.category');
     });
 });
 
@@ -71,6 +80,10 @@ Route::group(['middleware' => ['auth', 'access']], function () {
         /** Blog */
         Route::resource('blog', BlogController::class)->except('show');
         Route::resource('blog-categories', BlogCategoryController::class)->except('show');
+
+        /** Blog */
+        Route::resource('cheat-sheets', CheatSheetController::class)->except('show');
+        Route::resource('cheat-sheets-categories', CheatSheetCategoryController::class)->except('show');
 
         /**
          * ACL

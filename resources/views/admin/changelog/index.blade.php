@@ -59,6 +59,7 @@
                                         <li>Módulo de Aulas</li>
                                         <li>Módulo de Alunos</li>
                                         <li>Módulo de Blog</li>
+                                        <li>Módulo de Cheat Sheets</li>
                                     </ul>
                                 </x-adminlte-callout>
 
