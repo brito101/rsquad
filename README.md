@@ -17,6 +17,7 @@
 -   Classroom module
 -   Students module
 -   Blog module
+-   Cheat Sheet module
 
 ### Usage in development environment
 
