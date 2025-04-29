@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ClassroomRequest;
 use App\Models\Classroom;
 use App\Models\Course;
+use App\Models\CourseModule;
 use Exception;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
@@ -22,7 +23,7 @@ class ClassroomController extends Controller
 
         if ($request->ajax()) {
             if (auth()->user()->hasRole(['Programador', 'Administrador'])) {
-                $classes = Classroom::with(['course'])->get();
+                $classes = Classroom::with(['course', 'module'])->get();
             } elseif (auth()->user()->hasRole('Instrutor')) {
                 $classes = Classroom::where(function ($query) {
                     $query->where('user_id', auth()->user()->id)
@@ -31,7 +32,7 @@ class ClassroomController extends Controller
                                 $q->where('user_id', auth()->user()->id);
                             });
                         });
-                })->with(['course'])->get();
+                })->with(['course', 'module'])->get();
             } else {
                 $classes = new Classroom;
             }
@@ -44,6 +45,9 @@ class ClassroomController extends Controller
                     ->addColumn('course', function ($row) {
                         return $row->course->name;
                     })
+                    ->addColumn('module', function ($row) {
+                        return $row->module->name;
+                    })
                     ->addColumn('active', function ($row) {
                         if ($row->active == 0) {
                             return '<span class="text-danger"><i class="fa fa-lg fa-fw fa-thumbs-down"></i></span>';
@@ -53,16 +57,16 @@ class ClassroomController extends Controller
                     })
                     ->addColumn('action', function ($row) use ($token) {
                         if ($row->link) {
-                            $link = '<a class="btn btn-xs btn-success mx-1 shadow" title="Link da aula" href="'.$row->link.'" target="_blank"><i class="fa fa-lg fa-fw fa-link"></i></a>';
+                            $link = '<a class="btn btn-xs btn-success mx-1 shadow" title="Link da aula" href="' . $row->link . '" target="_blank"><i class="fa fa-lg fa-fw fa-link"></i></a>';
                         } else {
                             $link = '';
                         }
-                        $edit = '<a class="btn btn-xs btn-primary mx-1 shadow" title="Editar" href="'.route('admin.classes.edit', ['class' => $row->id]).'"><i class="fa fa-lg fa-fw fa-pen"></i></a>';
-                        $delete = '<form method="POST" action="'.route('admin.classes.destroy', ['class' => $row->id]).'" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="'.$token.'"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão desta aula?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>';
+                        $edit = '<a class="btn btn-xs btn-primary mx-1 shadow" title="Editar" href="' . route('admin.classes.edit', ['class' => $row->id]) . '"><i class="fa fa-lg fa-fw fa-pen"></i></a>';
+                        $delete = '<form method="POST" action="' . route('admin.classes.destroy', ['class' => $row->id]) . '" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="' . $token . '"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão desta aula?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>';
 
-                        return '<div class="d-flex justify-content-center align-items-center">'.$link.$edit.$delete.'</div>';
+                        return '<div class="d-flex justify-content-center align-items-center">' . $link . $edit . $delete . '</div>';
                     })
-                    ->rawColumns(['course', 'active', 'action'])
+                    ->rawColumns(['course', 'module', 'active', 'action'])
                     ->make(true);
             } catch (Exception $e) {
                 return response([
@@ -108,7 +112,15 @@ class ClassroomController extends Controller
                 ->with('error', 'Nenhum curso encontrado!');
         }
 
-        return view('admin.classroom.create', compact('courses'));
+        $modules = CourseModule::whereIn('course_id', $courses->pluck('id'))->orderBy('course_id')->orderBy('order')->get();
+
+        if (! $modules->count()) {
+            return redirect()
+                ->back()
+                ->with('error', 'Nenhum módulo encontrado!');
+        }
+
+        return view('admin.classroom.create', compact('modules'));
     }
 
     /**
@@ -118,32 +130,33 @@ class ClassroomController extends Controller
     {
         CheckPermission::checkAuth('Criar Aulas');
 
+        $module = CourseModule::where('id', $request->course_module_id)->first();
+
+        if (! $module) {
+            abort(403, 'Acesso não autorizado');
+        }    
+
         if (auth()->user()->hasRole(['Programador', 'Administrador'])) {
-            $course = Course::find($request->course_id);
+            $course = Course::find($module->course_id);
         } elseif (auth()->user()->hasRole('Instrutor')) {
             $course = Course::where(function ($query) {
                 $query->where('user_id', auth()->user()->id)
                     ->orWhereHas('authors', function ($q) {
                         $q->where('user_id', auth()->user()->id);
                     });
-            })->find($request->course_id);
+            })->find($module->course_id);
         } else {
             $course = null;
         }
 
         if (! $course) {
             abort(403, 'Acesso não autorizado');
-        }
-
-        if (! $course) {
-            return redirect()
-                ->back()
-                ->with('error', 'Nenhum curso encontrado!');
-        }
+        }          
 
         $data = $request->all();
 
         $data['course_id'] = $course->id;
+        $data['course_module_id'] = $module->id;
         $data['user_id'] = auth()->user()->id;
 
         $course = Classroom::create($data);
@@ -199,7 +212,15 @@ class ClassroomController extends Controller
                 ->with('error', 'Nenhum curso encontrado!');
         }
 
-        return view('admin.classroom.edit', compact('classroom', 'courses'));
+        $modules = CourseModule::whereIn('course_id', $courses->pluck('id'))->orderBy('course_id')->orderBy('order')->get();
+
+        if (! $modules->count()) {
+            return redirect()
+                ->back()
+                ->with('error', 'Nenhum módulo encontrado!');
+        }
+
+        return view('admin.classroom.edit', compact('classroom', 'modules'));
     }
 
     /**
@@ -209,16 +230,22 @@ class ClassroomController extends Controller
     {
         CheckPermission::checkAuth(auth: 'Editar Aulas');
 
+        $module = CourseModule::where('id', $request->course_module_id)->first();
+
+        if (! $module) {
+            abort(403, 'Acesso não autorizado');
+        }    
+
         if (auth()->user()->hasRole(['Programador', 'Administrador'])) {
             $classroom = Classroom::find($id);
-            $course = Course::find($request->course_id);
+            $course = Course::find($module->course_id);
         } elseif (auth()->user()->hasRole('Instrutor')) {
             $course = Course::where(function ($query) {
                 $query->where('user_id', auth()->user()->id)
                     ->orWhereHas('authors', function ($q) {
                         $q->where('user_id', auth()->user()->id);
                     });
-            })->find($request->course_id);
+            })->find($module->course_id);
             $classroom = Classroom::where(function ($query) {
                 $query->where('user_id', auth()->user()->id)
                     ->orWhereHas('course', function ($q) {
@@ -238,6 +265,7 @@ class ClassroomController extends Controller
 
         $data = $request->all();
         $data['course_id'] = $course->id;
+        $data['course_module_id'] = $module->id;
         $data['user_id'] = auth()->user()->id;
 
         if ($classroom->update($data)) {

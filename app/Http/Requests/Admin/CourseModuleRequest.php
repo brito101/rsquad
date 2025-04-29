@@ -4,7 +4,7 @@ namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ClassroomRequest extends FormRequest
+class CourseModuleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -12,6 +12,8 @@ class ClassroomRequest extends FormRequest
     public function authorize()
     {
         return true;
+
+        dd($this);
     }
 
     public function prepareForValidation()
@@ -31,9 +33,11 @@ class ClassroomRequest extends FormRequest
     {
         return [
             'name' => "required|max:191|unique:classrooms,name,{$this->id},id,deleted_at,NULL",
-            'status' => 'required|in:Publicado,Rascunho,Suspenso,Cancelado,Arquivado',
-            'course_module_id' => 'required|exists:course_modules,id',
+            'description' => 'nullable|max:4294967295',
+            'cover' => 'nullable|image|mimes:jpg,png,jpeg,webp|max:4096|dimensions:max_width=4000,max_height=4000',
             'order' => 'nullable|integer|min:0|max:9999',
+            'status' => 'required|in:Publicado,Rascunho,Suspenso,Cancelado,Arquivado',
+            'course_id' => 'required|exists:courses,id',
             'active' => 'nullable|boolean',
             'release_date' => 'nullable|date_format:Y-m-d',
             'link' => 'nullable|url|max:191',

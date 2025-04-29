@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', '- Aulas')
+@section('title', '- Módulos')
 @section('plugins.Datatables', true)
 @section('plugins.DatatablesPlugins', true)
 
@@ -10,13 +10,13 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1><i class="fas fa-fw fa-chalkboard-teacher"></i> Aulas</h1>
+                    <h1><i class="fas fa-fw fa-layer-group"></i> Módulos</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ route('admin.home') }}">Home</a></li>
                         <li class="breadcrumb-item"><a href="{{ route('admin.courses.index') }}">Cursos</a></li>
-                        <li class="breadcrumb-item active">Aulas</li>
+                        <li class="breadcrumb-item active">Módulos</li>
                     </ol>
                 </div>
             </div>
@@ -32,10 +32,10 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="d-flex flex-wrap justify-content-between col-12 align-content-center">
-                                <h3 class="card-title align-self-center">Aulas Cadastradas</h3>
-                                @can('Criar Aulas')
-                                    <a href="{{ route('admin.classes.create') }}" title="Nova Aula" class="btn btn-success"><i
-                                            class="fas fa-fw fa-plus"></i>Nova Aula</a>
+                                <h3 class="card-title align-self-center">Módulos Cadastrados</h3>
+                                @can('Criar Módulos de Cursos')
+                                    <a href="{{ route('admin.course-modules.create') }}" title="Nova Aula" class="btn btn-success"><i
+                                            class="fas fa-fw fa-plus"></i>Novo Módulo</a>
                                 @endcan
                             </div>
                         </div>
@@ -43,10 +43,11 @@
                         @php
                             $heads = [
                                 ['label' => 'ID', 'width' => 10],
+                                ['label' => 'Foto', 'no-export' => true],
                                 'Nome',
                                 'Ordem',
-                                'Curso',
-                                'Módulo',
+                                'Curso',                                
+                                'Aulas',
                                 'Status',
                                 'Ativo',
                                 'Data liberação',
@@ -54,13 +55,14 @@
                                 ['label' => 'Ações', 'no-export' => true, 'width' => 10],
                             ];
                             $config = [
-                                'ajax' => route('admin.classes.index'),
+                                'ajax' => route('admin.course-modules.index'),
                                 'columns' => [
                                     ['data' => 'id', 'name' => 'id'],
+                                    ['data' => 'cover', 'name' => 'cover', 'orderable' => false],
                                     ['data' => 'name', 'name' => 'name'],
                                     ['data' => 'order', 'name' => 'order'],
                                     ['data' => 'course', 'name' => 'course'],
-                                    ['data' => 'module', 'name' => 'module'],
+                                    ['data' => 'classes', 'name' => 'classes'],
                                     ['data' => 'status', 'name' => 'status'],
                                     ['data' => 'active', 'name' => 'active'],
                                     [

@@ -50,8 +50,27 @@ class Course extends Model
         return $this->hasMany(CourseStudent::class, 'course_id');
     }
 
+    public function modules()
+    {
+        return $this->hasMany(CourseModule::class, 'course_id');
+    }
+
     public function classes()
     {
         return $this->hasMany(Classroom::class, 'course_id');
+    }
+
+    /** Cascade actions */
+    public static function boot(): void
+    {
+        parent::boot();
+
+        static::deleting(function ($course) {
+            $course->categories()->delete();
+            $course->authors()->delete();
+            $course->students()->delete();
+            $course->modules()->delete();
+            $course->classes()->delete();
+        });
     }
 }

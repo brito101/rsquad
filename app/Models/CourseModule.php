@@ -4,10 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Classroom extends Model
+class CourseModule extends Model
 {
     use SoftDeletes;
 
@@ -20,14 +19,14 @@ class Classroom extends Model
      */
     protected $fillable = [
         'name',
-        'order',
+        'cover',
+        'description',
         'status',
         'order',
         'active',
         'link',
         'release_date',
         'course_id',
-        'course_module_id',
         'user_id',
     ];
 
@@ -50,13 +49,10 @@ class Classroom extends Model
         ]);
     }
 
-    public function module(): BelongsTo
+    public function classes()
     {
-        return $this->belongsTo(CourseModule::class, 'course_module_id')->withDefault([
-            'name' => 'Módulo excluído',
-        ]);
+        return $this->hasMany(Classroom::class, 'course_module_id');
     }
-
     /** Accessors */
     public function getReleaseDateBrAttribute(): ?string
     {
@@ -65,5 +61,15 @@ class Classroom extends Model
         } else {
             return null;
         }
+    }
+
+    /** Cascade actions */
+    public static function boot(): void
+    {
+        parent::boot();
+
+        static::deleting(function ($course) {
+            $course->classes()->delete();
+        });
     }
 }

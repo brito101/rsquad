@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', '- Aulas')
+@section('title', '- Aulas do Módulo ' . $module->name)
 @section('plugins.Datatables', true)
 @section('plugins.DatatablesPlugins', true)
 
@@ -10,13 +10,16 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1><i class="fas fa-fw fa-chalkboard-teacher"></i> Aulas</h1>
+                    <h1><i class="fas fa-fw fa-chalkboard-teacher"></i> Aulas do Módulo {{ $module->name }}
+                        ({{ $module->course->name }})</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ route('admin.home') }}">Home</a></li>
                         <li class="breadcrumb-item"><a href="{{ route('admin.courses.index') }}">Cursos</a></li>
-                        <li class="breadcrumb-item active">Aulas</li>
+                        <li class="breadcrumb-item"><a href="{{ route('admin.course-modules.index') }}">Módulos</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('admin.classes.index') }}">Aulas</a></li>
+                        <li class="breadcrumb-item active">Aulas por Módulo</li>
                     </ol>
                 </div>
             </div>
@@ -54,7 +57,7 @@
                                 ['label' => 'Ações', 'no-export' => true, 'width' => 10],
                             ];
                             $config = [
-                                'ajax' => route('admin.classes.index'),
+                                'ajax' => route('admin.course-modules.classes', ['module' => $module->id]),
                                 'columns' => [
                                     ['data' => 'id', 'name' => 'id'],
                                     ['data' => 'name', 'name' => 'name'],

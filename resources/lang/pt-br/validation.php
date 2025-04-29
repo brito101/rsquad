@@ -230,6 +230,7 @@ return [
         'category_id' => 'categoria',
         'course_category_id' => 'categoria de curso',
         'subtitle' => 'headline',
+        'course_module_id' => 'curso',
     ],
 
 ];

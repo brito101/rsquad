@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\CheatSheetController;
 use App\Http\Controllers\Admin\ClassroomController;
 use App\Http\Controllers\Admin\CourseCategoryController;
 use App\Http\Controllers\Admin\CourseController;
+use App\Http\Controllers\Admin\CourseModuleController;
 use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Site\BlogController as SiteBlogController;
@@ -70,9 +71,14 @@ Route::group(['middleware' => ['auth', 'access']], function () {
         Route::resource('course-categories', CourseCategoryController::class)->except(['show']);
 
         /** Courses */
+        Route::get('courses/{course}/modules', [CourseController::class, 'modules'])->name('courses.modules');
         Route::get('courses/{course}/classes', [CourseController::class, 'classes'])->name('courses.classes');
         Route::get('courses/{course}/students', [CourseController::class, 'students'])->name('courses.students');
         Route::resource('courses', CourseController::class)->except(['show']);
+
+        /** Course Modules */
+        Route::get('course-modules/{module}/classes', [CourseModuleController::class, 'classes'])->name('course-modules.classes');
+        Route::resource('course-modules', CourseModuleController::class)->except(['show']);
 
         /** Classes */
         Route::resource('classes', ClassroomController::class)->except(['show']);

@@ -553,6 +553,67 @@ class RolesHasPermissionTableSeeder extends Seeder
                 'permission_id' => 58,
                 'role_id' => 3,
             ],
+            /** Course Modules from 59 to 63 (Programmers, Administrators and Instructors) */
+            [
+                'permission_id' => 59,
+                'role_id' => 1,
+            ],
+            [
+                'permission_id' => 59,
+                'role_id' => 2,
+            ],
+            [
+                'permission_id' => 59,
+                'role_id' => 3,
+            ],
+            [
+                'permission_id' => 60,
+                'role_id' => 1,
+            ],
+            [
+                'permission_id' => 60,
+                'role_id' => 2,
+            ],
+            [
+                'permission_id' => 60,
+                'role_id' => 3,
+            ],
+            [
+                'permission_id' => 61,
+                'role_id' => 1,
+            ],
+            [
+                'permission_id' => 61,
+                'role_id' => 2,
+            ],
+            [
+                'permission_id' => 61,
+                'role_id' => 3,
+            ],
+            [
+                'permission_id' => 62,
+                'role_id' => 1,
+            ],
+            [
+                'permission_id' => 62,
+                'role_id' => 2,
+            ],
+            [
+                'permission_id' => 62,
+                'role_id' => 3,
+            ],
+            [
+                'permission_id' => 63,
+                'role_id' => 1,
+            ],
+            [
+                'permission_id' => 63,
+                'role_id' => 2,
+            ],
+            [
+                'permission_id' => 63,
+                'role_id' => 3,
+            ],
         ]);
     }
 }

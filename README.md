@@ -8,14 +8,10 @@
 
 ### Resources
 
--   Basic user controller
--   2FA authentication
+-   Basic user controller with 2FA authentication
 -   Visitors log
 -   API routes with JWT auth
--   Course categories module
--   Courses module
--   Classroom module
--   Students module
+-   Courses module with categories, classes and students
 -   Blog module
 -   Cheat Sheet module
 

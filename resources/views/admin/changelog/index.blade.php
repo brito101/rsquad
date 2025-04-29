@@ -49,17 +49,16 @@
 
                                 <x-adminlte-callout theme="primary" class="elevation-2" title-class="text-uppercase"
                                     title="1.0.0">
+                                    <p>Sistema com os seguintes módulos:</p>
                                     <ul>
-                                        <li>Módulo de ACL com perfis e permissões</li>
-                                        <li>Módulo de Usuários</li>
-                                        <li>Duplo fator de autenticação (2FA)</li>
+                                        <li>ACL com perfis e permissões</li>
+                                        <li>Usuários com duplo fator de autenticação (2FA)</li>
                                         <li>Changelog</li>
-                                        <li>Módulo de Categorias de Cursos</li>
-                                        <li>Módulo de Cursos</li>
-                                        <li>Módulo de Aulas</li>
-                                        <li>Módulo de Alunos</li>
-                                        <li>Módulo de Blog</li>
-                                        <li>Módulo de Cheat Sheets</li>
+                                        <li>Categorias de Cursos</li>
+                                        <li>Cursos com categorias, módulos e aulas</li>
+                                        <li>Alunos</li>
+                                        <li>Blog com múltiplas categorias</li>
+                                        <li>Cheat Sheets</li>
                                     </ul>
                                 </x-adminlte-callout>
 
@@ -78,10 +77,6 @@
                             <x-adminlte-profile-col-item title="Bootstrap" icon="fab fa-2x fa-bootstrap text-primary"
                                 size=4 />
                         </x-adminlte-profile-widget>
-
-                        <p class="text-muted">
-                            Sistema base em Laravel 10
-                        </p>
                     </div>
                 </div>
             </div>

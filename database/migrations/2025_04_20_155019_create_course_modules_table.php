@@ -12,26 +12,26 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('classrooms', function (Blueprint $table) {
+        Schema::create('course_modules', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('order')->default(0);
+            $table->string('cover')->nullable();
+            $table->longText('description')->nullable();
+            $table->integer('order')->default(0);            
             $table->string('status')->default('Rascunho');
             $table->boolean('active')->default(true);
             $table->string('link')->nullable();
             $table->date('release_date')->nullable();
             $table->foreignId('course_id')->constrained()->onDelete('cascade');
-            $table->foreignId('course_module_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->softDeletes();
             $table->timestamps();
         });
 
         DB::statement('
-        CREATE OR REPLACE VIEW `classrooms_view` AS
-        SELECT c.id, c.name, c.order, c.status, c.active, c.link, c.release_date, c.course_id, co.name as course, c.course_module_id, cm.name as module, c.user_id, u.name as editor
-        FROM classrooms as c        
-        LEFT JOIN course_modules as cm ON c.course_module_id = cm.id
+        CREATE OR REPLACE VIEW `course_modules_view` AS
+        SELECT c.id, c.name, c.order, c.status, c.active, c.link, c.release_date, c.course_id, co.name as course, c.user_id, u.name as editor
+        FROM course_modules as c
         LEFT JOIN courses as co ON c.course_id = co.id
         LEFT JOIN users as u ON c.user_id = u.id
         WHERE c.deleted_at IS NULL
@@ -43,7 +43,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        DB::statement('DROP VIEW classrooms_view');
-        Schema::dropIfExists('classrooms');
+        DB::statement('DROP VIEW course_modules_view');
+        Schema::dropIfExists('course_modules');
     }
 };

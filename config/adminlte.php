@@ -257,7 +257,7 @@ return [
                     'can' => 'Listar Usuários',
                 ],
                 [
-                    'text' => 'Cadastro de Usuários',
+                    'text' => 'Cadastro de Usuário',
                     'url' => 'admin/users/create',
                     'icon' => 'fas fa-fw fa-chevron-right',
                     'can' => 'Criar Usuários',
@@ -277,7 +277,7 @@ return [
                     'can' => 'Listar Alunos',
                 ],
                 [
-                    'text' => 'Cadastro de Alunos',
+                    'text' => 'Cadastro de Aluno',
                     'url' => 'admin/students/create',
                     'icon' => 'fas fa-fw fa-chevron-right',
                     'can' => 'Criar Alunos',
@@ -303,13 +303,25 @@ return [
                     'can' => 'Criar Cursos',
                 ],
                 [
+                    'text' => 'Listagem de Módulos',
+                    'url' => 'admin/course-modules',
+                    'icon' => 'fas fa-fw fa-chevron-right',
+                    'can' => 'Listar Módulos de Cursos',
+                ],
+                [
+                    'text' => 'Cadastro de Módulo',
+                    'url' => 'admin/course-modules/create',
+                    'icon' => 'fas fa-fw fa-chevron-right',
+                    'can' => 'Criar Módulos de Cursos',
+                ],
+                [
                     'text' => 'Listagem de Aulas',
                     'url' => 'admin/classes',
                     'icon' => 'fas fa-fw fa-chevron-right',
                     'can' => 'Listar Aulas',
                 ],
                 [
-                    'text' => 'Cadastro de Aulas',
+                    'text' => 'Cadastro de Aula',
                     'url' => 'admin/classes/create',
                     'icon' => 'fas fa-fw fa-chevron-right',
                     'can' => 'Criar Aulas',
@@ -420,7 +432,7 @@ return [
                     'can' => 'Listar Perfis',
                 ],
                 [
-                    'text' => 'Cadastro de Perfis',
+                    'text' => 'Cadastro de Perfil',
                     'url' => 'admin/role/create',
                     'icon' => 'fas fa-fw fa-chevron-right',
                     'can' => 'Criar Perfis',
@@ -431,7 +443,7 @@ return [
                     'icon' => 'fas fa-fw fa-chevron-right',
                 ],
                 [
-                    'text' => 'Cadastro de Permissões',
+                    'text' => 'Cadastro de Permissão',
                     'url' => 'admin/permission/create',
                     'icon' => 'fas fa-fw fa-chevron-right',
                     'can' => 'Criar Permissões',
