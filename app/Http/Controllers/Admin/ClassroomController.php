@@ -57,14 +57,14 @@ class ClassroomController extends Controller
                     })
                     ->addColumn('action', function ($row) use ($token) {
                         if ($row->link) {
-                            $link = '<a class="btn btn-xs btn-success mx-1 shadow" title="Link da aula" href="' . $row->link . '" target="_blank"><i class="fa fa-lg fa-fw fa-link"></i></a>';
+                            $link = '<a class="btn btn-xs btn-success mx-1 shadow" title="Link da aula" href="'.$row->link.'" target="_blank"><i class="fa fa-lg fa-fw fa-link"></i></a>';
                         } else {
                             $link = '';
                         }
-                        $edit = '<a class="btn btn-xs btn-primary mx-1 shadow" title="Editar" href="' . route('admin.classes.edit', ['class' => $row->id]) . '"><i class="fa fa-lg fa-fw fa-pen"></i></a>';
-                        $delete = '<form method="POST" action="' . route('admin.classes.destroy', ['class' => $row->id]) . '" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="' . $token . '"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão desta aula?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>';
+                        $edit = '<a class="btn btn-xs btn-primary mx-1 shadow" title="Editar" href="'.route('admin.classes.edit', ['class' => $row->id]).'"><i class="fa fa-lg fa-fw fa-pen"></i></a>';
+                        $delete = '<form method="POST" action="'.route('admin.classes.destroy', ['class' => $row->id]).'" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="'.$token.'"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão desta aula?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>';
 
-                        return '<div class="d-flex justify-content-center align-items-center">' . $link . $edit . $delete . '</div>';
+                        return '<div class="d-flex justify-content-center align-items-center">'.$link.$edit.$delete.'</div>';
                     })
                     ->rawColumns(['course', 'module', 'active', 'action'])
                     ->make(true);
@@ -134,7 +134,7 @@ class ClassroomController extends Controller
 
         if (! $module) {
             abort(403, 'Acesso não autorizado');
-        }    
+        }
 
         if (auth()->user()->hasRole(['Programador', 'Administrador'])) {
             $course = Course::find($module->course_id);
@@ -151,7 +151,7 @@ class ClassroomController extends Controller
 
         if (! $course) {
             abort(403, 'Acesso não autorizado');
-        }          
+        }
 
         $data = $request->all();
 
@@ -234,7 +234,7 @@ class ClassroomController extends Controller
 
         if (! $module) {
             abort(403, 'Acesso não autorizado');
-        }    
+        }
 
         if (auth()->user()->hasRole(['Programador', 'Administrador'])) {
             $classroom = Classroom::find($id);

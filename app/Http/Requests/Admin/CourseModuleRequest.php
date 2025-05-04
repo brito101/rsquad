@@ -12,8 +12,6 @@ class CourseModuleRequest extends FormRequest
     public function authorize()
     {
         return true;
-
-        dd($this);
     }
 
     public function prepareForValidation()
@@ -21,6 +19,7 @@ class CourseModuleRequest extends FormRequest
         $this->merge([
             'active' => ! ($this->active == null),
             'release_date' => $this->release_date ? date('Y-m-d', strtotime($this->release_date)) : null,
+            'order' => $this->order ? $this->order : '0',
         ]);
     }
 

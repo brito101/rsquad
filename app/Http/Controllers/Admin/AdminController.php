@@ -6,13 +6,14 @@ use App\Helpers\CheckPermission;
 use App\Http\Controllers\Controller;
 use App\Models\Blog;
 use App\Models\CheatSheet;
+use App\Models\Course;
 use App\Models\User;
-use App\Models\Views\Course as ViewsCourse;
 use App\Models\Views\User as ViewsUser;
 use App\Models\Views\Visit;
 use App\Models\Views\VisitYesterday;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use stdClass;
 use Yajra\DataTables\Facades\DataTables;
@@ -29,8 +30,35 @@ class AdminController extends Controller
 
         $administrators = ViewsUser::where('type', 'Administrador')->count();
         $instructors = ViewsUser::where('type', 'Instrutor')->count();
-        $students = ViewsUser::where('type', 'Aluno')->count();
-        $courses = ViewsCourse::where('active', true)->count();
+        $students = ViewsUser::where('type', 'Aluno')->get();
+
+        if (auth()->user()->hasRole(['Programador', 'Administrador'])) {
+            $courses = Course::where('active', true)->with('students')->get();
+        } elseif (auth()->user()->hasRole('Instrutor')) {
+            $courses = Course::where(function ($query) {
+                $query->where('user_id', auth()->user()->id)
+                    ->orWhereHas('authors', function ($q) {
+                        $q->where('user_id', auth()->user()->id);
+                    });
+            })->with(['students', 'modules', 'classes'])->get();
+        } else {
+            $courses = new Course;
+        }
+
+        $modules = new Collection;
+        foreach ($courses as $course) {
+            foreach ($course->modules as $module) {
+                $modules[] = $module;
+            }
+        }
+
+        $classes = new Collection;
+        foreach ($courses as $course) {
+            foreach ($course->classes as $classe) {
+                $classes[] = $classe;
+            }
+        }
+
         $posts = Blog::select('id', 'status', 'title', 'views', 'created_at')->orderBy('created_at', 'desc')->get();
         $cheats = CheatSheet::select('id', 'status', 'title', 'views', 'created_at')->orderBy('created_at', 'desc')->get();
 
@@ -66,6 +94,13 @@ class AdminController extends Controller
             $cheatsChart['label'][] = Str::limit($p->title, 25);
             $cheatsChart['data'][] = (int) $p->views;
         }
+
+        $studentCourseChart = ['label' => [], 'data' => []];
+        foreach ($courses as $course) {
+            $studentCourseChart['label'][] = Str::limit($course->name, 25);
+            $studentCourseChart['data'][] = (int) $course->students->count();
+        }
+
         /** Statistics */
         $statistics = $this->accessStatistics();
         $onlineUsers = $statistics['onlineUsers'];
@@ -82,8 +117,13 @@ class AdminController extends Controller
             'percent',
             'access',
             'chart',
+            'posts',
             'postsChart',
+            'cheats',
             'cheatsChart',
+            'studentCourseChart',
+            'modules',
+            'classes',
         ));
     }
 

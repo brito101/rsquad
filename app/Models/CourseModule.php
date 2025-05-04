@@ -53,6 +53,7 @@ class CourseModule extends Model
     {
         return $this->hasMany(Classroom::class, 'course_module_id');
     }
+
     /** Accessors */
     public function getReleaseDateBrAttribute(): ?string
     {

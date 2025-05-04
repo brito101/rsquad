@@ -3,7 +3,6 @@
 namespace App\Helpers;
 
 use DOMDocument;
-use DOMXPath;
 use Exception;
 use Illuminate\Support\Str;
 
@@ -11,10 +10,9 @@ class TextProcessor
 {
     public static function store(string $title, string $package, string $text = '', bool $xss = false): string
     {
-        $text = preg_replace('/[\x{34F}\x{AD}\x{200E}]/u', '', $text);
-        $description = str_replace(["\'<?xml encoding=\"utf-8\" ?>\'", '<!--?xml encoding="utf-8" ?-->'], ['', ''], $text);
+
         $dom = new DOMDocument('1.0', 'UTF-8');
-        $dom->loadHTML('<?xml encoding="utf-8" ?>'.$description, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_NOERROR | LIBXML_NOWARNING);
+        $dom->loadHTML($text, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_NOERROR | LIBXML_NOWARNING);
         $imageFile = $dom->getElementsByTagName('img');
 
         foreach ($imageFile as $item => $image) {
@@ -91,12 +89,8 @@ class TextProcessor
 
     public static function urlImageTransform($text, bool $misc = false): string
     {
-        if ($misc) {
-            $text = substr($text, 0, strpos($text, '<p><b>3. A')).'</div>';
-        }
-
         $dom = new DOMDocument('1.0', 'UTF-8');
-        $dom->loadHTML('<?xml encoding="utf-8" ?>'.$text, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_NOERROR | LIBXML_NOWARNING);
+        $dom->loadHTML($text, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_NOERROR | LIBXML_NOWARNING);
         $imageFile = $dom->getElementsByTagName('img');
 
         $url = str_replace('www.', '', env('APP_URL'));
@@ -113,13 +107,6 @@ class TextProcessor
                 }
             } catch (Exception) {
                 $image->parentNode->removeChild($image);
-            }
-        }
-
-        if ($misc) {
-            $xpath = new DOMXPath($dom);
-            foreach ($xpath->query('//div[contains(attribute::class, "remove-misc")]') as $e) {
-                $e->parentNode->removeChild($e);
             }
         }
 

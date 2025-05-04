@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('cover')->nullable();
             $table->longText('description')->nullable();
-            $table->integer('order')->default(0);            
+            $table->integer('order')->default(0);
             $table->string('status')->default('Rascunho');
             $table->boolean('active')->default(true);
             $table->string('link')->nullable();

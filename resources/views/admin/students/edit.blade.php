@@ -123,7 +123,7 @@
                                 @endphp
 
                                 <div class="col-12 col-md-6 form-group px-0 pr-md-2 mb-0">
-                                    <x-adminlte-select-bs id="courses" name="courses[]" label="Autores"
+                                    <x-adminlte-select-bs id="courses" name="courses[]" label="Cursos"
                                         label-class="text-dark" igroup-size="md" :config="$config" multiple
                                         class="border">
                                         @foreach ($courses as $course)
