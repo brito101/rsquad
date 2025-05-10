@@ -1,6 +1,7 @@
 {
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
+    "/css/site.css": "/css/site.css",
     "/css/login.css": "/css/login.css",
     "/img/403-error.webp": "/img/403-error.webp",
     "/img/404-error.webp": "/img/404-error.webp",
@@ -10,11 +11,13 @@
     "/img/favicon.svg": "/img/favicon.svg",
     "/img/logo-100.webp": "/img/logo-100.webp",
     "/img/logo-50.png": "/img/logo-50.png",
+    "/img/logo-bg-white.png": "/img/logo-bg-white.png",
     "/vendor/jquery/jquery.min.js": "/vendor/jquery/jquery.min.js",
     "/js/company.js": "/js/company.js",
     "/js/address.js": "/js/address.js",
     "/js/phone.js": "/js/phone.js",
     "/js/google2fa.js": "/js/google2fa.js",
     "/js/snow.js": "/js/snow.js",
-    "/js/particles.js": "/js/particles.js"
+    "/js/particles.js": "/js/particles.js",
+    "/img/logo-rounded.png": "/img/logo-rounded.png"
 }
