@@ -60,6 +60,17 @@ class Course extends Model
         return $this->hasMany(Classroom::class, 'course_id');
     }
 
+    public function authorsInfo()
+    {
+        return $this->hasManyThrough(User::class, CourseAuthor::class, 'course_id', 'id', 'id', 'user_id');
+    }
+
+     public function categoriesInfo()
+    {
+        return $this->hasManyThrough(CategoryCourse::class, CourseCategoryPivot::class, 'course_id', 'id', 'id', 'category_course_id');
+    }
+
+
     /** Cascade actions */
     public static function boot(): void
     {

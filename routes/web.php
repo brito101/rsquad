@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Academy\AcademyController;
+use App\Http\Controllers\Academy\CourseController as AcademyCourseController;
 use App\Http\Controllers\Academy\UserController as AcademyUserController;
 use App\Http\Controllers\Admin\ACL\PermissionController;
 use App\Http\Controllers\Admin\ACL\RoleController;
@@ -112,6 +113,9 @@ Route::group(['middleware' => ['auth', 'access']], function () {
         Route::get('/', [AcademyController::class, 'index'])->name('home');
         Route::get('/user/edit', [AcademyUserController::class, 'edit'])->name('user.edit');
         Route::put('/user/edit', [AcademyUserController::class, 'update'])->name('user.update');
+        /** Courses */
+        Route::get('/courses', [AcademyCourseController::class, 'index'])->name('courses.index');
+        Route::get('/courses/{course}', [AcademyCourseController::class, 'show'])->name('courses.show');
     });
 });
 

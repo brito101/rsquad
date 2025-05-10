@@ -231,18 +231,38 @@ return [
             'type' => 'fullscreen-widget',
             'topnav_right' => true,
         ],
-
+        [
+            'text' => 'Profile',
+            'url' => '/admin/user/edit',
+            'icon' => 'fas fa-fw fa-user',
+            'topnav_right' => true,
+            'can' => 'Acessar Administração',
+        ],
+        [
+            'text' => 'Profile',
+            'url' => '/academy/user/edit',
+            'icon' => 'fas fa-fw fa-user',
+            'topnav_right' => true,
+            'can' => 'Acessar Academia',
+        ],
         // Sidebar items:
         [
             'type' => 'sidebar-menu-search',
             'text' => 'Pesquisar',
         ],
-        // Custom menus
+
+        // Custom menus        
         [
             'text' => 'Dashboard',
             'url' => '/admin',
             'icon' => 'fa fa-fw fa-digital-tachograph mr-2',
             'can' => 'Acessar Administração',
+        ],
+        [
+            'text' => 'Dashboard',
+            'url' => '/academy',
+            'icon' => 'fa fa-fw fa-digital-tachograph mr-2',
+            'can' => 'Acessar Academia',
         ],
         [
             'text' => 'Usuários',
@@ -283,6 +303,12 @@ return [
                     'can' => 'Criar Alunos',
                 ],
             ],
+        ],
+        [
+            'text' => 'Meus Cursos',
+            'url' => 'academy/courses',
+            'icon' => 'fa fa-fw fa-newspaper mr-2',
+            'can' => 'Acessar Academia',
         ],
         [
             'text' => 'Cursos',

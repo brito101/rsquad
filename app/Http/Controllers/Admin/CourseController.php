@@ -156,6 +156,7 @@ class CourseController extends Controller
             $destinationPath = storage_path().'/app/public/courses';
             $destinationPathMedium = storage_path().'/app/public/courses/medium';
             $destinationPathMin = storage_path().'/app/public/courses/min';
+            $destinationPathIcon = storage_path().'/app/public/courses/icon/';
 
             if (! file_exists($destinationPath)) {
                 mkdir($destinationPath, 755, true);
@@ -167,6 +168,10 @@ class CourseController extends Controller
 
             if (! file_exists($destinationPathMin)) {
                 mkdir($destinationPathMin, 755, true);
+            }
+
+            if (! file_exists($destinationPathIcon)) {
+                mkdir($destinationPathIcon, 755, true);
             }
 
             $img = Image::make($request->cover)->resize(null, 490, function ($constraint) {
@@ -184,7 +189,12 @@ class CourseController extends Controller
                 $constraint->upsize();
             })->crop(360, 207)->save($destinationPathMin.'/'.$nameFile);
 
-            if (! $img && ! $imgMedium && ! $imgMin) {
+            $icon = Image::make($request->cover)->resize(null, 50, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            })->crop(65, 65)->save($destinationPathIcon.'/'.$nameFile);
+
+            if (! $img && ! $imgMedium && ! $imgMin && ! $icon) {
                 return redirect()
                     ->back()
                     ->withInput()
@@ -319,6 +329,7 @@ class CourseController extends Controller
             $destinationPath = storage_path().'/app/public/courses';
             $destinationPathMedium = storage_path().'/app/public/courses/medium';
             $destinationPathMin = storage_path().'/app/public/courses/min';
+            $destinationPathIcon = storage_path().'/app/public/courses/icon/';
 
             if (! file_exists($destinationPath)) {
                 mkdir($destinationPath, 755, true);
@@ -331,6 +342,11 @@ class CourseController extends Controller
             if (! file_exists($destinationPathMin)) {
                 mkdir($destinationPathMin, 755, true);
             }
+
+             if (! file_exists($destinationPathIcon)) {
+                mkdir($destinationPathIcon, 755, true);
+            }
+
 
             $img = Image::make($request->cover)->resize(null, 490, function ($constraint) {
                 $constraint->aspectRatio();
@@ -347,7 +363,12 @@ class CourseController extends Controller
                 $constraint->upsize();
             })->crop(360, 207)->save($destinationPathMin.'/'.$nameFile);
 
-            if (! $img && ! $imgMedium && ! $imgMin) {
+            $icon = Image::make($request->cover)->resize(null, 50, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            })->crop(65, 65)->save($destinationPathIcon.'/'.$nameFile);
+
+            if (! $img && ! $imgMedium && ! $imgMin && ! $icon) {
                 return redirect()
                     ->back()
                     ->withInput()
@@ -429,6 +450,7 @@ class CourseController extends Controller
             $imagePath = storage_path().'/app/public/courses/'.$course->cover;
             $imagePathMedium = storage_path().'/app/public/courses/medium/'.$course->cover;
             $imagePathMin = storage_path().'/app/public/courses/min/'.$course->cover;
+            $imagePathIcon= storage_path().'/app/public/courses/icon/'.$course->cover;
 
             if (File::isFile($imagePath)) {
                 unlink($imagePath);
@@ -440,6 +462,10 @@ class CourseController extends Controller
 
             if (File::isFile($imagePathMin)) {
                 unlink($imagePathMin);
+            }
+
+            if (File::isFile($imagePathIcon)) {
+                unlink($imagePathIcon);
             }
 
             $course->cover = null;
