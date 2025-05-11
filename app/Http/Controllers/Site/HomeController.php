@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
+use App\Models\Course;
 use Meta;
 
 class HomeController extends Controller
@@ -24,6 +25,8 @@ class HomeController extends Controller
         Meta::set('image', asset('img/share.png'));
         Meta::set('canonical', $route);
 
-        return view('site.home.index', compact('title'));
+        $courses = Course::where('active', true)->orderBy('created_at', 'desc')->take(3)->with('authorsInfo')->get();
+
+        return view('site.home.index', compact('title', 'courses'));
     }
 }

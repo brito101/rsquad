@@ -16,9 +16,13 @@
     a:hover {
         color: var(--color-0);
     }
+
+    li {
+        margin-bottom: 16px;
+    }
 }
 
-.footer-contato ul {
+.footer-contact ul {
     margin-bottom: 32px;
 
     li:nth-child(even):after {
@@ -35,7 +39,7 @@
     }
 }
 
-.footer-redes {
+.footer-social {
     display: flex;
     gap: 32px;
 }

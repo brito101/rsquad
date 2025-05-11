@@ -189,7 +189,7 @@ class CourseController extends Controller
                 $constraint->upsize();
             })->crop(360, 207)->save($destinationPathMin.'/'.$nameFile);
 
-            $icon = Image::make($request->cover)->resize(null, 50, function ($constraint) {
+            $icon = Image::make($request->cover)->resize(null, 65, function ($constraint) {
                 $constraint->aspectRatio();
                 $constraint->upsize();
             })->crop(65, 65)->save($destinationPathIcon.'/'.$nameFile);
@@ -363,7 +363,7 @@ class CourseController extends Controller
                 $constraint->upsize();
             })->crop(360, 207)->save($destinationPathMin.'/'.$nameFile);
 
-            $icon = Image::make($request->cover)->resize(null, 50, function ($constraint) {
+            $icon = Image::make($request->cover)->resize(null, 65, function ($constraint) {
                 $constraint->aspectRatio();
                 $constraint->upsize();
             })->crop(65, 65)->save($destinationPathIcon.'/'.$nameFile);

@@ -16,9 +16,9 @@
     <meta itemprop="description" content="{{ env('APP_DESC') }}" />
     <meta itemprop="url" content="{{ env('APP_URL') }}" />
     <meta itemprop="image" content="{{ asset('img/share.png') }}" />
-    <meta name="csrf-token" content="{{ csrf_token() }}" /> @laravelPWA
-
-    <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+    <meta name="csrf-token" content="{{ csrf_token() }}" /> 
+    {{-- @laravelPWA --}}
+    <link rel="icon" href="{{ asset('img/logo-rounded.png') }}" type="image/png">
     <link rel="preload" href="{{ asset('css/site.css') }}" as="style">
     <link rel="stylesheet" href="{{ asset('css/site.css') }}">
 
@@ -38,15 +38,16 @@
     <header class="header-bg">
         <div class="header container">
             <a href="{{ route('site.home') }}" title="{{ env('APP_NAME') }}">
-                <img src="{{ asset('img/logo-100.webp') }}" width="100" height="100" alt="{{ env('APP_NAME') }}">
-                <h1>Squady Academy</h1>
+                <img src="{{ asset('img/brand.webp') }}" width="221" height="100" alt="{{ env('APP_NAME') }}">
             </a>
 
             <nav aria-label="primaria">
                 <ul class="header-menu font-1-m color-0">
-                    <li><a href="./bicicletas.html">Bicicletas</a></li>
-                    <li><a href="./seguros.html">Seguros</a></li>
-                    <li><a href="./contato.html">Contato</a></li>
+                    <li><a href="x">Cursos</a></li>
+                    <li><a href="y">Blog</a></li>
+                    <li><a href="z">Cheat Sheet</a></li>
+                    <li><a href="ç">Contato</a></li>
+                    <li><a href="{{ route('login') }}">Login</a></li>
                 </ul>
             </nav>
         </div>
@@ -56,8 +57,8 @@
 
     <footer class="footer-bg">
         <div class="footer container">
-            <img src="./img/bikcraft.svg" width="136" height="32" alt="Bikcraft">
-            <div class="footer-contato">
+            <img src="{{ asset('img/brand.webp') }}" width="221" height="100" alt="{{ env('APP_NAME') }}">
+            <div class="footer-contact">
                 <h3 class="font-2-l-b color-0">Contato</h3>
                 <ul class="font-2-m color-5">
                     <li><a href="tel:+552199999999">+55 21 9999-9999</a></li>
@@ -65,35 +66,36 @@
                     <li>Rua Ali Perto, 42 - Botafogo</li>
                     <li>Rio de Janeiro - RJ</li>
                 </ul>
-                <div class="footer-redes">
+                <div class="footer-social">
                     <a href="./">
-                        <img src="./img/redes/instagram.svg" width="32" height="32" alt="Instagram">
+                        <img src="{{ asset('img/social/instagram.svg') }}" width="32" height="32" alt="Instagram">
                     </a>
                     <a href="./">
-                        <img src="./img/redes/facebook.svg" width="32" height="32" alt="Facebook">
+                        <img src="{{ asset('img/social/facebook.svg') }}" width="32" height="32" alt="Facebook">
                     </a>
                     <a href="./">
-                        <img src="./img/redes/youtube.svg" width="32" height="32" alt="Youtube">
+                        <img src="{{ asset('img/social/youtube.svg') }}" width="32" height="32" alt="Youtube">
                     </a>
                 </div>
             </div>
-            <div class="footer-informacoes">
+            <div class="footer-informations">
                 <h3 class="font-2-l-b color-0">Informações</h3>
                 <nav>
                     <ul class="font-1-m color-5">
-                        <li><a href="./bicicletas.html">Bicicletas</a></li>
-                        <li><a href="./seguros.html">Seguros</a></li>
-                        <li><a href="./contato.html">Contato</a></li>
-                        <li><a href="./termos.html">Termos e Condições</a></li>
+                        <li><a href="">Cursos</a></li>
+                        <li><a href="">Blog</a></li>
+                        <li><a href="">Cheat Sheet</a></li>
+                        <li><a href="">Contato</a></li>
+                        <li><a href="">Termos e Condições</a></li>
                     </ul>
                 </nav>
             </div>
-            <p class="footer-copy font-2-m color-6">Bikcraft © Alguns direitos reservados.</p>
+            <p class="footer-copy font-2-m color-6">{{ env('APP_NAME') }} © Todos direitos reservados.</p>
         </div>
     </footer>
 
-    <script src="./js/plugins/simple-anime.js"></script>
-    <script src="./js/script.js"></script>
+    <script src="{{ asset('js/simple-anime.js') }}"></script>
+    <script src="{{ asset('js/script.js') }}"></script>
 </body>
 
 </html>

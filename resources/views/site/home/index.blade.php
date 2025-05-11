@@ -1,82 +1,83 @@
 @extends('site.master')
 
 @section('content')
-    <main class="introducao-bg">
-        <div class="introducao container">
-            <div class="introducao-conteudo">
-                <h1 class="font-1-xxl color-0 fadeInDown" data-anime="200">Bicicletas feitas sob medida<span
+    {{-- Hero --}}
+    <main class="introduction-bg">
+        <div class="introduction container">
+            <div class="introduction-content">
+                <h1 class="font-1-xxl color-0 fadeInDown" data-anime="200">Eleve suas habilidades ao próximo nível<span
                         class="color-p1">.</span></h1>
-                <p class="font-2-l color-5 fadeInDown" data-anime="400">Bicicletas elétricas de alta precisão e
-                    qualidade, feitas sob medida para você. Explore o mundo na sua velocidade com a Bikcraft.</p>
-                <a class="botao fadeInDown" data-anime="600" href="./bicicletas.html">Escolha a sua</a>
+                <p class="font-2-l color-5 fadeInDown" data-anime="400">Somos especialistas em capacitar profissionais de
+                    cibersegurança com o conhecimento e as ferramentas necessárias para enfrentar os desafios mais críticos
+                    do setor.</p>
+                <a class="btn fadeInDown" data-anime="600" href=".">Veja nossos Cursos</a>
             </div>
             <picture data-anime="800" class="fadeInDown">
-                <source media="(max-width: 800px)" srcset="./img/bicicletas/nimbus.jpg">
-                <img src="./img/fotos/introducao.jpg" width="1280" height="1600" alt="Bicicleta elétrica preta.">
+                <source media="(max-width: 800px)" srcset="{{ asset('img/introduction-min.webp') }}">
+                <img src="{{ asset('img/introduction.webp') }}" width="560" height="700"
+                    alt="Bicicleta elétrica preta.">
             </picture>
         </div>
     </main>
 
-    <article class="bicicletas-lista">
-        <h2 class="container font-1-xxl">escolha a sua<span class="color-p1">.</span></h2>
+    {{-- Courses --}}
+    @if ($courses->count() > 0)
+        <article class="courses-list">
+            <h2 class="container font-1-xxl">escolha o seu<span class="color-p1">.</span></h2>
+            <ul>
+                @foreach ($courses as $course)
+                    <li>
+                        <a href="">
+                            <img src="{{ asset('storage/courses/medium/' . $course->cover) }}" alt="{{ $course->name }}"
+                                width="675" height="385">
+                            <h3 class="font-1-xl">{{ $course->name }}</h3>
+                            <p class="font-2-m color-5">
+                                {{ $course->authorsInfo->count() > 0 ? 'Criado por: ' . $course->authorsInfo->pluck('name')->join(', ') : '' }}
+                            </p>
+                        </a>
+                    </li>
+                @endforeach
+            </ul>
+            <a class="btn container" href="">Conheça todos nossos cursos</a>
+        </article>
+    @else
+        <article class="courses-list">
+            <h2 class="container font-1-xxl">cursos em breve<span class="color-p1">.</span></h2>
+        </article>
+    @endif
 
-        <ul>
-            <li>
-                <a href="./bicicletas/magic.html">
-                    <img src="./img/bicicletas/magic-home.jpg" alt="Bicicleta preta" width="920" height="1040">
-                    <h3 class="font-1-xl">Magic Might</h3>
-                    <span class="font-2-m color-8">R$ 2499</span>
-                </a>
-            </li>
-            <li>
-                <a href="./bicicletas/nimbus.html">
-                    <img src="./img/bicicletas/nimbus-home.jpg" alt="Bicicleta preta" width="920" height="1040">
-                    <h3 class="font-1-xl">Nimbus Stark</h3>
-                    <span class="font-2-m color-8">R$ 4999</span>
-                </a>
-            </li>
-            <li>
-                <a href="./bicicletas/nebula.html">
-                    <img src="./img/bicicletas/nebula-home.jpg" alt="Bicicleta preta" width="920" height="1040">
-                    <h3 class="font-1-xl">Nebula Cosmic</h3>
-                    <span class="font-2-m color-8">R$ 3999</span>
-                </a>
-            </li>
-        </ul>
-    </article>
-
-    <article class="tecnologia-bg">
-        <div class="tecnologia container">
-            <div class="tecnologia-conteudo">
-                <span class="font-2-l-b color-5">Tecnologia Avançada</span>
-                <h2 class="font-1-xxl color-0">você escolhe as suas colores e componentes<span class="color-p1">.</span>
+    {{-- About --}}
+    <article class="tecnologic-bg">
+        <div class="tecnologic container">
+            <div class="tecnologic-content">
+                <span class="font-2-l-b color-5">A Resiliência cibernética</span>
+                <h2 class="font-1-xxl color-0">começa com uma equipe capacitada<span class="color-p1">.</span>
                 </h2>
-                <p class="font-2-l color-5">Cada Bikcraft é única e possui a sua identidade. As medidas serão exatas
-                    para o seu colorpo e altura, garantindo maior conforto e ergonomia na sua pedalada. Você pode
-                    também personalizar completamente as suas colores.</p>
-                <a class="link" href="./bicicletas.html">Escolha um modelo</a>
-                <div class="tecnologia-vantagens">
+                <p class="font-2-l color-5">Somos especialistas em capacitar profissionais de cibersegurança.</p>
+                <a class="link" href="">Escolha um curso</a>
+                <div class="tecnologic-advantages">
                     <div>
-                        <img src="./img/icones/eletrica.svg" width="24" height="24" alt="">
-                        <h3 class="font-1-m color-0">Motor Elétrico</h3>
-                        <p class="font-2-s color-5">Toda Bikcraft é equipada com um motor elétrico que possui duração
-                            de até 120h. A bateria é recarregada com a sua energia gasta ao pedalar.</p>
+                        <img src="{{ asset('img/icons/tracker.svg') }}" width="24" height="24" alt="Nossa missão">
+                        <h3 class="font-1-m color-0">Nossa missão</h3>
+                        <p class="font-2-s color-5">Transformar a maneira como organizações lidam com ameaças,
+                            oferecendo serviços especializados e treinamentos de ponta em resposta a incidentes.</p>
                     </div>
                     <div>
-                        <img src="./img/icones/rastreador.svg" width="24" height="24" alt="">
-                        <h3 class="font-1-m color-0">Rastreador</h3>
-                        <p class="font-2-s color-5">Sabemos o quão preciosa é a sua Bikcraft, por isso adicionamos
-                            rastreadores e sistemas anti-furto para garantir o seu sossego.</p>
+                        <img src="{{ asset('img/icons/speed.svg') }}" width="24" height="24" alt="Não há limites">
+                        <h3 class="font-1-m color-0">Não há limites</h3>
+                        <p class="font-2-s color-5">Seja você um iniciante na área ou um profissional experiente, a Rsquad
+                            Academy está aqui para ajudá-lo a evoluir e dominar o cenário de ameaças digitai.</p>
                     </div>
                 </div>
             </div>
-            <div class="tecnologia-imagem">
-                <img src="./img/fotos/tecnologia.jpg" width="1200" height="1920" alt="">
+            <div class="tecnologic-image">
+                <img src="{{ asset('img/tecnologic.webp') }}" width="550" height="1105" alt="{{ env('APP_NAME') }}">
             </div>
         </div>
     </article>
 
-    <section class="parceiros" aria-label="Nossos Parceiros">
+    {{-- Team --}}
+    <section class="team" aria-label="Nosso Time">
         <h2 class="container font-1-xxl">nossos parceiros<span class="color-p1">.</span></h2>
 
         <ul>
