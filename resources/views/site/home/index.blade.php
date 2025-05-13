@@ -47,15 +47,15 @@
     @endif
 
     {{-- About --}}
-    <article class="tecnologic-bg">
-        <div class="tecnologic container">
-            <div class="tecnologic-content">
+    <article class="about-bg">
+        <div class="about container">
+            <div class="about-content">
                 <span class="font-2-l-b color-5">A Resiliência cibernética</span>
                 <h2 class="font-1-xxl color-0">começa com uma equipe capacitada<span class="color-p2">.</span>
                 </h2>
                 <p class="font-2-l color-5">Somos especialistas em capacitar profissionais de cibersegurança.</p>
                 <a class="link" href="">Escolha um curso</a>
-                <div class="tecnologic-advantages">
+                <div class="about-advantages">
                     <div>
                         <img src="{{ asset('img/icons/tracker.svg') }}" width="24" height="24" alt="Nossa missão">
                         <h3 class="font-1-m color-0">Nossa missão</h3>
@@ -70,8 +70,8 @@
                     </div>
                 </div>
             </div>
-            <div class="tecnologic-image">
-                <img src="{{ asset('img/tecnologic.webp') }}" width="550" height="1105" alt="{{ env('APP_NAME') }}">
+            <div class="about-image">
+                <img src="{{ asset('img/about.webp') }}" width="550" height="1105" alt="{{ env('APP_NAME') }}">
             </div>
         </div>
     </article>

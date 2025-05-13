@@ -572,34 +572,34 @@ img[src$=".jpg"] {
   }
 }
 
-.tecnologic-bg {
+.about-bg {
   background-color: var(--color-12);
   box-shadow: inset 0 80px var(--color-0), inset 0 -80px var(--color-0);
 }
 @media (max-width: 800px) {
-  .tecnologic-bg {
+  .about-bg {
     box-shadow: initial;
   }
 }
 
-.tecnologic {
+.about {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 40px;
 }
-.tecnologic a {
+.about a {
   margin-bottom: 80px;
 }
 @media (max-width: 800px) {
-  .tecnologic {
+  .about {
     grid-template-columns: 1fr;
   }
-  .tecnologic a {
+  .about a {
     margin-bottom: 60px;
   }
 }
 
-.tecnologic-image img {
+.about-image img {
   width: 100%;
   height: 100%;
   -o-object-fit: cover;
@@ -608,47 +608,47 @@ img[src$=".jpg"] {
      object-position: left;
 }
 @media (max-width: 800px) {
-  .tecnologic-image img {
+  .about-image img {
     display: none;
   }
 }
 
-.tecnologic-content {
+.about-content {
   padding-top: 160px;
   padding-bottom: 160px;
 }
-.tecnologic-content > span {
+.about-content > span {
   display: block;
   margin-bottom: 20px;
 }
-.tecnologic-content h2 {
+.about-content h2 {
   margin-bottom: 32px;
 }
-.tecnologic-content > p {
+.about-content > p {
   margin-bottom: 20px;
 }
 @media (max-width: 800px) {
-  .tecnologic-content {
+  .about-content {
     padding-top: 60px;
     padding-bottom: 60px;
   }
 }
 
-.tecnologic-advantages {
+.about-advantages {
   display: flex;
   gap: 40px;
 }
-.tecnologic-advantages h3 {
+.about-advantages h3 {
   margin-bottom: 8px;
   width: -moz-max-content;
   width: max-content;
 }
-.tecnologic-advantages img {
+.about-advantages img {
   width: 24px;
   margin-bottom: 8px;
 }
 @media (max-width: 600px) {
-  .tecnologic-advantages {
+  .about-advantages {
     flex-direction: column;
   }
 }
