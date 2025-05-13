@@ -27,7 +27,7 @@ class CourseController extends Controller
                 return DataTables::of($courses)
                     ->addIndexColumn()
                     ->addColumn('cover', function ($row) {
-                        return '<div class="d-flex justify-content-center align-items-center"><img src="' . ($row->cover ? url('storage/courses/min/' . $row->cover) : asset('img/defaults/min/courses.webp')) . '" class="img-thumbnail d-block" width="360" height="207" alt="' . $row->name . '" title="' . $row->name . '"/></div>';
+                        return '<div class="d-flex justify-content-center align-items-center"><img src="'.($row->cover ? url('storage/courses/min/'.$row->cover) : asset('img/defaults/min/courses.webp')).'" class="img-thumbnail d-block" width="360" height="207" alt="'.$row->name.'" title="'.$row->name.'"/></div>';
                     })
                     ->addColumn('categories', function ($row) {
                         return $row->categories->map(function ($pivot) {
@@ -46,7 +46,7 @@ class CourseController extends Controller
                         })->implode(' - ');
                     })
                     ->addColumn('action', function ($row) {
-                        return '<a class="btn btn-xs btn-success mx-1 shadow" title="Editar" href="' . route('academy.courses.show', ['course' => $row->id]) . '"><i class="fa fa-lg fa-fw fa-eye"></i></a>';
+                        return '<a class="btn btn-xs btn-success mx-1 shadow" title="Editar" href="'.route('academy.courses.show', ['course' => $row->id]).'"><i class="fa fa-lg fa-fw fa-eye"></i></a>';
                     })
                     ->rawColumns(['cover', 'categories', 'modules', 'authors', 'action'])
                     ->make(true);
@@ -87,7 +87,7 @@ class CourseController extends Controller
 
         $modules = $course->modules()->where('active', true)->orderBy('order')->get();
         $classes = $course->classes()->where('active', true)->orderBy('order')->get();
-        
+
         return view('academy.courses.show', compact(
             'course',
             'modules',

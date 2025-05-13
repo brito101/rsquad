@@ -450,27 +450,26 @@ img[src$=".jpg"] {
   color: var(--color-0);
 }
 
-/* titulo internas */
-.titulo-bg {
+.title-bg {
   padding-top: 60px;
   padding-bottom: 60px;
   background-color: var(--color-11);
 }
 
-.titulo {
-  background: url("../../img/dec/top-right.svg") no-repeat top right 20px;
+.title {
+  background: url("/img/dec/top-right.svg") no-repeat top right 20px;
 }
 
-.titulo p {
+.title p {
   margin-bottom: 4px;
 }
 
 @media (max-width: 800px) {
-  .titulo-bg {
+  .title-bg {
     padding-top: 40px;
     padding-bottom: 40px;
   }
-  .titulo p {
+  .title p {
     font-size: 1rem;
     text-transform: lowercase;
     font-weight: 400;
@@ -722,4 +721,18 @@ img[src$=".jpg"] {
   .courses-list ul {
     gap: 20px;
   }
+}
+.terms {
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
+.terms h2 {
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+.terms p + h2 {
+  margin-top: 40px;
+}
+.terms p {
+  margin-bottom: 24px;
 }

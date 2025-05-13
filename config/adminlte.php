@@ -251,7 +251,7 @@ return [
             'text' => 'Pesquisar',
         ],
 
-        // Custom menus        
+        // Custom menus
         [
             'text' => 'Dashboard',
             'url' => '/admin',
