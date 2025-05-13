@@ -7,11 +7,11 @@
         margin-bottom: 20px;
     }
 
-    p + h2 {
-        margin-top: 40px;
-    }
-
     p {
         margin-bottom: 24px;
+
+        & + h2 {
+            margin-top: 40px;
+        }
     }
 }

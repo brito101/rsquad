@@ -23,7 +23,7 @@
     {{-- Courses --}}
     @if ($courses->count() > 0)
         <article class="courses-list">
-            <h2 class="container font-1-xxl">escolha o seu<span class="color-p1">.</span></h2>
+            <h2 class="container font-1-xxl">escolha o seu<span class="color-p2">.</span></h2>
             <ul>
                 @foreach ($courses as $course)
                     <li>
@@ -42,7 +42,7 @@
         </article>
     @else
         <article class="courses-list">
-            <h2 class="container font-1-xxl">cursos em breve<span class="color-p1">.</span></h2>
+            <h2 class="container font-1-xxl">cursos em breve<span class="color-p2">.</span></h2>
         </article>
     @endif
 
@@ -51,7 +51,7 @@
         <div class="tecnologic container">
             <div class="tecnologic-content">
                 <span class="font-2-l-b color-5">A Resiliência cibernética</span>
-                <h2 class="font-1-xxl color-0">começa com uma equipe capacitada<span class="color-p1">.</span>
+                <h2 class="font-1-xxl color-0">começa com uma equipe capacitada<span class="color-p2">.</span>
                 </h2>
                 <p class="font-2-l color-5">Somos especialistas em capacitar profissionais de cibersegurança.</p>
                 <a class="link" href="">Escolha um curso</a>
