@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Site\BlogController as SiteBlogController;
 use App\Http\Controllers\Site\CheatSheetController as SiteCheatSheetController;
+use App\Http\Controllers\Site\CookieController;
 use App\Http\Controllers\Site\HomeController;
 use App\Http\Controllers\Site\TermController;
 use Illuminate\Support\Facades\Auth;
@@ -55,6 +56,9 @@ Route::group(['middleware' => ['access']], function () {
 
         /** Terms */
         Route::get('/termos', [TermController::class, 'index'])->name('terms');
+
+        /** Cookie */
+        Route::post('/cookie-consent', [CookieController::class, 'index'])->name('cookie.consent');
     });
 });
 

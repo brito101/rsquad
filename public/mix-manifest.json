@@ -6,6 +6,7 @@
     "/img/403-error.webp": "/img/403-error.webp",
     "/img/404-error.webp": "/img/404-error.webp",
     "/img/414-error.webp": "/img/414-error.webp",
+    "/img/about.webp": "/img/about.webp",
     "/img/brand.png": "/img/brand.png",
     "/img/brand.webp": "/img/brand.webp",
     "/img/dec/bottom-left.svg": "/img/dec/bottom-left.svg",
@@ -31,7 +32,6 @@
     "/img/social/instagram.svg": "/img/social/instagram.svg",
     "/img/social/linkedin.svg": "/img/social/linkedin.svg",
     "/img/social/youtube.svg": "/img/social/youtube.svg",
-    "/img/tecnologic.webp": "/img/tecnologic.webp",
     "/vendor/jquery/jquery.min.js": "/vendor/jquery/jquery.min.js",
     "/js/company.js": "/js/company.js",
     "/js/address.js": "/js/address.js",
@@ -40,5 +40,8 @@
     "/js/snow.js": "/js/snow.js",
     "/js/particles.js": "/js/particles.js",
     "/js/simple-anime.js": "/js/simple-anime.js",
-    "/js/script.js": "/js/script.js"
+    "/js/script.js": "/js/script.js",
+    "/js/cookie.js": "/js/cookie.js",
+    "/js/button-top.js": "/js/button-top.js",
+    "/img/icons/arrow-up.svg": "/img/icons/arrow-up.svg"
 }

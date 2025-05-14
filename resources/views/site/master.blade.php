@@ -2,6 +2,9 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" itemscope itemtype="http://schema.org/WebPage">
 
     <head>
+        @if ($cookieConsent == 'accept')
+            @include('site._partials.gtm-head')
+        @endif
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -35,6 +38,9 @@
     </head>
 
     <body>
+        @if ($cookieConsent == 'accept')
+            @include('site._partials.gtm-body')
+        @endif
         <header class="header-bg">
             <div class="header container">
                 <a href="{{ route('site.home') }}" title="{{ env('APP_NAME') }}">
@@ -98,8 +104,33 @@
             </div>
         </footer>
 
+        @if (!$cookieConsent)
+            <div id="cookieConsent">
+                <p>Este website utiliza cookies próprios e de terceiros a fim de personalizar o conteúdo, melhorar a
+                    experiência
+                    do usuário, fornecer funções de mídias sociais e analisar o tráfego. Para continuar navegando você
+                    deve
+                    concordar com nossa
+                    <a href="{{ route('site.terms') }}">Política de Privacidade</a>
+                </p>
+                <a data-action="{{ route('site.cookie.consent') }}" data-cookie="accept" href="#"
+                    class="footer_opt_out_btn">
+                    Aceito
+                </a>
+                <a data-action="{{ route('site.cookie.consent') }}" data-cookie="decline" href="#"
+                    class="footer_opt_out_btn">
+                    Não aceito
+                </a>
+            </div>
+        @endif
+
+        <button aria-label="Voltar ao topo da página" title="Voltar ao topo da página"
+            class="smoothScroll-top"><img src="{{ asset('img/icons/arrow-up.svg') }}" alt="Voltar ao topo"></button>
+
         <script src="{{ asset('js/simple-anime.js') }}"></script>
         <script src="{{ asset('js/script.js') }}"></script>
+        <script src="{{ asset('js/cookie.js') }}"></script>
+        <script src="{{ asset('js/button-top.js') }}"></script>
     </body>
 
 </html>

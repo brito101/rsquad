@@ -29,6 +29,8 @@ mix.js("resources/js/app.js", "public/js")
     /** Site */
     .scripts(["resources/js/site/plugins/simple-anime.js"], "public/js/simple-anime.js")
     .scripts(["resources/js/site/script.js"], "public/js/script.js")
+    .scripts(["resources/js/site/cookie.js"], "public/js/cookie.js")
+    .scripts(["resources/js/site/button-top.js"], "public/js/button-top.js")
     .options({
         processCssUrls: false,
     })
