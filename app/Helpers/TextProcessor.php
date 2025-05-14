@@ -11,8 +11,10 @@ class TextProcessor
     public static function store(string $title, string $package, string $text = '', bool $xss = false): string
     {
 
+        $text = preg_replace('/[\x{34F}\x{AD}\x{200E}]/u', '', $text);
+        $description = str_replace(['<?xml encoding="utf-8" ?>', '<!--?xml encoding="utf-8" ?-->'], ['', ''], $text);
         $dom = new DOMDocument('1.0', 'UTF-8');
-        $dom->loadHTML($text, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_NOERROR | LIBXML_NOWARNING);
+        $dom->loadHTML('<?xml encoding="utf-8" ?>'.$description, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_NOERROR | LIBXML_NOWARNING);
         $imageFile = $dom->getElementsByTagName('img');
 
         foreach ($imageFile as $item => $image) {
