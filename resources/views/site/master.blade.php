@@ -53,7 +53,7 @@
                         <li><a href="x">Cursos</a></li>
                         <li><a href="y">Blog</a></li>
                         <li><a href="z">Cheat Sheet</a></li>
-                        <li><a href="ç">Contato</a></li>
+                        <li><a href="{{ route('site.contact') }}">Contato</a></li>
                         <li><a href="{{ route('login') }}">Login</a></li>
                     </ul>
                 </nav>
@@ -95,7 +95,7 @@
                             <li><a href="">Cursos</a></li>
                             <li><a href="">Blog</a></li>
                             <li><a href="">Cheat Sheet</a></li>
-                            <li><a href="">Contato</a></li>
+                            <li><a href="{{ route('site.contact') }}">Contato</a></li>
                             <li><a href="{{ route('site.terms') }}">Termos e Condições</a></li>
                         </ul>
                     </nav>
@@ -131,6 +131,7 @@
         <script src="{{ asset('js/script.js') }}"></script>
         <script src="{{ asset('js/cookie.js') }}"></script>
         <script src="{{ asset('js/button-top.js') }}"></script>
+        @yield('custom_js')
     </body>
 
 </html>

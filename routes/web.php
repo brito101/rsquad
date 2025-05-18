@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\ChangelogController;
 use App\Http\Controllers\Admin\CheatSheetCategoryController;
 use App\Http\Controllers\Admin\CheatSheetController;
 use App\Http\Controllers\Admin\ClassroomController;
+use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\CourseCategoryController;
 use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Admin\CourseModuleController;
@@ -19,6 +20,7 @@ use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Site\BlogController as SiteBlogController;
 use App\Http\Controllers\Site\CheatSheetController as SiteCheatSheetController;
+use App\Http\Controllers\Site\ContactController as SiteContactController;
 use App\Http\Controllers\Site\CookieController;
 use App\Http\Controllers\Site\HomeController;
 use App\Http\Controllers\Site\TermController;
@@ -56,6 +58,13 @@ Route::group(['middleware' => ['access']], function () {
 
         /** Terms */
         Route::get('/termos', [TermController::class, 'index'])->name('terms');
+
+        /** Contact */
+        Route::get('/contato', [SiteContactController::class, 'index'])->name('contact');
+        Route::middleware(['throttle:contact'])->group(function () {
+            Route::post('/contato', [SiteContactController::class, 'send'])
+                ->name('contact.send');
+        });
 
         /** Cookie */
         Route::post('/cookie-consent', [CookieController::class, 'index'])->name('cookie.consent');
@@ -100,6 +109,9 @@ Route::group(['middleware' => ['auth', 'access']], function () {
         /** Blog */
         Route::resource('cheat-sheets', CheatSheetController::class)->except('show');
         Route::resource('cheat-sheets-categories', CheatSheetCategoryController::class)->except('show');
+
+        /** Contacts */
+        Route::resource('contacts', ContactController::class)->except(['show', 'edit', 'update']);
 
         /**
          * ACL

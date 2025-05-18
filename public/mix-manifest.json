@@ -17,8 +17,12 @@
     "/img/defaults/min/course-categories.webp": "/img/defaults/min/course-categories.webp",
     "/img/defaults/min/courses.webp": "/img/defaults/min/courses.webp",
     "/img/favicon.svg": "/img/favicon.svg",
+    "/img/icons/arrow-up.svg": "/img/icons/arrow-up.svg",
     "/img/icons/arrow.svg": "/img/icons/arrow.svg",
+    "/img/icons/email.svg": "/img/icons/email.svg",
+    "/img/icons/map.svg": "/img/icons/map.svg",
     "/img/icons/speed.svg": "/img/icons/speed.svg",
+    "/img/icons/telephone.svg": "/img/icons/telephone.svg",
     "/img/icons/tracker.svg": "/img/icons/tracker.svg",
     "/img/introduction-min.webp": "/img/introduction-min.webp",
     "/img/introduction.png": "/img/introduction.png",
@@ -42,6 +46,5 @@
     "/js/simple-anime.js": "/js/simple-anime.js",
     "/js/script.js": "/js/script.js",
     "/js/cookie.js": "/js/cookie.js",
-    "/js/button-top.js": "/js/button-top.js",
-    "/img/icons/arrow-up.svg": "/img/icons/arrow-up.svg"
+    "/js/button-top.js": "/js/button-top.js"
 }

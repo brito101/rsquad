@@ -11,9 +11,10 @@
 -   Basic user controller with 2FA authentication
 -   Visitors log
 -   API routes with JWT auth
--   Courses module with categories, classes and students
--   Blog module
--   Cheat Sheet module
+-   Courses with categories, classes and students
+-   Blog
+-   Cheat Sheet
+-   Contacts
 
 ### Usage in development environment
 

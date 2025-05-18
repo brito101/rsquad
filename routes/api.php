@@ -20,19 +20,19 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::prefix('v1')->name('api.')->group(function () {
+// Route::prefix('v1')->name('api.')->group(function () {
 
-    Route::post('register', [JWTAuthController::class, 'register'])->name('register');
-    Route::post('login', [JWTAuthController::class, 'login'])->name('login');
+//     Route::post('register', [JWTAuthController::class, 'register'])->name('register');
+//     Route::post('login', [JWTAuthController::class, 'login'])->name('login');
 
-    Route::middleware([JWTMiddleware::class])->group(function () {
+//     Route::middleware([JWTMiddleware::class])->group(function () {
 
-        Route::prefix('admin')->name('admin.')->group(function () {
-            Route::get('users', [UserController::class, 'index'])->name('users.index');
-            Route::get('profile', [UserController::class, 'profile'])->name('profile');
-        });
+//         Route::prefix('admin')->name('admin.')->group(function () {
+//             Route::get('users', [UserController::class, 'index'])->name('users.index');
+//             Route::get('profile', [UserController::class, 'profile'])->name('profile');
+//         });
 
-        Route::post('refresh', [JWTAuthController::class, 'refresh'])->name('refresh');
-        Route::post('logout', [JWTAuthController::class, 'logout'])->name('logout');
-    });
-});
+//         Route::post('refresh', [JWTAuthController::class, 'refresh'])->name('refresh');
+//         Route::post('logout', [JWTAuthController::class, 'logout'])->name('logout');
+//     });
+// });
