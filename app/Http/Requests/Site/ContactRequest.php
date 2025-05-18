@@ -17,7 +17,7 @@ class ContactRequest extends FormRequest
     protected function prepareForValidation(): void
     {
         $this->merge([
-            'name'    => strip_tags($this->name),
+            'name' => strip_tags($this->name),
             'message' => strip_tags($this->message),
         ]);
     }
@@ -30,9 +30,9 @@ class ContactRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'    => 'required|string|max:191',
-            'email'   => 'required|email|max:191',
-            'phone'   => 'required|string|max:20|regex:/^\(?\d{2}\)?[-\s]?\d{4,5}-?\d{4}$/',
+            'name' => 'required|string|max:191',
+            'email' => 'required|email|max:191',
+            'phone' => 'required|string|max:20|regex:/^\(?\d{2}\)?[-\s]?\d{4,5}-?\d{4}$/',
             'message' => 'required|string|max:500',
         ];
     }

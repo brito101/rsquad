@@ -26,7 +26,7 @@ class ContactController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) use ($token) {
                     $btn =
-                        '<form method="POST" action="' . route('admin.contacts.destroy', ['contact' => $row->id]) . '" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="' . $token . '"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão deste contato?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>';
+                        '<form method="POST" action="'.route('admin.contacts.destroy', ['contact' => $row->id]).'" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="'.$token.'"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão deste contato?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>';
 
                     return $btn;
                 })

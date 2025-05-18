@@ -6,13 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Site\ContactRequest;
 use App\Models\Contact;
 use Eusonlito\LaravelMeta\Facade as Meta;
-use Illuminate\Support\Facades\Request;
 
 class ContactController extends Controller
 {
     public function index()
     {
-        $title = env('APP_NAME' . ' - Contato');
+        $title = env('APP_NAME'.' - Contato');
         $route = route('site.contact');
         $description = 'Entre em contato conosco!';
         /** Meta */
@@ -35,7 +34,7 @@ class ContactController extends Controller
         Contact::create($request->validated());
         $message = 'Mensagem enviada com sucesso! Em breve entraremos em contato.';
 
-        $title = env('APP_NAME' . ' - Contato');
+        $title = env('APP_NAME'.' - Contato');
         $route = route('site.contact');
         $description = 'Entre em contato conosco!';
         /** Meta */
