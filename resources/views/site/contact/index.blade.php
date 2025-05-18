@@ -13,7 +13,7 @@
             <section class="contact-data" aria-label="Endereço">
                 <h2 class="font-1-m color-0">Entre em contato conosco</h2>
                 <div class="contact-address font-2-s color-4">
-                    <p>Recife-Pe</p>
+                    <p>Recife-PE</p>
                 </div>
                 <address class="contact-mods font-2-s color-4">
                     <a href="mailto:contato@rsquadacademy.com.br">contato@rsquadacademy.com.br</a>
