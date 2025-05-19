@@ -50,9 +50,10 @@
 
                 <nav aria-label="primaria">
                     <ul class="header-menu font-1-m color-0">
-                        <li><a href="x">Cursos</a></li>
+                        <li><a href="{{ route('site.courses') }}">Cursos</a></li>
                         <li><a href="y">Blog</a></li>
-                        <li><a href="z">Cheat Sheet</a></li>
+                        <li><a href="z">Cheat Sheet</a></li>                        
+                        <li><a href="y">Sobre</a></li>
                         <li><a href="{{ route('site.contact') }}">Contato</a></li>
                         <li><a href="{{ route('login') }}">Login</a></li>
                     </ul>
@@ -92,9 +93,10 @@
                     <h3 class="font-2-l-b color-0">Informações</h3>
                     <nav>
                         <ul class="font-1-m color-5">
-                            <li><a href="">Cursos</a></li>
+                            <li><a href="{{ route('site.courses') }}">Cursos</a></li>
                             <li><a href="">Blog</a></li>
-                            <li><a href="">Cheat Sheet</a></li>
+                            <li><a href="">Cheat Sheet</a></li>                            
+                            <li><a href="">Sobre</a></li>
                             <li><a href="{{ route('site.contact') }}">Contato</a></li>
                             <li><a href="{{ route('site.terms') }}">Termos e Condições</a></li>
                         </ul>
@@ -124,8 +126,8 @@
             </div>
         @endif
 
-        <button aria-label="Voltar ao topo da página" title="Voltar ao topo da página"
-            class="smoothScroll-top"><img src="{{ asset('img/icons/arrow-up.svg') }}" alt="Voltar ao topo"></button>
+        <button aria-label="Voltar ao topo da página" title="Voltar ao topo da página" class="smoothScroll-top"><img
+                src="{{ asset('img/icons/arrow-up.svg') }}" alt="Voltar ao topo"></button>
 
         <script src="{{ asset('js/simple-anime.js') }}"></script>
         <script src="{{ asset('js/script.js') }}"></script>

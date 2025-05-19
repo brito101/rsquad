@@ -3,15 +3,16 @@
 namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
+use App\Models\Course;
 use Eusonlito\LaravelMeta\Facade as Meta;
 
-class TermController extends Controller
+class CourseController extends Controller
 {
     public function index()
     {
-        $title = env('APP_NAME').' - Termos de Uso';
-        $route = route('site.terms');
-        $description = 'Ao utilizar esse site você concorda com os termos aqui descritos.';
+        $title = env('APP_NAME').' - Cursos';
+        $route = route('site.courses');
+        $description = 'Confira nossos cursos.';
         /** Meta */
         Meta::title($title);
         Meta::set('description', $description);
@@ -24,6 +25,8 @@ class TermController extends Controller
         Meta::set('image', asset('img/share.png'));
         Meta::set('canonical', $route);
 
-        return view('site.terms.index');
+        $courses = Course::where('active', true)->orderBy('created_at', 'desc')->with('authorsInfo')->get();
+
+        return view('site.courses.index', compact('courses'));
     }
 }

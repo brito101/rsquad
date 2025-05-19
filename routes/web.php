@@ -22,6 +22,7 @@ use App\Http\Controllers\Site\BlogController as SiteBlogController;
 use App\Http\Controllers\Site\CheatSheetController as SiteCheatSheetController;
 use App\Http\Controllers\Site\ContactController as SiteContactController;
 use App\Http\Controllers\Site\CookieController;
+use App\Http\Controllers\Site\CourseController as SiteCourseController;
 use App\Http\Controllers\Site\HomeController;
 use App\Http\Controllers\Site\TermController;
 use Illuminate\Support\Facades\Auth;
@@ -43,6 +44,9 @@ Route::group(['middleware' => ['access']], function () {
     Route::name('site.')->group(function () {
         /** Home */
         Route::get('/', [HomeController::class, 'index'])->name('home');
+
+        /** Courses */
+        Route::get('/cursos', [SiteCourseController::class, 'index'])->name('courses');
 
         /** Blog */
         Route::get('/blog/buscar/{s?}', [SiteBlogController::class, 'search'])->name('blog.search');

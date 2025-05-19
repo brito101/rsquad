@@ -11,7 +11,7 @@ class ContactController extends Controller
 {
     public function index()
     {
-        $title = env('APP_NAME'.' - Contato');
+        $title = env('APP_NAME').' - Contato';
         $route = route('site.contact');
         $description = 'Entre em contato conosco!';
         /** Meta */
