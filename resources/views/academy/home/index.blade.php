@@ -50,7 +50,7 @@
                                             </div>
                                             <div class="widget-user-image d-flex justify-content-center w-100"
                                                 style="left: 0; margin-left: 0;">
-                                                @foreach ($course->authorsInfo as $author)
+                                                @foreach ($course->instructorsInfo as $author)
                                                     <img class="img-circle"
                                                         src="{{ $author->photo ? url('storage/users/' . $author->photo) : asset('vendor/adminlte/dist/img/avatar.png') }}"
                                                         alt="{{ $author->name }}">
@@ -134,7 +134,7 @@
                                 @foreach ($courses_avaliable as $course)
                                     <div class="col-md-4">
                                         <x-adminlte-profile-widget name="{{ $course->name }}"
-                                            desc="{{ $course->authors->count() > 0 ? 'Criado por: ' . $course->authorsInfo()->pluck('name')->join(', ') : '' }}"
+                                            desc="{{ $course->instructors->count() > 0 ? 'Instrutores: ' . $course->instructorsInfo()->pluck('name')->join(', ') : '' }}"
                                             theme="primary"
                                             img="{{ $course->cover ? url('storage/courses/icon/' . $course->cover) : asset('/img/logo-bg-white.png') }}"
                                             layout-type="classic">

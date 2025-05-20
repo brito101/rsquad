@@ -1,103 +1,110 @@
 .courses-bg {
-  background: linear-gradient(to right, var(--color-0) 30%, var(--color-11) 0%);
+    background: linear-gradient(
+        to right,
+        var(--color-0) 30%,
+        var(--color-11) 0%
+    );
 }
 
 .courses {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 40px;
-  padding-top: 60px;
-  padding-bottom: 60px;
-  background: url("/img/dec/top-right.svg") no-repeat top 40px right 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    padding-top: 60px;
+    padding-bottom: 60px;
+    background: url("/img/dec/top-right.svg") no-repeat top 40px right 20px;
 }
 
-.courses-imagem {
-  display: grid;
+.courses-image {
+    display: grid;
 }
 
 .courses-image img {
-  grid-area: 1/1;
+    grid-area: 1/1;
+    border: 1px solid var(--color-6);
+    border-radius: 4px;
 }
 
-.courses-imagem span {
-  grid-area: 1/1;
-  place-self: start end;
-  margin-top: 20px;
-  background: var(--color-12);
-  display: inline-block;
-  padding: 8px 16px 8px 8px;
-  border-radius: 4px 0 0 4px;
+.courses-image span {
+    grid-area: 1/1;
+    place-self: start end;
+    margin-top: 20px;
+    background: var(--color-p2);
+    display: inline-block;
+    padding: 8px 16px 8px 8px;
+    border-radius: 4px 0 0 4px;
 }
 
 .courses-content {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-content: start;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-content: start;
 }
 
 .courses h2,
 .courses p {
-  grid-column: 1/-1;
+    grid-column: 1/-1;
 }
 
 .courses h2 {
-  margin-bottom: 20px;
+    margin-top: 20px;
 }
 
 .courses h2::before {
-  content: "";
-  display: block;
-  width: 12px;
-  height: 8px;
-  background-color: var(--color-p1);
-  margin-bottom: 8px;
+    content: "";
+    display: block;
+    width: 12px;
+    height: 8px;
+    background-color: var(--color-p2);
+    margin-bottom: 8px;
 }
 
 .courses p {
-  margin-bottom: 32px;
+    margin-bottom: 32px;
 }
 
 .courses a {
-  place-self: end;
+    place-self: end;
 }
 
 .courses li {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
+    font-size: 1rem;        
 }
 
 .courses ul {
-  display: grid;
-  gap: 16px;
+    display: grid;
+    gap: 16px;
 }
 
 .courses-content img {
-  width: 24px;
-  margin-right: 8px;
+    width: 24px;
+    margin-right: 8px;
 }
 
 @media (max-width: 800px) {
-  .courses-bg {
-    background: var(--color-11);
-  }
-  .courses {
-    grid-template-columns: 1fr;
-    gap: 20px;
-    padding-top: 40px;
-    padding-bottom: 40px;
-  }
+    .courses-bg {
+        background: var(--color-11);
+    }
+    .courses {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding-top: 40px;
+        padding-bottom: 40px;
+    }
 }
 
 @media (max-width: 600px) {
-  .courses-content {
-    grid-template-columns: 1fr;
-  }
-  .courses ul {
-    font-size: 1rem;
-    grid-template-columns: 1fr 1fr;
-    margin-bottom: 32px;
-  }
-  .courses a {
-    place-self: start;
-  }
+    .courses-content {
+        grid-template-columns: 1fr;
+    }
+    .courses ul {
+        font-size: 1rem;
+        grid-template-columns: 1fr 1fr;
+        margin-bottom: 32px;
+    }
+    .courses a {
+        place-self: start;
+    }
 }

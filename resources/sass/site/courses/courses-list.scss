@@ -20,7 +20,7 @@
     }
 
     li {
-        flex-basis: calc(33% - 40px);
+        flex: 1;
         min-width: 360px;
     }
 
@@ -33,6 +33,7 @@
         width: 100%;
         height: auto;
         border-radius: 4px;
+        border: 1px solid var(--color-6);
     }
 
     h3 {

@@ -26,6 +26,7 @@ mix.js("resources/js/app.js", "public/js")
     .scripts(["resources/js/google2fa.js"], "public/js/google2fa.js")
     .scripts(["resources/js/snow.js"], "public/js/snow.js")
     .scripts(["resources/js/particles.js"], "public/js/particles.js")
+    .scripts(["resources/js/money.js"], "public/js/money.js")
     /** Site */
     .scripts(["resources/js/site/plugins/simple-anime.js"], "public/js/simple-anime.js")
     .scripts(["resources/js/site/script.js"], "public/js/script.js")

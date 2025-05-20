@@ -18,6 +18,9 @@ class CourseRequest extends FormRequest
     {
         $this->merge([
             'active' => ! ($this->active == null),
+            'is_promotional' => ! ($this->is_promotional == null),
+            'price' => str_replace(',', '.', str_replace('.', '', str_replace('R$ ', '', $this->price))),
+            'promotional_price' => str_replace(',', '.', str_replace('.', '', str_replace('R$ ', '', $this->promotional_price))),
         ]);
     }
 
@@ -35,6 +38,9 @@ class CourseRequest extends FormRequest
             'status' => 'required|in:Planejamento,Previsto,Em Andamento,Concluído,Disponível,Sob Demanda,Suspenso,Cancelado,Arquivado',
             'active' => 'nullable|boolean',
             'sales_link' => 'nullable|url|max:191',
+            'price' => 'required|numeric|min:0|max:999999.99',
+            'promotional_price' => 'nullable|numeric|min:0|max:999999.99',
+            'is_promotional' => 'nullable|boolean',
         ];
     }
 }

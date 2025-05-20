@@ -25,6 +25,10 @@ class Course extends Model
         'active',
         'sales_link',
         'user_id',
+        'price',
+        'promotional_price',
+        'is_promotional',
+        'uri',
     ];
 
     /** Relationships */
@@ -40,9 +44,9 @@ class Course extends Model
         return $this->hasMany(CourseCategoryPivot::class, 'course_id');
     }
 
-    public function authors()
+    public function instructors()
     {
-        return $this->hasMany(CourseAuthor::class, 'course_id');
+        return $this->hasMany(CourseInstructor::class, 'course_id');
     }
 
     public function students()
@@ -60,9 +64,9 @@ class Course extends Model
         return $this->hasMany(Classroom::class, 'course_id');
     }
 
-    public function authorsInfo()
+    public function instructorsInfo()
     {
-        return $this->hasManyThrough(User::class, CourseAuthor::class, 'course_id', 'id', 'id', 'user_id');
+        return $this->hasManyThrough(User::class, CourseInstructor::class, 'course_id', 'id', 'id', 'user_id');
     }
 
     public function categoriesInfo()
@@ -77,7 +81,7 @@ class Course extends Model
 
         static::deleting(function ($course) {
             $course->categories()->delete();
-            $course->authors()->delete();
+            $course->instructors()->delete();
             $course->students()->delete();
             $course->modules()->delete();
             $course->classes()->delete();

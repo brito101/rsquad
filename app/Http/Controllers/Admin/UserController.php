@@ -6,7 +6,7 @@ use App\Helpers\CheckPermission;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Google2faRequest;
 use App\Http\Requests\Admin\UserRequest;
-use App\Models\CourseAuthor;
+use App\Models\CourseInstructor;
 use App\Models\User;
 use App\Models\Views\User as ViewsUser;
 use Illuminate\Contracts\Foundation\Application;
@@ -238,7 +238,7 @@ class UserController extends Controller
                 $user->update();
             }
 
-            CourseAuthor::where('user_id', $user->id)->delete();
+            CourseInstructor::where('user_id', $user->id)->delete();
 
             return redirect()
                 ->route('admin.users.index')

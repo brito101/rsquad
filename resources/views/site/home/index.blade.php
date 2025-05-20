@@ -27,18 +27,18 @@
             <ul>
                 @foreach ($courses as $course)
                     <li>
-                        <a href="">
-                            <img src="{{ asset('storage/courses/medium/' . $course->cover) }}" alt="{{ $course->name }}"
+                        <a href="{{ route('site.courses.show', ['uri' => $course->uri]) }}">
+                            <img src="{{ $course->cover ? asset('storage/courses/' . $course->cover) : asset('img/share.png') }}" alt="{{ $course->name }}"
                                 width="675" height="385">
                             <h3 class="font-1-xl">{{ $course->name }}</h3>
-                            <p class="font-2-m color-5">
-                                {{ $course->authorsInfo->count() > 0 ? 'Criado por: ' . $course->authorsInfo->pluck('name')->join(', ') : '' }}
+                            <p class="font-2-m color-p2">
+                                {{ $course->price > 0 ? 'R$ ' . number_format($course->price, 2, ',', '.') : '' }}
                             </p>
                         </a>
                     </li>
                 @endforeach
             </ul>
-            <a class="btn container" href="">Conheça todos nossos cursos</a>
+            <a class="btn container" href="{{ route('site.courses') }}">Conheça todos nossos cursos</a>
         </article>
     @else
         <article class="courses-list">

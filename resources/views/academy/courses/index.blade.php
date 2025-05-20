@@ -43,7 +43,7 @@
                                 'Categorias',
                                 'Módulos',
                                 'Aulas',
-                                'Autores',
+                                'Instrutores',
                                 'Status',
                                 ['label' => 'Ações', 'no-export' => true, 'width' => 10],
                             ];
@@ -56,7 +56,7 @@
                                     ['data' => 'categories', 'name' => 'categories'],
                                     ['data' => 'modules', 'name' => 'modules'],
                                     ['data' => 'classes', 'name' => 'classes'],
-                                    ['data' => 'authors', 'name' => 'authors'],
+                                    ['data' => 'instructors', 'name' => 'instructors'],
                                     ['data' => 'status', 'name' => 'status'],
                                     [
                                         'data' => 'action',

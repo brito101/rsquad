@@ -157,10 +157,10 @@
 
                                     <br>
                                     <div class="text-muted">
-                                        @if ($course->authors->count() > 0)
-                                            <p class="text-sm">Autores:
-                                                @foreach ($course->authorsInfo as $author)
-                                                    <b class="d-block">{{ $author->name }}</b>
+                                        @if ($course->instructors->count() > 0)
+                                            <p class="text-sm">Instrutores:
+                                                @foreach ($course->instructorsInfo as $instructor)
+                                                    <b class="d-block">{{ $instructor->name }}</b>
                                                 @endforeach
                                             </p>
                                         @endif

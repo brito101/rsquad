@@ -3,16 +3,15 @@
 namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
-use App\Models\Course;
 use Eusonlito\LaravelMeta\Facade as Meta;
 
-class HomeController extends Controller
+class AboutController extends Controller
 {
     public function index()
     {
-        $title = env('APP_NAME');
-        $route = route('site.home');
-        $description = env('APP_DESC');
+        $title = env('APP_NAME') . ' - Sobre nós';
+        $route = route('site.about');
+        $description = 'Saiba mais sobre a ' . env('APP_NAME') . '!';
         /** Meta */
         Meta::title($title);
         Meta::set('description', $description);
@@ -25,8 +24,6 @@ class HomeController extends Controller
         Meta::set('image', asset('img/share.png'));
         Meta::set('canonical', $route);
 
-        $courses = Course::where('active', true)->orderBy('created_at', 'desc')->take(3)->with('instructorsInfo')->get();
-
-        return view('site.home.index', compact('courses'));
+        return view('site.about.index');
     }
 }

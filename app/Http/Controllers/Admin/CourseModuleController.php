@@ -32,7 +32,7 @@ class CourseModuleController extends Controller
                 $modules = CourseModule::where(function ($query) {
                     $query->where('user_id', auth()->user()->id)
                         ->orWhereHas('course', function ($q) {
-                            $q->whereHas('authors', function ($q) {
+                            $q->whereHas('instructors', function ($q) {
                                 $q->where('user_id', auth()->user()->id);
                             });
                         });
@@ -109,7 +109,7 @@ class CourseModuleController extends Controller
         } elseif (auth()->user()->hasRole('Instrutor')) {
             $courses = Course::where(function ($query) {
                 $query->where('user_id', auth()->user()->id)
-                    ->orWhereHas('authors', function ($q) {
+                    ->orWhereHas('instructors', function ($q) {
                         $q->where('user_id', auth()->user()->id);
                     });
             })->orderBy('name')->get();
@@ -142,7 +142,7 @@ class CourseModuleController extends Controller
         } elseif (auth()->user()->hasRole('Instrutor')) {
             $course = Course::where(function ($query) {
                 $query->where('user_id', auth()->user()->id)
-                    ->orWhereHas('authors', function ($q) {
+                    ->orWhereHas('instructors', function ($q) {
                         $q->where('user_id', auth()->user()->id);
                     });
             })->find($request->course_id);
@@ -252,14 +252,14 @@ class CourseModuleController extends Controller
         } elseif (auth()->user()->hasRole('Instrutor')) {
             $courses = Course::where(function ($query) {
                 $query->where('user_id', auth()->user()->id)
-                    ->orWhereHas('authors', function ($q) {
+                    ->orWhereHas('instructors', function ($q) {
                         $q->where('user_id', auth()->user()->id);
                     });
             })->orderBy('name')->get();
             $module = CourseModule::where(function ($query) {
                 $query->where('user_id', auth()->user()->id)
                     ->orWhereHas('course', function ($q) {
-                        $q->whereHas('authors', function ($q) {
+                        $q->whereHas('instructors', function ($q) {
                             $q->where('user_id', auth()->user()->id);
                         });
                     });
@@ -294,14 +294,14 @@ class CourseModuleController extends Controller
         } elseif (auth()->user()->hasRole('Instrutor')) {
             $course = Course::where(function ($query) {
                 $query->where('user_id', auth()->user()->id)
-                    ->orWhereHas('authors', function ($q) {
+                    ->orWhereHas('instructors', function ($q) {
                         $q->where('user_id', auth()->user()->id);
                     });
             })->find($request->course_id);
             $module = CourseModule::where(function ($query) {
                 $query->where('user_id', auth()->user()->id)
                     ->orWhereHas('course', function ($q) {
-                        $q->whereHas('authors', function ($q) {
+                        $q->whereHas('instructors', function ($q) {
                             $q->where('user_id', auth()->user()->id);
                         });
                     });
@@ -406,7 +406,7 @@ class CourseModuleController extends Controller
             $module = Classroom::where(function ($query) {
                 $query->where('user_id', auth()->user()->id)
                     ->orWhereHas('course', function ($q) {
-                        $q->whereHas('authors', function ($q) {
+                        $q->whereHas('instructors', function ($q) {
                             $q->where('user_id', auth()->user()->id);
                         });
                     });
@@ -464,7 +464,7 @@ class CourseModuleController extends Controller
             $module = Classroom::where(function ($query) {
                 $query->where('user_id', auth()->user()->id)
                     ->orWhereHas('course', function ($q) {
-                        $q->whereHas('authors', function ($q) {
+                        $q->whereHas('instructors', function ($q) {
                             $q->where('user_id', auth()->user()->id);
                         });
                     });
@@ -484,7 +484,7 @@ class CourseModuleController extends Controller
                 $classes = Classroom::where(function ($query) {
                     $query->where('user_id', auth()->user()->id)
                         ->orWhereHas('course', function ($q) {
-                            $q->whereHas('authors', function ($q) {
+                            $q->whereHas('instructors', function ($q) {
                                 $q->where('user_id', auth()->user()->id);
                             });
                         });

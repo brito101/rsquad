@@ -53,7 +53,7 @@
                         <li><a href="{{ route('site.courses') }}">Cursos</a></li>
                         <li><a href="y">Blog</a></li>
                         <li><a href="z">Cheat Sheet</a></li>                        
-                        <li><a href="y">Sobre</a></li>
+                        <li><a href="{{ route('site.about') }}">Sobre</a></li>
                         <li><a href="{{ route('site.contact') }}">Contato</a></li>
                         <li><a href="{{ route('login') }}">Login</a></li>
                     </ul>
@@ -96,7 +96,7 @@
                             <li><a href="{{ route('site.courses') }}">Cursos</a></li>
                             <li><a href="">Blog</a></li>
                             <li><a href="">Cheat Sheet</a></li>                            
-                            <li><a href="">Sobre</a></li>
+                            <li><a href="{{ route('site.about') }}">Sobre</a></li>
                             <li><a href="{{ route('site.contact') }}">Contato</a></li>
                             <li><a href="{{ route('site.terms') }}">Termos e Condições</a></li>
                         </ul>

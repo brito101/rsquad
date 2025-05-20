@@ -231,6 +231,9 @@ return [
         'course_category_id' => 'categoria de curso',
         'subtitle' => 'headline',
         'course_module_id' => 'curso',
+        'price' => 'preço',
+        'promotional_price' => 'preço promocional',
+        'is_promotional' => 'promocção ativa',
     ],
 
 ];

@@ -40,15 +40,15 @@ class CourseController extends Controller
                     ->addColumn('classes', function ($row) {
                         return $row->classes->count();
                     })
-                    ->addColumn('authors', function ($row) {
-                        return $row->authors->map(function ($pivot) {
+                    ->addColumn('instructors', function ($row) {
+                        return $row->instructors->map(function ($pivot) {
                             return $pivot->user->name;
                         })->implode(' - ');
                     })
                     ->addColumn('action', function ($row) {
                         return '<a class="btn btn-xs btn-success mx-1 shadow" title="Editar" href="'.route('academy.courses.show', ['course' => $row->id]).'"><i class="fa fa-lg fa-fw fa-eye"></i></a>';
                     })
-                    ->rawColumns(['cover', 'categories', 'modules', 'authors', 'action'])
+                    ->rawColumns(['cover', 'categories', 'modules', 'instructors', 'action'])
                     ->make(true);
             } catch (Exception $e) {
                 return response([
@@ -77,7 +77,7 @@ class CourseController extends Controller
                 'categories',
                 'modules',
                 'classes',
-                'authors',
+                'instructors',
             ])
             ->first();
 

@@ -51,6 +51,7 @@
                                 'Alunos',
                                 'Status',
                                 'Ativo',
+                                'Preço',
                                 ['label' => 'Ações', 'no-export' => true, 'width' => 10],
                             ];
                             $config = [
@@ -62,10 +63,11 @@
                                     ['data' => 'categories', 'name' => 'categories'],
                                     ['data' => 'modules', 'name' => 'modules'],
                                     ['data' => 'classes', 'name' => 'classes'],
-                                    ['data' => 'authors', 'name' => 'authors'],
+                                    ['data' => 'instructors', 'name' => 'instructors'],
                                     ['data' => 'students', 'name' => 'students'],
                                     ['data' => 'status', 'name' => 'status'],
                                     ['data' => 'active', 'name' => 'active'],
+                                    ['data' => 'price', 'name' => 'price'],
                                     [
                                         'data' => 'action',
                                         'name' => 'action',

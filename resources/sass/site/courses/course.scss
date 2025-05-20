@@ -1,0 +1,124 @@
+.course {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+    gap: 40px;
+    padding-top: 60px;
+    padding-bottom: 60px;
+}
+
+#course .title p {
+    text-transform: uppercase;
+}
+
+.course-images {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.course-images img {
+    flex: 1;
+    min-width: 200px;
+}
+
+.course-images img:first-child {
+    min-width: 100%;
+}
+
+.course-content > p {
+    margin-bottom: 32px;
+}
+
+.course-buy {
+    display: grid;
+    grid-template-columns: max-content auto;
+    align-items: center;
+    justify-items: start;
+    gap: 8px 12px;
+}
+
+.course-buy a {
+    grid-row: span 2;
+}
+
+.course-buy span {
+    display: flex;
+    align-items: center;
+    background-color: var(--cor-12);
+    gap: 8px;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.course-content h2 {
+    text-transform: uppercase;
+    letter-spacing: 0.015em;
+    margin-bottom: 12px;
+}
+
+.course-content > div {
+    margin-bottom: 40px;
+}
+
+.course-instructors,
+.course-data {
+    padding: 10px;
+    background-color: var(--cor-12);
+    border-radius: 4px;
+}
+
+.course-instructors {
+    margin-bottom: 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+}
+
+.course-instructors img {
+    width: 50px;
+    height: 50px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 1px solid #dee2e6 !important;
+    margin-bottom: 8px;
+}
+
+.course-instructors h3 {
+    margin-bottom: 8px;
+}
+
+.course-data li {
+    padding: 4px 0;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--cor-11);
+}
+
+.course-data li:last-child {
+    border-bottom: none;
+}
+
+.course-data span {
+    color: var(--cor-6);
+}
+
+@media (max-width: 800px) {
+    .course {
+        grid-template-columns: 1fr;
+        padding-top: 40px;
+        padding-bottom: 40px;
+    }
+    .course-images {
+        grid-row: 2;
+    }
+}
+
+@media (max-width: 400px) {
+    .course-instructors {
+        grid-template-columns: 1fr;
+    }
+    .course-buy {
+        grid-template-columns: 1fr;
+    }
+}
