@@ -24,21 +24,13 @@
 @import "./site/courses/course";
 @import "./site/courses/about";
 
-// /* Bicicleta */
-// @import "./bicicleta/bicicleta.css";
-// @import "./bicicleta/seguro.css";
 
-// /* Seguros */
-// @import "./seguros/seguros.css";
-// @import "./seguros/vantagens.css";
-// @import "./seguros/perguntas.css";
+// /* About */
+@import "./site/about/about";
+@import "./site/about/advantages";
 
-/* Contato */
+/* Contact */
 @import "./site/contact/contact";
-// @import "./contato/lojas.css";
-
-// /* Contato */
-// @import "./orcamento/orcamento.css";
 
 // /* Terms */
 @import "./site/terms/terms";

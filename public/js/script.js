@@ -1,4 +1,3 @@
-// Ativar Links do Menu
 const links = document.querySelectorAll(".header-menu a");
 
 function activateLink(link) {
@@ -25,7 +24,7 @@ function activateProduct(param) {
 params.forEach(activateProduct);
 
 // Perguntas Frequentes
-const perguntas = document.querySelectorAll(".perguntas button");
+const perguntas = document.querySelectorAll(".perguntas btn");
 
 function activateQuestion(event) {
   const pergunta = event.currentTarget;
