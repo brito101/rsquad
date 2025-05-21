@@ -5,7 +5,7 @@
         <div class="title-bg">
             <div class="title container">
                 <p class="font-2-l-b color-5">Nossa História</p>
-                <h1 class="font-1-xxl color-0">R<span class="color-p2">Squad Academy</span></h1>
+                <h1 class="font-1-xxl color-0">R<span class="color-p2">Squadsail Academy</span></h1>
                 <p class="font-2-l color-0">nasceu da necessidade de formar
                     profissionais realmente prontos para atuar na linha de frente da segurança cibernética. Fundada por
                     especialistas que viveram operações reais, nossa missão é simples:</p>
