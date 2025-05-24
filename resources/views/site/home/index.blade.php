@@ -28,8 +28,8 @@
                 @foreach ($courses as $course)
                     <li>
                         <a href="{{ route('site.courses.show', ['uri' => $course->uri]) }}">
-                            <img src="{{ $course->cover ? asset('storage/courses/' . $course->cover) : asset('img/share.png') }}" alt="{{ $course->name }}"
-                                width="675" height="385">
+                            <img src="{{ $course->cover ? asset('storage/courses/' . $course->cover) : asset('img/share.png') }}"
+                                alt="{{ $course->name }}" width="675" height="385">
                             <h3 class="font-1-xl">{{ $course->name }}</h3>
                             <p class="font-2-m color-p2">
                                 {{ $course->price > 0 ? 'R$ ' . number_format($course->price, 2, ',', '.') : '' }}
@@ -47,14 +47,14 @@
     @endif
 
     {{-- About --}}
-    <article class="about-bg">
-        <div class="about container">
+    <article class="about-home-bg">
+        <div class="about-home container">
             <div class="about-content">
                 <span class="font-2-l-b color-5">A Resiliência cibernética</span>
                 <h2 class="font-1-xxl color-0">começa com uma equipe capacitada<span class="color-p2">.</span>
                 </h2>
                 <p class="font-2-l color-5">Somos especialistas em capacitar profissionais de cibersegurança.</p>
-                <a class="link" href="">Escolha um curso</a>
+                <a class="link" href="{{ route('site.courses') }}">Escolha um curso</a>
                 <div class="about-advantages">
                     <div>
                         <img src="{{ asset('img/icons/tracker.svg') }}" width="24" height="24" alt="Nossa missão">
@@ -78,61 +78,55 @@
 
     {{-- Team --}}
     <section class="team" aria-label="Nosso Time">
-        <h2 class="container font-1-xxl">nossos parceiros<span class="color-p1">.</span></h2>
-
+        <h2 class="container font-1-xxl">nossos time<span class="color-p2">.</span></h2>
         <ul>
-            <li><img src="./img/parceiros/caravan.svg" alt="Caravan" width="140" height="38"></li>
-            <li><img src="./img/parceiros/ranek.svg" alt="Ranek" width="149" height="36"></li>
-            <li><img src="./img/parceiros/handel.svg" alt="Handel" width="140" height="50"></li>
-            <li><img src="./img/parceiros/dogs.svg" alt="Dogs" width="152" height="39"></li>
-            <li><img src="./img/parceiros/lescone.svg" alt="LeScone" width="208" height="41"></li>
-            <li><img src="./img/parceiros/flexblog.svg" alt="FlexBlog" width="165" height="38"></li>
-            <li><img src="./img/parceiros/wildbeast.svg" alt="Wildbeast" width="196" height="34"></li>
-            <li><img src="./img/parceiros/surfbot.svg" alt="Surfbot" width="200" height="49"></li>
+            <li><img src="./img/team/eric.webp" alt="Eric Fraga" width="400" height="350"></li>
+            <li><img src="./img/team/wagner.webp" alt="Wagner Souza" width="400" height="350"></li>
         </ul>
     </section>
 
-    <section class="depoimento" aria-label="Depoimento">
+    <section class="phrase" aria-label="Frase">
         <div>
-            <img src="./img/fotos/depoimento.jpg" width="1560" height="1360"
+            <img src="{{ asset('img/soc.webp') }}" width="1560" height="1360"
                 alt="Pessoa pedalando uma bicicleta Bikcraft">
         </div>
-        <div class="depoimento-conteudo">
-            <blockquote class="font-1-xl color-p5">
-                <p>Pedalar sempre foi a minha paixão, o que o pessoal da Bikcraft fez foi intensificar o meu amor
-                    por esta atividade. Recomendo à todos que amo.</p>
+        <div class="phrase-content">
+            <blockquote class="font-1-xl color-0">
+                <p><span class="color-p1">"</span>Quando cada segundo conta, o Blue Team responde sempre primeiro<span
+                        class="color-p1">"</span></p>
             </blockquote>
-            <span class="font-1-m-b color-p4">Ana Júlia</span>
         </div>
     </section>
 
-    <article class="seguros-bg">
-        <div class="seguros container">
-            <h2 class="font-1-xxl color-0">seguros<span class="color-p1">.</span></h2>
-            <div class="seguros-item">
-                <h3 class="font-1-xl color-6">PRATA</h3>
-                <span class="font-1-xl color-0">R$ 199 <span class="font-1-xs color-6">mensal</span></span>
+    <article class="about-home-secondary">
+        <div class="about container">
+            <h2 class="font-1-xxl color-0">R<span class="color-p2">Squad</span></h2>
+            <div class="about-item fadeInLeft" data-anime="200">
+                <h3 class="font-1-xl color-6">Blue Team</h3>
                 <ul class="font-2-m color-0">
-                    <li>Duas trocas por ano</li>
-                    <li>Assistência técnica</li>
-                    <li>Suporte 08h às 18h</li>
-                    <li>Cobertura estadual</li>
+                    <li>Resposta a Incidentes</li>
+                    <li>SOC</li>
+                    <li>DevSecOPs</li>
+                    <li>DFIR</li>
+                    <li>Analise de malware</li>
                 </ul>
-                <a class="botao secundario" href="./orcamento.html?tipo=seguro&produto=prata">Inscreva-se</a>
+                <a class="btn" href="{{ route('site.courses') }}">Inscreva-se</a>
             </div>
 
-            <div class="seguros-item">
-                <h3 class="font-1-xl color-p1">OURO</h3>
-                <span class="font-1-xl color-0">R$ 299 <span class="font-1-xs color-6">mensal</span></span>
+            <div class="about-item fadeInRight" data-anime="400">
+                <h3 class="font-1-xl color-p2">Professores certificados</h3>
                 <ul class="font-2-m color-0">
-                    <li>Cinco trocas por ano</li>
-                    <li>Assistência especial</li>
-                    <li>Suporte 24h</li>
-                    <li>Cobertura nacional</li>
-                    <li>Desconto em parceiros</li>
-                    <li>Acesso ao Clube Bikcraft</li>
+                    <li>CEH</li>
+                    <li>ECIH</li>
+                    <li>SEC+</li>
+                    <li>CYSA+</li>
+                    <li>Elastic Gold Contribuitor</li>
+                    <li>ISO 27001</li>
+                    <li>NSE4</li>
+                    <li>NSE 7</li>
+                    <li>Cloud Security</li>
+                    <li>CTIA</li>
                 </ul>
-                <a class="botao" href="./orcamento.html?tipo=seguro&produto=ouro">Inscreva-se</a>
             </div>
         </div>
     </article>

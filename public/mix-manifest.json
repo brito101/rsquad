@@ -55,5 +55,9 @@
     "/js/simple-anime.js": "/js/simple-anime.js",
     "/js/script.js": "/js/script.js",
     "/js/cookie.js": "/js/cookie.js",
-    "/js/button-top.js": "/js/button-top.js"
+    "/js/button-top.js": "/js/button-top.js",
+    "/img/team/eric.png": "/img/team/eric.png",
+    "/img/team/eric.webp": "/img/team/eric.webp",
+    "/img/team/wagner.png": "/img/team/wagner.png",
+    "/img/team/wagner.webp": "/img/team/wagner.webp"
 }
