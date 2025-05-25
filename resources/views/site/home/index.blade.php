@@ -100,7 +100,7 @@
 
     <article class="about-home-secondary">
         <div class="about container">
-            <h2 class="font-1-xxl color-0">R<span class="color-p2">Squad</span></h2>
+            <h2 class="font-1-xxl color-0">R<span class="color-p2">Squad Academy</span></h2>
             <div class="about-item fadeInLeft" data-anime="200">
                 <h3 class="font-1-xl color-6">Blue Team</h3>
                 <ul class="font-2-m color-0">
