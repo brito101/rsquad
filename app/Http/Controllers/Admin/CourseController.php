@@ -3,14 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Helpers\CheckPermission;
-use App\Helpers\TextProcessor;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\CourseRequest;
 use App\Models\CategoryCourse;
 use App\Models\Classroom;
 use App\Models\Course;
-use App\Models\CourseInstructor;
 use App\Models\CourseCategoryPivot;
+use App\Models\CourseInstructor;
 use App\Models\CourseModule;
 use App\Models\CourseStudent;
 use App\Models\Views\CategoryCourse as ViewsCategoryCourse;
@@ -53,7 +52,7 @@ class CourseController extends Controller
                 return DataTables::of($courses)
                     ->addIndexColumn()
                     ->addColumn('cover', function ($row) {
-                        return '<div class="d-flex justify-content-center align-items-center"><img src="' . ($row->cover ? url('storage/courses/min/' . $row->cover) : asset('img/defaults/min/courses.webp')) . '" class="img-thumbnail d-block" width="360" height="207" alt="' . $row->name . '" title="' . $row->name . '"/></div>';
+                        return '<div class="d-flex justify-content-center align-items-center"><img src="'.($row->cover ? url('storage/courses/min/'.$row->cover) : asset('img/defaults/min/courses.webp')).'" class="img-thumbnail d-block" width="360" height="207" alt="'.$row->name.'" title="'.$row->name.'"/></div>';
                     })
                     ->addColumn('categories', function ($row) {
                         return $row->categories->map(function ($pivot) {
@@ -83,36 +82,36 @@ class CourseController extends Controller
                     })
                     ->addColumn('price', function ($row) {
                         if ($row->is_promotional == 1) {
-                            return '<span style="text-decoration: line-through;">' . 'R$ ' . number_format($row->price, 2, ',', '.') . '</span><span class="badge bg-warning">R$ ' . number_format($row->promotional_price, 2, ',', '.') . '</span>';
+                            return '<span style="text-decoration: line-through;">'.'R$ '.number_format($row->price, 2, ',', '.').'</span><span class="badge bg-warning">R$ '.number_format($row->promotional_price, 2, ',', '.').'</span>';
                         } else {
-                            return 'R$ ' . number_format($row->price, 2, ',', '.');
+                            return 'R$ '.number_format($row->price, 2, ',', '.');
                         }
                     })
                     ->addColumn('action', function ($row) use ($token) {
                         if ($row->sales_link) {
-                            $sales_link = '<a class="btn btn-xs btn-success mx-1 shadow" title="Link de vendas" href="' . $row->sales_link . '" target="_blank"><i class="fa fa-lg fa-fw fa-dollar-sign"></i></a>';
+                            $sales_link = '<a class="btn btn-xs btn-success mx-1 shadow" title="Link de vendas" href="'.$row->sales_link.'" target="_blank"><i class="fa fa-lg fa-fw fa-dollar-sign"></i></a>';
                         } else {
                             $sales_link = '';
                         }
                         if ($row->modules->count() > 0) {
-                            $modules_link = '<a class="btn btn-xs btn-info mx-1 shadow" title="Módulos" href="courses/' . $row->id . '/modules"><i class="fa fa-lg fa-fw fa-layer-group"></i></a>';
+                            $modules_link = '<a class="btn btn-xs btn-info mx-1 shadow" title="Módulos" href="courses/'.$row->id.'/modules"><i class="fa fa-lg fa-fw fa-layer-group"></i></a>';
                         } else {
                             $modules_link = '';
                         }
                         if ($row->classes->count() > 0) {
-                            $classes_link = '<a class="btn btn-xs btn-warning mx-1 shadow" title="Aulas" href="courses/' . $row->id . '/classes"><i class="fa fa-lg fa-fw fa-chalkboard-teacher"></i></a>';
+                            $classes_link = '<a class="btn btn-xs btn-warning mx-1 shadow" title="Aulas" href="courses/'.$row->id.'/classes"><i class="fa fa-lg fa-fw fa-chalkboard-teacher"></i></a>';
                         } else {
                             $classes_link = '';
                         }
                         if ($row->students->count() > 0) {
-                            $students = '<a class="btn btn-xs brn-light mx-1 shadow" title="Alunos" href="' . route('admin.courses.students', ['course' => $row->id]) . '"><i class="fa fa-lg fa-fw fa-graduation-cap"></i></a>';
+                            $students = '<a class="btn btn-xs brn-light mx-1 shadow" title="Alunos" href="'.route('admin.courses.students', ['course' => $row->id]).'"><i class="fa fa-lg fa-fw fa-graduation-cap"></i></a>';
                         } else {
                             $students = '';
                         }
-                        $edit = '<a class="btn btn-xs btn-primary mx-1 shadow" title="Editar" href="' . route('admin.courses.edit', ['course' => $row->id]) . '"><i class="fa fa-lg fa-fw fa-pen"></i></a>';
-                        $delete = '<form method="POST" action="' . route('admin.courses.destroy', ['course' => $row->id]) . '" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="' . $token . '"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão deste curso?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>';
+                        $edit = '<a class="btn btn-xs btn-primary mx-1 shadow" title="Editar" href="'.route('admin.courses.edit', ['course' => $row->id]).'"><i class="fa fa-lg fa-fw fa-pen"></i></a>';
+                        $delete = '<form method="POST" action="'.route('admin.courses.destroy', ['course' => $row->id]).'" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="'.$token.'"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão deste curso?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>';
 
-                        return '<div class="d-flex justify-content-center align-items-center">' . $sales_link . $students . $modules_link . $classes_link . $edit . $delete . '</div>';
+                        return '<div class="d-flex justify-content-center align-items-center">'.$sales_link.$students.$modules_link.$classes_link.$edit.$delete.'</div>';
                     })
                     ->rawColumns(['cover', 'categories', 'modules', 'instructors', 'students', 'active', 'price', 'action'])
                     ->make(true);
@@ -154,16 +153,16 @@ class CourseController extends Controller
         $data = $request->all();
 
         if ($request->hasFile('cover') && $request->file('cover')->isValid()) {
-            $name = Str::slug(mb_substr($data['name'], 0, 100)) . time();
+            $name = Str::slug(mb_substr($data['name'], 0, 100)).time();
             $extension = $request->cover->extension();
             $nameFile = "{$name}.{$extension}";
 
             $data['cover'] = $nameFile;
 
-            $destinationPath = storage_path() . '/app/public/courses';
-            $destinationPathMedium = storage_path() . '/app/public/courses/medium';
-            $destinationPathMin = storage_path() . '/app/public/courses/min';
-            $destinationPathIcon = storage_path() . '/app/public/courses/icon/';
+            $destinationPath = storage_path().'/app/public/courses';
+            $destinationPathMedium = storage_path().'/app/public/courses/medium';
+            $destinationPathMin = storage_path().'/app/public/courses/min';
+            $destinationPathIcon = storage_path().'/app/public/courses/icon/';
 
             if (! file_exists($destinationPath)) {
                 mkdir($destinationPath, 755, true);
@@ -184,22 +183,22 @@ class CourseController extends Controller
             $img = Image::make($request->cover)->resize(null, 490, function ($constraint) {
                 $constraint->aspectRatio();
                 $constraint->upsize();
-            })->crop(860, 490)->save($destinationPath . '/' . $nameFile);
+            })->crop(860, 490)->save($destinationPath.'/'.$nameFile);
 
             $imgMedium = Image::make($request->cover)->resize(null, 385, function ($constraint) {
                 $constraint->aspectRatio();
                 $constraint->upsize();
-            })->crop(675, 385)->save($destinationPathMedium . '/' . $nameFile);
+            })->crop(675, 385)->save($destinationPathMedium.'/'.$nameFile);
 
             $imgMin = Image::make($request->cover)->resize(null, 207, function ($constraint) {
                 $constraint->aspectRatio();
                 $constraint->upsize();
-            })->crop(360, 207)->save($destinationPathMin . '/' . $nameFile);
+            })->crop(360, 207)->save($destinationPathMin.'/'.$nameFile);
 
             $icon = Image::make($request->cover)->resize(null, 65, function ($constraint) {
                 $constraint->aspectRatio();
                 $constraint->upsize();
-            })->crop(65, 65)->save($destinationPathIcon . '/' . $nameFile);
+            })->crop(65, 65)->save($destinationPathIcon.'/'.$nameFile);
 
             if (! $img && ! $imgMedium && ! $imgMin && ! $icon) {
                 return redirect()
@@ -308,10 +307,10 @@ class CourseController extends Controller
         $data = $request->all();
 
         if ($request->hasFile('cover') && $request->file('cover')->isValid()) {
-            $name = Str::slug(mb_substr($data['name'], 0, 100)) . time();
-            $imagePath = storage_path() . '/app/public/courses/' . $course->cover;
-            $imagePathMedium = storage_path() . '/app/public/courses/medium/' . $course->cover;
-            $imagePathMin = storage_path() . '/app/public/courses/min/' . $course->cover;
+            $name = Str::slug(mb_substr($data['name'], 0, 100)).time();
+            $imagePath = storage_path().'/app/public/courses/'.$course->cover;
+            $imagePathMedium = storage_path().'/app/public/courses/medium/'.$course->cover;
+            $imagePathMin = storage_path().'/app/public/courses/min/'.$course->cover;
 
             if (File::isFile($imagePath)) {
                 unlink($imagePath);
@@ -330,10 +329,10 @@ class CourseController extends Controller
 
             $data['cover'] = $nameFile;
 
-            $destinationPath = storage_path() . '/app/public/courses';
-            $destinationPathMedium = storage_path() . '/app/public/courses/medium';
-            $destinationPathMin = storage_path() . '/app/public/courses/min';
-            $destinationPathIcon = storage_path() . '/app/public/courses/icon/';
+            $destinationPath = storage_path().'/app/public/courses';
+            $destinationPathMedium = storage_path().'/app/public/courses/medium';
+            $destinationPathMin = storage_path().'/app/public/courses/min';
+            $destinationPathIcon = storage_path().'/app/public/courses/icon/';
 
             if (! file_exists($destinationPath)) {
                 mkdir($destinationPath, 755, true);
@@ -354,22 +353,22 @@ class CourseController extends Controller
             $img = Image::make($request->cover)->resize(null, 490, function ($constraint) {
                 $constraint->aspectRatio();
                 $constraint->upsize();
-            })->crop(860, 490)->save($destinationPath . '/' . $nameFile);
+            })->crop(860, 490)->save($destinationPath.'/'.$nameFile);
 
             $imgMedium = Image::make($request->cover)->resize(null, 385, function ($constraint) {
                 $constraint->aspectRatio();
                 $constraint->upsize();
-            })->crop(675, 385)->save($destinationPathMedium . '/' . $nameFile);
+            })->crop(675, 385)->save($destinationPathMedium.'/'.$nameFile);
 
             $imgMin = Image::make($request->cover)->resize(null, 207, function ($constraint) {
                 $constraint->aspectRatio();
                 $constraint->upsize();
-            })->crop(360, 207)->save($destinationPathMin . '/' . $nameFile);
+            })->crop(360, 207)->save($destinationPathMin.'/'.$nameFile);
 
             $icon = Image::make($request->cover)->resize(null, 65, function ($constraint) {
                 $constraint->aspectRatio();
                 $constraint->upsize();
-            })->crop(65, 65)->save($destinationPathIcon . '/' . $nameFile);
+            })->crop(65, 65)->save($destinationPathIcon.'/'.$nameFile);
 
             if (! $img && ! $imgMedium && ! $imgMin && ! $icon) {
                 return redirect()
@@ -447,10 +446,10 @@ class CourseController extends Controller
         }
 
         if ($course->delete()) {
-            $imagePath = storage_path() . '/app/public/courses/' . $course->cover;
-            $imagePathMedium = storage_path() . '/app/public/courses/medium/' . $course->cover;
-            $imagePathMin = storage_path() . '/app/public/courses/min/' . $course->cover;
-            $imagePathIcon = storage_path() . '/app/public/courses/icon/' . $course->cover;
+            $imagePath = storage_path().'/app/public/courses/'.$course->cover;
+            $imagePathMedium = storage_path().'/app/public/courses/medium/'.$course->cover;
+            $imagePathMin = storage_path().'/app/public/courses/min/'.$course->cover;
+            $imagePathIcon = storage_path().'/app/public/courses/icon/'.$course->cover;
 
             if (File::isFile($imagePath)) {
                 unlink($imagePath);
@@ -541,19 +540,19 @@ class CourseController extends Controller
                     })
                     ->addColumn('action', function ($row) use ($token) {
                         if ($row->link) {
-                            $link = '<a class="btn btn-xs btn-success mx-1 shadow" title="Link da aula" href="' . $row->link . '" target="_blank"><i class="fa fa-lg fa-fw fa-link"></i></a>';
+                            $link = '<a class="btn btn-xs btn-success mx-1 shadow" title="Link da aula" href="'.$row->link.'" target="_blank"><i class="fa fa-lg fa-fw fa-link"></i></a>';
                         } else {
                             $link = '';
                         }
                         if ($row->classes->count() > 0) {
-                            $classes_link = '<a class="btn btn-xs btn-warning mx-1 shadow" title="Aulas" href="courses/' . $row->id . '/classes"><i class="fa fa-lg fa-fw fa-chalkboard-teacher"></i></a>';
+                            $classes_link = '<a class="btn btn-xs btn-warning mx-1 shadow" title="Aulas" href="courses/'.$row->id.'/classes"><i class="fa fa-lg fa-fw fa-chalkboard-teacher"></i></a>';
                         } else {
                             $classes_link = '';
                         }
-                        $edit = '<a class="btn btn-xs btn-primary mx-1 shadow" title="Editar" href="' . route('admin.classes.edit', ['class' => $row->id]) . '"><i class="fa fa-lg fa-fw fa-pen"></i></a>';
-                        $delete = '<form method="POST" action="' . route('admin.classes.destroy', ['class' => $row->id]) . '" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="' . $token . '"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão desta aula?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>';
+                        $edit = '<a class="btn btn-xs btn-primary mx-1 shadow" title="Editar" href="'.route('admin.classes.edit', ['class' => $row->id]).'"><i class="fa fa-lg fa-fw fa-pen"></i></a>';
+                        $delete = '<form method="POST" action="'.route('admin.classes.destroy', ['class' => $row->id]).'" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="'.$token.'"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão desta aula?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>';
 
-                        return '<div class="d-flex justify-content-center align-items-center">' . $link . $classes_link . $edit . $delete . '</div>';
+                        return '<div class="d-flex justify-content-center align-items-center">'.$link.$classes_link.$edit.$delete.'</div>';
                     })
                     ->rawColumns(['course', 'classes', 'active', 'action'])
                     ->make(true);
@@ -625,14 +624,14 @@ class CourseController extends Controller
                     })
                     ->addColumn('action', function ($row) use ($token) {
                         if ($row->link) {
-                            $link = '<a class="btn btn-xs btn-success mx-1 shadow" title="Link da aula" href="' . $row->link . '" target="_blank"><i class="fa fa-lg fa-fw fa-link"></i></a>';
+                            $link = '<a class="btn btn-xs btn-success mx-1 shadow" title="Link da aula" href="'.$row->link.'" target="_blank"><i class="fa fa-lg fa-fw fa-link"></i></a>';
                         } else {
                             $link = '';
                         }
-                        $edit = '<a class="btn btn-xs btn-primary mx-1 shadow" title="Editar" href="' . route('admin.classes.edit', ['class' => $row->id]) . '"><i class="fa fa-lg fa-fw fa-pen"></i></a>';
-                        $delete = '<form method="POST" action="' . route('admin.classes.destroy', ['class' => $row->id]) . '" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="' . $token . '"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão desta aula?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>';
+                        $edit = '<a class="btn btn-xs btn-primary mx-1 shadow" title="Editar" href="'.route('admin.classes.edit', ['class' => $row->id]).'"><i class="fa fa-lg fa-fw fa-pen"></i></a>';
+                        $delete = '<form method="POST" action="'.route('admin.classes.destroy', ['class' => $row->id]).'" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="'.$token.'"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão desta aula?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>';
 
-                        return '<div class="d-flex justify-content-center align-items-center">' . $link . $edit . $delete . '</div>';
+                        return '<div class="d-flex justify-content-center align-items-center">'.$link.$edit.$delete.'</div>';
                     })
                     ->rawColumns(['course', 'active', 'action'])
                     ->make(true);
@@ -683,13 +682,13 @@ class CourseController extends Controller
             return DataTables::of($students)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) use ($token) {
-                    return '<a class="btn btn-xs btn-success mx-1 shadow" title="Visualizar" href="' . route('admin.students.show', ['student' => $row->id]) . '"><i class="fa fa-lg fa-fw fa-eye"></i></a>' .
-                        (Auth::user()->hasPermissionTo('Editar Alunos') ? '<a class="btn btn-xs btn-primary mx-1 shadow" title="Editar" href="' . route('admin.students.edit', ['student' => $row->id]) . '"><i class="fa fa-lg fa-fw fa-pen"></i></a>' : '') .
-                        (Auth::user()->hasPermissionTo('Excluir Alunos') ? '<form method="POST" action="' . route('admin.students.destroy', ['student' => $row->id]) . '" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="' . $token . '"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão deste usuário?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>' : '');
+                    return '<a class="btn btn-xs btn-success mx-1 shadow" title="Visualizar" href="'.route('admin.students.show', ['student' => $row->id]).'"><i class="fa fa-lg fa-fw fa-eye"></i></a>'.
+                        (Auth::user()->hasPermissionTo('Editar Alunos') ? '<a class="btn btn-xs btn-primary mx-1 shadow" title="Editar" href="'.route('admin.students.edit', ['student' => $row->id]).'"><i class="fa fa-lg fa-fw fa-pen"></i></a>' : '').
+                        (Auth::user()->hasPermissionTo('Excluir Alunos') ? '<form method="POST" action="'.route('admin.students.destroy', ['student' => $row->id]).'" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="'.$token.'"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão deste usuário?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>' : '');
                 })
                 ->addColumn('photo', function ($row) {
-                    return '<img src="' . ($row->photo ? url('storage/users/' . $row->photo) : asset('vendor/adminlte/dist/img/avatar.png')) . '"
-                    alt="' . $row->name . '" class="img-circle img-size-32 mr-2 border" style="object-fit: cover; width:75px; height: 75px; aspect-ratio: 1;">';
+                    return '<img src="'.($row->photo ? url('storage/users/'.$row->photo) : asset('vendor/adminlte/dist/img/avatar.png')).'"
+                    alt="'.$row->name.'" class="img-circle img-size-32 mr-2 border" style="object-fit: cover; width:75px; height: 75px; aspect-ratio: 1;">';
                 })
                 ->rawColumns(['action', 'photo'])
                 ->make(true);

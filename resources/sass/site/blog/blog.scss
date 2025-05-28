@@ -1,4 +1,4 @@
-.courses-bg {
+.posts-bg {
     background: linear-gradient(
         to right,
         var(--color-0) 30%,
@@ -6,7 +6,7 @@
     );
 }
 
-.courses {
+.posts {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 40px;
@@ -15,18 +15,18 @@
     background: url("/img/dec/top-right.svg") no-repeat top 40px right 20px;
 }
 
-.courses-image {
+.posts-image {
     display: grid;
 }
 
-.courses-image img {
+.posts-image img {
     grid-area: 1/1;
     border: 1px solid var(--color-6);
     border-radius: 4px;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
 }
 
-.courses-image span {
+.posts-image span {
     grid-area: 1/1;
     place-self: start end;
     margin-top: 20px;
@@ -36,22 +36,26 @@
     border-radius: 4px 0 0 4px;
 }
 
-.courses-content {
+.posts-content {
     display: grid;
     grid-template-columns: 1fr auto;
     align-content: start;
 }
 
-.courses h2,
-.courses p {
+.posts h2,
+.posts p {
     grid-column: 1/-1;
 }
 
-.courses h2 {
+.posts h2 {
     margin-top: 20px;
 }
 
-.courses h2::before {
+.posts h3 {
+    margin-top: 5px;
+}
+
+.posts h2::before {
     content: "";
     display: block;
     width: 12px;
@@ -60,35 +64,40 @@
     margin-bottom: 8px;
 }
 
-.courses p {
-    margin-bottom: 32px;
+.posts p {
+    margin-top: 10px;
+    margin-bottom: 5px;
 }
 
-.courses a {
+.posts a {
     place-self: end;
 }
 
-.courses li {
+.posts li {
     display: flex;
     align-items: center;
     font-size: 1rem;        
 }
 
-.courses ul {
+.posts ul {
     display: grid;
-    gap: 16px;
+    gap: 5px;
+
+    a {
+        font-size: 0.75rem;
+    }
 }
 
-.courses-content img {
+.posts-content img {
     width: 24px;
     margin-right: 8px;
 }
 
 @media (max-width: 800px) {
-    .courses-bg {
+    .posts-bg {
         background: var(--color-11);
     }
-    .courses {
+    .posts {
         grid-template-columns: 1fr;
         gap: 20px;
         padding-top: 40px;
@@ -97,15 +106,16 @@
 }
 
 @media (max-width: 600px) {
-    .courses-content {
+    .posts-content {
         grid-template-columns: 1fr;
     }
-    .courses ul {
+    .posts ul {
         font-size: 1rem;
-        grid-template-columns: 1fr 1fr;
+        display: flex;
+        flex-wrap: wrap;
         margin-bottom: 32px;
     }
-    .courses a {
+    .posts a {
         place-self: start;
     }
 }

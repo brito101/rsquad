@@ -51,8 +51,8 @@
                 <nav aria-label="primaria">
                     <ul class="header-menu font-1-m color-0">
                         <li><a href="{{ route('site.courses') }}">Cursos</a></li>
-                        <li><a href="y">Blog</a></li>
-                        <li><a href="z">Cheat Sheet</a></li>                        
+                        <li><a href="{{ route('site.blog') }}">Blog</a></li>
+                        <li><a href="z">Cheat Sheet</a></li>
                         <li><a href="{{ route('site.about') }}">Sobre</a></li>
                         <li><a href="{{ route('site.contact') }}">Contato</a></li>
                         <li><a href="{{ route('login') }}">Login</a></li>
@@ -94,8 +94,8 @@
                     <nav>
                         <ul class="font-1-m color-5">
                             <li><a href="{{ route('site.courses') }}">Cursos</a></li>
-                            <li><a href="">Blog</a></li>
-                            <li><a href="">Cheat Sheet</a></li>                            
+                            <li><a href="{{ route('site.blog') }}">Blog</a></li>
+                            <li><a href="">Cheat Sheet</a></li>
                             <li><a href="{{ route('site.about') }}">Sobre</a></li>
                             <li><a href="{{ route('site.contact') }}">Contato</a></li>
                             <li><a href="{{ route('site.terms') }}">Termos e Condições</a></li>

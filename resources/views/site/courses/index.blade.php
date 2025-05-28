@@ -27,17 +27,17 @@
                                             <img src="{{ asset('img/icons/tracker.svg') }}" alt="">
                                             {{ $course->categoriesInfo->pluck('name')->join(' - ') }}
                                         </li>
-                                    @endif                                    
+                                    @endif
                                 </ul>
-                                <a class="btn arrow" href="{{ route('site.courses.show', ['uri' => $course->uri]) }}"
-                                    target="_blank">Saiba mais</a>
+                                <a class="btn arrow" href="{{ route('site.courses.show', ['uri' => $course->uri]) }}">Saiba
+                                    mais</a>
                             </div>
                         </div>
                     @else
                         <div class="courses-bg">
                             <div class="courses container">
                                 <div class="courses-image">
-                                    <img src="{{ asset('storage/courses/medium/' . $course->cover) }}"
+                                    <img src="{{ $course->cover ? asset('storage/courses/medium/' . $course->cover) : asset('img/share.png') }}"
                                         alt="{{ $course->name }}">
                                     <span
                                         class="font-2-m color-0">{{ $course->is_promotional == 1 ? 'R$ ' . number_format($course->promotional_price, 2, ',', '.') : 'R$ ' . number_format($course->price, 2, ',', '.') }}</span>
@@ -52,8 +52,8 @@
                                             </li>
                                         @endif
                                     </ul>
-                                    <a class="btn arrow" href="{{ route('site.courses.show', ['uri' => $course->uri]) }}"
-                                        target="_blank">Saiba mais</a>
+                                    <a class="btn arrow"
+                                        href="{{ route('site.courses.show', ['uri' => $course->uri]) }}">Saiba mais</a>
                                 </div>
                             </div>
                         </div>

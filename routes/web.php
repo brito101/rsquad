@@ -50,9 +50,7 @@ Route::group(['middleware' => ['access']], function () {
         Route::get('/cursos/{uri}', [SiteCourseController::class, 'show'])->name('courses.show');
         Route::get('/cursos', [SiteCourseController::class, 'index'])->name('courses');
 
-
         /** Blog */
-        Route::get('/blog/buscar/{s?}', [SiteBlogController::class, 'search'])->name('blog.search');
         Route::get('/blog/{uri}', [SiteBlogController::class, 'post'])->name('blog.post');
         Route::get('/blog', [SiteBlogController::class, 'index'])->name('blog');
         Route::get('/blog/em/{category}', [SiteBlogController::class, 'category'])->name('blog.category');
@@ -65,7 +63,6 @@ Route::group(['middleware' => ['access']], function () {
 
         /** About */
         Route::get('/sobre', [AboutController::class, 'index'])->name('about');
-
 
         /** Terms */
         Route::get('/termos', [TermController::class, 'index'])->name('terms');

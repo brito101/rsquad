@@ -9,9 +9,9 @@ class AboutController extends Controller
 {
     public function index()
     {
-        $title = env('APP_NAME') . ' - Sobre nós';
+        $title = env('APP_NAME').' - Sobre nós';
         $route = route('site.about');
-        $description = 'Saiba mais sobre a ' . env('APP_NAME') . '!';
+        $description = 'Saiba mais sobre a '.env('APP_NAME').'!';
         /** Meta */
         Meta::title($title);
         Meta::set('description', $description);

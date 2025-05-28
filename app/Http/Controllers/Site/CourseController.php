@@ -10,7 +10,7 @@ class CourseController extends Controller
 {
     public function index()
     {
-        $title = env('APP_NAME') . ' - Cursos';
+        $title = env('APP_NAME').' - Cursos';
         $route = route('site.courses');
         $description = 'Confira nossos cursos.';
         /** Meta */
@@ -37,7 +37,7 @@ class CourseController extends Controller
     {
         $course = Course::where('uri', $uri)->where('active', true)->firstOrFail();
 
-        $title = env('APP_NAME') . ' - ' . $course->name;
+        $title = env('APP_NAME').' - '.$course->name;
         $route = route('site.courses.show', ['uri' => $course->uri]);
         $description = $course->description;
         /** Meta */
@@ -49,7 +49,7 @@ class CourseController extends Controller
         Meta::set('og:url', $route);
         Meta::set('twitter:url', $route);
         Meta::set('robots', 'index,follow');
-        Meta::set('image', ($course->cover ? asset('storage/courses/' . $course->cover) : asset('img/share.png')));
+        Meta::set('image', ($course->cover ? asset('storage/courses/'.$course->cover) : asset('img/share.png')));
         Meta::set('canonical', $route);
 
         $courses = Course::where('active', true)

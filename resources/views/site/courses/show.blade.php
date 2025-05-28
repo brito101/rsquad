@@ -72,7 +72,7 @@
                 <img src="{{ asset('img/soc.webp') }}" alt="Pessoa em um curso de SOC.">
             </div>
             <div class="about-content">
-                <h2 class="font-1-xxl color-0">Evolua com a <span class="color-p2">RSquad.</span></h2>
+                <h2 class="font-1-xxl color-0">Evolua com a R<span class="color-p2">Squad</span>.</h2>
                 <p class="font-2-l color-5">Participe dos nossos cursos e domine a resposta a incidentes com aulas práticas e conteúdo de alto nível.</p>
                 <a class="btn" href="{{ route('site.about') }}">Conheça Mais</a>
             </div>

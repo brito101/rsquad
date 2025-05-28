@@ -80,16 +80,16 @@
     <section class="team" aria-label="Nosso Time">
         <h2 class="container font-1-xxl">nosso time<span class="color-p2">.</span></h2>
         <ul>
-            <li><img src="{{ asset('/img/team/eric.webp') }}" alt="Eric Fraga" width="400" height="350"></li>
-            <li><img src="{{ asset('/img/team/wagner.webp') }}" alt="Wagner Souza" width="400" height="350"></li>
-            <li><img src="{{ asset('/img/team/eddy.webp') }}" alt="Eddy Martins" width="400" height="350"></li>
+            <li><img src="{{ asset('img/team/eric.webp') }}" alt="Eric Fraga" width="400" height="350"></li>
+            <li><img src="{{ asset('img/team/wagner.webp') }}" alt="Wagner Souza" width="400" height="350"></li>
+            <li><img src="{{ asset('img/team/eddy.webp') }}" alt="Eddy Martins" width="400" height="350"></li>
         </ul>
     </section>
 
     <section class="phrase" aria-label="Frase">
         <div>
             <img src="{{ asset('img/soc.webp') }}" width="1560" height="1360"
-                alt="Pessoa pedalando uma bicicleta Bikcraft">
+                alt="Quando cada segundo conta, o Blue Team responde sempre primeiro<">
         </div>
         <div class="phrase-content">
             <blockquote class="font-1-xl color-0">
