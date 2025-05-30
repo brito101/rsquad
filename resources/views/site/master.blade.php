@@ -52,7 +52,7 @@
                     <ul class="header-menu font-1-m color-0">
                         <li><a href="{{ route('site.courses') }}">Cursos</a></li>
                         <li><a href="{{ route('site.blog') }}">Blog</a></li>
-                        <li><a href="z">Cheat Sheet</a></li>
+                        <li><a href="{{ route('site.cheat-sheets') }}">Cheat Sheet</a></li>
                         <li><a href="{{ route('site.about') }}">Sobre</a></li>
                         <li><a href="{{ route('site.contact') }}">Contato</a></li>
                         <li><a href="{{ route('login') }}">Login</a></li>
@@ -65,7 +65,9 @@
 
         <footer class="footer-bg">
             <div class="footer container">
-                <img src="{{ asset('img/brand.webp') }}" width="221" height="100" alt="{{ env('APP_NAME') }}">
+                <a href="{{ route('site.home') }}">
+                    <img src="{{ asset('img/brand.webp') }}" width="221" height="100"
+                        alt="{{ env('APP_NAME') }}"></a>
                 <div class="footer-contact">
                     <h3 class="font-2-l-b color-0">Contato</h3>
                     <ul class="font-2-m color-5">
@@ -95,7 +97,7 @@
                         <ul class="font-1-m color-5">
                             <li><a href="{{ route('site.courses') }}">Cursos</a></li>
                             <li><a href="{{ route('site.blog') }}">Blog</a></li>
-                            <li><a href="">Cheat Sheet</a></li>
+                            <li><a href="{{ route('site.cheat-sheets') }}">Cheat Sheet</a></li>
                             <li><a href="{{ route('site.about') }}">Sobre</a></li>
                             <li><a href="{{ route('site.contact') }}">Contato</a></li>
                             <li><a href="{{ route('site.terms') }}">Termos e Condições</a></li>
