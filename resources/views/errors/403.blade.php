@@ -5,7 +5,7 @@
     <style>
         body {
             margin-top: -50px;
-            background-color: #3b3b3b !important;
+            background-color: #030303 !important;
         }
     </style>
 @stop
