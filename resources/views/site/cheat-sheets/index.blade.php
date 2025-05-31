@@ -10,7 +10,7 @@
         </div>
     </main>
 
-    @if (!$categories->count() > 0)
+    @if ($categories->count() > 0)
         <div class="container cheats">
             <dl>
                 @foreach ($categories as $category)
