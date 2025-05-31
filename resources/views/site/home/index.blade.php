@@ -10,7 +10,7 @@
                 <p class="font-2-l color-5 fadeInDown" data-anime="400">Somos especialistas em capacitar profissionais de
                     cibersegurança com o conhecimento e as ferramentas necessárias para enfrentar os desafios mais críticos
                     do setor.</p>
-                <a class="btn fadeInDown" data-anime="600" href=".">Veja nossos Cursos</a>
+                <a class="btn fadeInDown" data-anime="600" href="{{ route('site.courses') }}">Veja nossos Cursos</a>
             </div>
             <picture data-anime="800" class="fadeInDown">
                 <source media="(max-width: 800px)" srcset="{{ asset('img/introduction-min.webp') }}">
