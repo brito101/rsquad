@@ -30,7 +30,7 @@
         </div>
     @else
         <div class="posts container">
-            <h2 class="font-1-xl color-p2">Em breve... estamos preparando posts de primeira para você :)</h2>
+            <h2 class="font-1-xl color-p2">Em breve... estamos preparando cheats de primeira para você :)</h2>
         </div>
     @endif
 @endsection
