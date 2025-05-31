@@ -56,10 +56,8 @@ Route::group(['middleware' => ['access']], function () {
         Route::get('/blog/em/{category}', [SiteBlogController::class, 'category'])->name('blog.category');
 
         /** Cheat Sheet */
-        Route::get('/cheat-sheets/buscar/{s?}', [SiteCheatSheetController::class, 'search'])->name('cheat-sheets.search');
         Route::get('/cheat-sheets/{uri}', [SiteCheatSheetController::class, 'post'])->name('cheat-sheets.post');
         Route::get('/cheat-sheets', [SiteCheatSheetController::class, 'index'])->name('cheat-sheets');
-        Route::get('/cheat-sheets/em/{category}', [SiteCheatSheetController::class, 'category'])->name('cheat-sheets.category');
 
         /** About */
         Route::get('/sobre', [AboutController::class, 'index'])->name('about');

@@ -24,9 +24,13 @@
 @import "./site/courses/course";
 @import "./site/courses/about";
 
+/** Blog */
 @import "./site/blog/blog";
 @import "./site/blog/post";
 
+/** Cheat Sheet */
+@import "./site/cheat-sheet/cheat-sheet";
+@import "./site/cheat-sheet/post";
 
 // /* About */
 @import "./site/about/about";

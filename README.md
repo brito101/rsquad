@@ -1,7 +1,7 @@
 # RSquad Academy
 
 <p align="center">
-<img src="rsquadacademy.jpg" alt="RSquad Academy"/>
+<img src="screenshots/rsquadacademy.jpg" alt="RSquad Academy"/>
 </p>
 
 ## Project with Laravel 12 and Docker with Laravel Pint, PEST, Debugar, AdminLTE3, DataTables server side and Spatie ACL
@@ -15,6 +15,10 @@
 -   Blog
 -   Cheat Sheet
 -   Contacts
+
+<p align="center">
+<img src="screenshots/home.png" alt="RSquad Academy"/>
+</p>
 
 ### Usage in development environment
 

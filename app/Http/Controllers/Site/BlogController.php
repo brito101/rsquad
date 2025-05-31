@@ -43,7 +43,7 @@ class BlogController extends Controller
 
         if ($post) {
 
-            $title = env('APP_NAME') . $post->title;
+            $title = env('APP_NAME') . ' - ' . $post->title;
             $route = route('site.blog.post', ['uri' => $uri]);
             $description = $post->subtitle;
 

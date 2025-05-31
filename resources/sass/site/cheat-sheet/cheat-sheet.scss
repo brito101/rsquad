@@ -1,0 +1,85 @@
+.cheats {
+    padding-top: 120px;
+    padding-bottom: 120px;
+}
+
+.cheats h2 {
+    margin-bottom: 60px;
+}
+
+.cheats dl > div {
+    padding: 20px;
+    border-radius: 4px;
+}
+
+.cheats dl > div:nth-child(odd) {
+    background-color: var(--color-1);
+}
+
+.cheats button {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+}
+
+.cheats button::before {
+    content: "";
+    display: inline-block;
+    width: 12px;
+    height: 8px;
+    background-color: var(--color-p2);
+}
+
+.cheats button::after {
+    content: "";
+    display: inline-block;
+    width: 14px;
+    height: 6px;
+    background: url("/img/icons/arrow-open.svg");
+    transition: 0.3s;
+}
+
+.cheats button:hover::after,
+.cheats button[aria-expanded="true"]::after {
+    transform: rotate(180deg);
+}
+
+.js .cheats dd {
+    display: none;
+}
+
+.js .cheats dd.active {
+    display: block;
+}
+
+.cheats dd {
+    border-radius: 4px;
+
+    a {
+        padding: 20px;
+        width: 100%;
+        display: block;
+    }
+
+    &:hover {
+        color: var(--color-p2);
+        font-weight: bold;
+        background-color: var(--color-4);
+    }
+}
+
+@media (max-width: 800px) {
+    .cheats {
+        padding-top: 60px;
+        padding-bottom: 60px;
+    }
+    .cheats h2 {
+        margin-bottom: 40px;
+    }
+}
