@@ -109,7 +109,7 @@
                     <li>SOC</li>
                     <li>DevSecOPs</li>
                     <li>DFIR</li>
-                    <li>Analise de malware</li>
+                    <li>Análise de malware</li>
                 </ul>
                 <a class="btn" href="{{ route('site.courses') }}">Inscreva-se</a>
             </div>
