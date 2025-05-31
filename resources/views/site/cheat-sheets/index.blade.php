@@ -4,10 +4,13 @@
     <main>
         <div class="title-bg">
             <div class="title container">
-                <h1 class="font-1-xxl color-0">cheat sheet<span class="color-p1">.</span></h1>
+                <p class="font-2-l-b color-5">Cheat Sheet</p>
+                <h1 class="font-1-xxl color-0">confira nossos cheats<span class="color-p1">.</span></h1>
             </div>
         </div>
+    </main>
 
+    @if (!$categories->count() > 0)
         <div class="container cheats">
             <dl>
                 @foreach ($categories as $category)
@@ -25,5 +28,9 @@
                 @endforeach
             </dl>
         </div>
-    </main>
+    @else
+        <div class="posts container">
+            <h2 class="font-1-xl color-p2">Em breve... estamos preparando posts de primeira para você :)</h2>
+        </div>
+    @endif
 @endsection
