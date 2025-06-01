@@ -147,7 +147,7 @@ Route::group(['middleware' => ['auth', 'access']], function () {
 });
 
 Auth::routes([
-    'register' => false,
+    'register' => true,
 ]);
 
 Route::fallback(function () {
