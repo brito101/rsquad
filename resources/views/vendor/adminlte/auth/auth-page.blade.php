@@ -25,8 +25,7 @@
     {{-- Logo --}}
     <div class="{{ $auth_type ?? 'login' }}-logo">
         <a href="{{ $dashboard_url }}">
-            <img src="{{ asset('img/logo-100.webp') }}" height="100">
-            <h1>{{ config('rsquad.name') }}</h1>
+            <img src="{{ asset('img/logo-original.webp') }}" height="" alt="{{ config('rsquad.name') }}">
         </a>
     </div>
 

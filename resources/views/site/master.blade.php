@@ -44,7 +44,7 @@
         <header class="header-bg">
             <div class="header container">
                 <a href="{{ route('site.home') }}" title="{{ env('APP_NAME') }}">
-                    <img src="{{ asset('img/brand.webp') }}" width="221" height="100"
+                    <img src="{{ asset('img/logo-white-250.webp') }}" width="250" height="150"
                         alt="{{ env('APP_NAME') }}">
                 </a>
 
@@ -66,12 +66,12 @@
         <footer class="footer-bg">
             <div class="footer container">
                 <a href="{{ route('site.home') }}">
-                    <img src="{{ asset('img/brand.webp') }}" width="221" height="100"
+                    <img src="{{ asset('img/logo-white-250.webp') }}" width="250" height="150"
                         alt="{{ env('APP_NAME') }}"></a>
                 <div class="footer-contact">
                     <h3 class="font-2-l-b color-0">Contato</h3>
                     <ul class="font-2-m color-5">
-                        <li><a href="tel:+558198351988">+55 81 9835-1988</a></li>
+                        <li><a href="tel:+558199382388">+55 81 9938-2388</a></li>
                         <li><a href="mailto:contato@rsquadacademy.com.br">contato@rsquadacademy.com.br</a></li>
                         <li>Recife - PE</li>
                     </ul>

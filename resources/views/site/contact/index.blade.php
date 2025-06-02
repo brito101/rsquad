@@ -17,7 +17,7 @@
                 </div>
                 <address class="contact-mods font-2-s color-4">
                     <a href="mailto:contato@rsquadacademy.com.br">contato@rsquadacademy.com.br</a>
-                    <a href="tel:+558198351988">+55 81 9835-1988</a>
+                    <a href="tel:+558199382388">+55 81 9938-2388</a>
                 </address>
                 <div class="contact-social">
                     <a href="https://www.linkedin.com/company/rsquadacademy" target="_blank" rel="noopener"
