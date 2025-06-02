@@ -1,7 +1,7 @@
 # RSquad Academy
 
 <p align="center">
-<img src="screenshots/rsquadacademy.jpg" alt="RSquad Academy"/>
+<img src="screenshots/logo.png" alt="RSquad Academy"/>
 </p>
 
 ## Project with Laravel 12 and Docker with Laravel Pint, PEST, Debugar, AdminLTE3, DataTables server side and Spatie ACL
