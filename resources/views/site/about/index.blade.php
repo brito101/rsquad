@@ -7,7 +7,7 @@
             <p class="font-2-l-b color-5">Nossa História</p>
             <h1 class="font-1-xxl color-0">R<span class="color-p2">Squad Academy</span></h1>
             <p class="font-2-l color-0">Empresa no segmento de Educação e tecnologia voltada a Segurança da informação. 
-                Possuímos professores certificados com as principais certificaçoes e com bastante
+                Possuímos professores certificados com as principais +certificações e com bastante
                 experiência no mercado. Nosso foco principal e prover conhecimento nas áreas de:</p>
         </div>
     </div>
