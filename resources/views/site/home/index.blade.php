@@ -51,7 +51,7 @@
         <div class="about-home container">
             <div class="about-content">
                 <span class="font-2-l-b color-5">A Resiliência cibernética</span>
-                <h2 class="font-1-xxl color-0">começa com uma equipe capacitada<span class="color-p2">.</span>
+                <h2 class="font-1-xxl color-0">Começa com uma equipe capacitada<span class="color-p2">.</span>
                 </h2>
                 <p class="font-2-l color-5">Somos especialistas em capacitar profissionais de cibersegurança.</p>
                 <a class="link" href="{{ route('site.courses') }}">Escolha um curso</a>
