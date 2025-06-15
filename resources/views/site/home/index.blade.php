@@ -80,9 +80,9 @@
     <section class="team" aria-label="Nosso Time">
         <h2 class="container font-1-xxl">nosso time<span class="color-p2">.</span></h2>
         <ul>
-            <li><img src="{{ asset('img/team/eric.webp') }}" alt="Eric Fraga" width="400" height="350"></li>
-            <li><img src="{{ asset('img/team/wagner.webp') }}" alt="Wagner Souza" width="400" height="350"></li>
-            <li><img src="{{ asset('img/team/eddy.webp') }}" alt="Eddy Martins" width="400" height="350"></li>
+            <li><img src="{{ asset('img/team-v1/eric.webp') }}" alt="Eric Fraga" width="400" height="350"></li>
+            <li><img src="{{ asset('img/team-v1/wagner.webp') }}" alt="Wagner Souza" width="400" height="350"></li>
+            <li><img src="{{ asset('img/team-v1/eddy.webp') }}" alt="Eddy Martins" width="400" height="350"></li>
         </ul>
     </section>
 
