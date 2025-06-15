@@ -5,7 +5,7 @@
         <div class="title-bg">
             <div class="title container">
                 <p class="font-2-l-b color-5">Respostas em até 24h</p>
-                <h1 class="font-1-xxl color-0">nosso contato<span class="color-p1">.</span></h1>
+                <h1 class="font-1-xxl color-0">Nosso contato<span class="color-p1">.</span></h1>
             </div>
         </div>
 

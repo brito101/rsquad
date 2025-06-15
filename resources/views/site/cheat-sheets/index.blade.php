@@ -5,7 +5,7 @@
         <div class="title-bg">
             <div class="title container">
                 <p class="font-2-l-b color-5">Cheat Sheet</p>
-                <h1 class="font-1-xxl color-0">confira nossos cheats<span class="color-p1">.</span></h1>
+                <h1 class="font-1-xxl color-0">Confira nossos cheats<span class="color-p1">.</span></h1>
             </div>
         </div>
     </main>

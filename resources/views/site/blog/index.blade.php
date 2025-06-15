@@ -5,7 +5,7 @@
         <div class="title-bg">
             <div class="title container">
                 <p class="font-2-l-b color-5">Blog</p>
-                <h1 class="font-1-xxl color-0">confira nossos
+                <h1 class="font-1-xxl color-0">Confira nossos
                     posts{{ isset($category) ? ' em: ' . $category->title : '' }}<span class="color-p2">.</span></h1>
             </div>
         </div>

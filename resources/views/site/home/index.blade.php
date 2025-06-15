@@ -23,7 +23,7 @@
     {{-- Courses --}}
     @if ($courses->count() > 0)
         <article class="courses-list">
-            <h2 class="container font-1-xxl">escolha o seu<span class="color-p2">.</span></h2>
+            <h2 class="container font-1-xxl">Escolha o seu<span class="color-p2">.</span></h2>
             <ul>
                 @foreach ($courses as $course)
                     <li>
@@ -42,7 +42,7 @@
         </article>
     @else
         <article class="courses-list">
-            <h2 class="container font-1-xxl">cursos em breve<span class="color-p2">.</span></h2>
+            <h2 class="container font-1-xxl">Cursos em breve<span class="color-p2">.</span></h2>
         </article>
     @endif
 
@@ -78,7 +78,7 @@
 
     {{-- Team --}}
     <section class="team" aria-label="Nosso Time">
-        <h2 class="container font-1-xxl">nosso time<span class="color-p2">.</span></h2>
+        <h2 class="container font-1-xxl">Nosso time<span class="color-p2">.</span></h2>
         <ul>
             <li><img src="{{ asset('img/team-v1/eric.webp') }}" alt="Eric Fraga" width="400" height="350"></li>
             <li><img src="{{ asset('img/team-v1/wagner.webp') }}" alt="Wagner Souza" width="400" height="350"></li>

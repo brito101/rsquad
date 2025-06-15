@@ -45,7 +45,7 @@
 
 <article class="advantages-bg">
     <div class="advantages container">
-        <h2 class="font-1-xxl color-0">conte conosco<span class="color-p1">.</span></h2>
+        <h2 class="font-1-xxl color-0">Conte conosco<span class="color-p1">.</span></h2>
         <ul>
             <li>
                 <img src="{{ asset('img/icons/square.svg') }}" alt="Comece sua jornada">
@@ -84,7 +84,7 @@
 </article>
 
 <article class="questions container">
-    <h2 class="font-1-xxl">perguntas frequentes<span class="color-p2">.</span></h2>
+    <h2 class="font-1-xxl">Perguntas frequentes<span class="color-p2">.</span></h2>
     <dl>
         <div>
             <dt><button class="font-1-m-b" aria-controls="question1" aria-expanded="true">Qual forma de pagamento vocês

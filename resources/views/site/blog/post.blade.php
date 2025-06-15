@@ -22,7 +22,7 @@
         <section class="related">
             <div class="title-bg">
                 <div class="container">
-                    <h2 class="font-1-xxl color-0">artigos relacionados<span class="color-p1">.</span></h2>
+                    <h2 class="font-1-xxl color-0">Artigos relacionados<span class="color-p1">.</span></h2>
                 </div>
             </div>
             @foreach ($related as $post)

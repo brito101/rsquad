@@ -47,7 +47,7 @@
 
     @if ($courses->count() > 0)
         <article class="courses-list">
-            <h2 class="container font-1-xxl">escolha o seu<span class="color-p2">.</span></h2>
+            <h2 class="container font-1-xxl">Escolha o seu<span class="color-p2">.</span></h2>
             <ul>
                 @foreach ($courses as $course)
                     <li>

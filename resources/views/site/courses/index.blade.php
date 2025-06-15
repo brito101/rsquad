@@ -5,7 +5,7 @@
         <div class="title-bg">
             <div class="title container">
                 <p class="font-2-l-b color-5">Escolha o melhor para você</p>
-                <h1 class="font-1-xxl color-0">nossos cursos<span class="color-p2">.</span></h1>
+                <h1 class="font-1-xxl color-0">Nossos cursos<span class="color-p2">.</span></h1>
             </div>
         </div>
         @if ($courses->count() > 0)
