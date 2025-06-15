@@ -589,7 +589,7 @@
                     @endphp
 
                     <div class="card-body">
-                        <x-adminlte-datatable id="table2" :heads="$heads" :heads="$heads" :config="$config" striped
+                        <x-adminlte-datatable id="tableAccess" :heads="$heads" :heads="$heads" :config="$config" striped
                             hoverable beautify />
                     </div>
                 </div>
