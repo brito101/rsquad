@@ -280,9 +280,9 @@ class UserController extends Controller
             $user = User::where('id', Auth::user()->id)->first();
         } else {
             if (Auth::user()->hasRole('Programador')) {
-                $viewUser = ViewsUser::find($id);
+                $viewUser = ViewsUser::find($request->user);
             } else {
-                $viewUser = ViewsUser::whereNotIn('type', ['Programador', 'Aluno'])->find($id);
+                $viewUser = ViewsUser::whereNotIn('type', ['Programador', 'Aluno'])->find($request->user);
             }
             $user = User::where('id', $viewUser->id)->first();
         }
