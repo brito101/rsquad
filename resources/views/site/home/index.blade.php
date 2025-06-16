@@ -32,7 +32,7 @@
                                 alt="{{ $course->name }}" width="675" height="385">
                             <h3 class="font-1-xl">{{ $course->name }}</h3>
                             <p class="font-2-m color-p2">
-                                {{ $course->price > 0 ? 'R$ ' . number_format($course->price, 2, ',', '.') : '' }}
+                                {{ $course->is_promotional == 1 ? 'R$ ' . number_format($course->promotional_price, 2, ',', '.') : 'R$ ' . number_format($course->price, 2, ',', '.') }}
                             </p>
                         </a>
                     </li>
