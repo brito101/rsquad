@@ -11,6 +11,7 @@ use App\Models\Course;
 use App\Models\CourseCategoryPivot;
 use App\Models\CourseInstructor;
 use App\Models\CourseModule;
+use App\Models\CourseMonitor;
 use App\Models\CourseStudent;
 use App\Models\Views\CategoryCourse as ViewsCategoryCourse;
 use App\Models\Views\Student;
@@ -42,6 +43,13 @@ class CourseController extends Controller
                             $q->where('user_id', auth()->user()->id);
                         });
                 })->with(['classes', 'instructors', 'modules'])->get();
+            } elseif (auth()->user()->hasRole('Monitor')) {
+                $courses = Course::where(function ($query) {
+                    $query->where('user_id', auth()->user()->id)
+                        ->orWhereHas('monitors', function ($q) {
+                            $q->where('user_id', auth()->user()->id);
+                        });
+                })->with(['students', 'modules', 'classes'])->get();
             } else {
                 $courses = new Course;
             }
@@ -70,6 +78,11 @@ class CourseController extends Controller
                             return $pivot->user->name;
                         })->implode(' - ');
                     })
+                    ->addColumn('monitors', function ($row) {
+                        return $row->monitors->map(function ($pivot) {
+                            return $pivot->user->name;
+                        })->implode(' - ');
+                    })
                     ->addColumn('students', function ($row) {
                         return $row->students->count();
                     })
@@ -94,12 +107,12 @@ class CourseController extends Controller
                             $sales_link = '';
                         }
                         if ($row->modules->count() > 0) {
-                            $modules_link = '<a class="btn btn-xs btn-info mx-1 shadow" title="Módulos" href="courses/'.$row->id.'/modules"><i class="fa fa-lg fa-fw fa-layer-group"></i></a>';
+                            $modules_link = '<a class="btn btn-xs btn-info mx-1 shadow" title="Módulos" href="'.route('admin.courses.modules', ['course' => $row->id]).'"><i class="fa fa-lg fa-fw fa-layer-group"></i></a>';
                         } else {
                             $modules_link = '';
                         }
                         if ($row->classes->count() > 0) {
-                            $classes_link = '<a class="btn btn-xs btn-warning mx-1 shadow" title="Aulas" href="courses/'.$row->id.'/classes"><i class="fa fa-lg fa-fw fa-chalkboard-teacher"></i></a>';
+                            $classes_link = '<a class="btn btn-xs btn-warning mx-1 shadow" title="Aulas" href="'.route('admin.courses.classes', ['course' => $row->id]).'"><i class="fa fa-lg fa-fw fa-chalkboard-teacher"></i></a>';
                         } else {
                             $classes_link = '';
                         }
@@ -108,12 +121,17 @@ class CourseController extends Controller
                         } else {
                             $students = '';
                         }
-                        $edit = '<a class="btn btn-xs btn-primary mx-1 shadow" title="Editar" href="'.route('admin.courses.edit', ['course' => $row->id]).'"><i class="fa fa-lg fa-fw fa-pen"></i></a>';
-                        $delete = '<form method="POST" action="'.route('admin.courses.destroy', ['course' => $row->id]).'" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="'.$token.'"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão deste curso?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>';
+                        if (Auth::user()->hasPermissionTo('Editar Cursos') && Auth::user()->hasPermissionTo('Excluir Cursos')) {
+                            $edit = '<a class="btn btn-xs btn-primary mx-1 shadow" title="Editar" href="'.route('admin.courses.edit', ['course' => $row->id]).'"><i class="fa fa-lg fa-fw fa-pen"></i></a>';
+                            $delete = '<form method="POST" action="'.route('admin.courses.destroy', ['course' => $row->id]).'" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="'.$token.'"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão deste curso?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>';
+                        } else {
+                            $edit = '';
+                            $delete = '';
+                        }
 
                         return '<div class="d-flex justify-content-center align-items-center">'.$sales_link.$students.$modules_link.$classes_link.$edit.$delete.'</div>';
                     })
-                    ->rawColumns(['cover', 'categories', 'modules', 'instructors', 'students', 'active', 'price', 'action'])
+                    ->rawColumns(['cover', 'categories', 'modules', 'instructors', 'monitors', 'students', 'active', 'price', 'action'])
                     ->make(true);
             } catch (Exception $e) {
                 return response([
@@ -138,9 +156,10 @@ class CourseController extends Controller
 
         $categories = ViewsCategoryCourse::orderBy('name')->get();
 
-        $instructors = ViewsUser::whereNotIn('type', ['Programador', 'Aluno'])->orderBy('name')->get();
+        $instructors = ViewsUser::whereNotIn('type', ['Programador', 'Aluno', 'Monitor'])->orderBy('name')->get();
+        $monitors = ViewsUser::where('type', ['Monitor'])->orderBy('name')->get();
 
-        return view('admin.courses.create', compact('categories', 'instructors'));
+        return view('admin.courses.create', compact('categories', 'instructors', 'monitors'));
     }
 
     /**
@@ -238,6 +257,18 @@ class CourseController extends Controller
                 }
             }
 
+            $monitors = $request->monitors;
+            if ($monitors && count($monitors) > 0) {
+                $users = ViewsUser::whereIn('id', $monitors)->where('type', 'Monitor')->pluck('id');
+                foreach ($users as $user) {
+                    $pivot = new CourseMonitor;
+                    $pivot->create([
+                        'course_id' => $course->id,
+                        'user_id' => $user,
+                    ]);
+                }
+            }
+
             return redirect()
                 ->route('admin.courses.index')
                 ->with('success', 'Cadastro realizado!');
@@ -275,9 +306,10 @@ class CourseController extends Controller
 
         $categories = ViewsCategoryCourse::orderBy('name')->get();
 
-        $instructors = ViewsUser::whereNotIn('type', ['Programador', 'Aluno'])->orderBy('name')->get();
+        $instructors = ViewsUser::whereNotIn('type', ['Programador', 'Aluno', 'Monitor'])->orderBy('name')->get();
+        $monitors = ViewsUser::where('type', ['Monitor'])->orderBy('name')->get();
 
-        return view('admin.courses.edit', compact('course', 'categories', 'instructors'));
+        return view('admin.courses.edit', compact('course', 'categories', 'instructors', 'monitors'));
     }
 
     /**
@@ -410,6 +442,20 @@ class CourseController extends Controller
                 }
             }
 
+            CourseMonitor::where('course_id', $course->id)->delete();
+
+            $monitors = $request->monitors;
+            if ($monitors && count($monitors) > 0) {
+                $users = ViewsUser::whereIn('id', $monitors)->where('type', 'Monitor')->pluck('id');
+                foreach ($users as $user) {
+                    $pivot = new CourseMonitor;
+                    $pivot->create([
+                        'course_id' => $course->id,
+                        'user_id' => $user,
+                    ]);
+                }
+            }
+
             return redirect()
                 ->route('admin.courses.index')
                 ->with('success', 'Atualização realizada!');
@@ -493,6 +539,13 @@ class CourseController extends Controller
                         $q->where('user_id', auth()->user()->id);
                     });
             })->find($id);
+        } elseif (auth()->user()->hasRole('Monitor')) {
+            $course = Course::where(function ($query) {
+                $query->where('user_id', auth()->user()->id)
+                    ->orWhereHas('monitors', function ($q) {
+                        $q->where('user_id', auth()->user()->id);
+                    });
+            })->find($id);
         } else {
             $course = null;
         }
@@ -509,6 +562,15 @@ class CourseController extends Controller
                     $query->where('user_id', auth()->user()->id)
                         ->orWhereHas('course', function ($q) {
                             $q->whereHas('instructors', function ($q) {
+                                $q->where('user_id', auth()->user()->id);
+                            });
+                        });
+                })->where('course_id', $course->id)->get();
+            } elseif (auth()->user()->hasRole('Monitor')) {
+                $modules = CourseModule::where(function ($query) {
+                    $query->where('user_id', auth()->user()->id)
+                        ->orWhereHas('course', function ($q) {
+                            $q->whereHas('monitors', function ($q) {
                                 $q->where('user_id', auth()->user()->id);
                             });
                         });
@@ -545,12 +607,17 @@ class CourseController extends Controller
                             $link = '';
                         }
                         if ($row->classes->count() > 0) {
-                            $classes_link = '<a class="btn btn-xs btn-warning mx-1 shadow" title="Aulas" href="courses/'.$row->id.'/classes"><i class="fa fa-lg fa-fw fa-chalkboard-teacher"></i></a>';
+                            $classes_link = '<a class="btn btn-xs btn-warning mx-1 shadow" title="Aulas" href="'.route('admin.course-modules.classes', ['module', $row->id]).'"><i class="fa fa-lg fa-fw fa-chalkboard-teacher"></i></a>';
                         } else {
                             $classes_link = '';
                         }
-                        $edit = '<a class="btn btn-xs btn-primary mx-1 shadow" title="Editar" href="'.route('admin.classes.edit', ['class' => $row->id]).'"><i class="fa fa-lg fa-fw fa-pen"></i></a>';
-                        $delete = '<form method="POST" action="'.route('admin.classes.destroy', ['class' => $row->id]).'" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="'.$token.'"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão desta aula?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>';
+                        if (Auth::user()->hasPermissionTo('Editar Módulos de Cursos') && Auth::user()->hasPermissionTo('Excluir Módulos de Cursos')) {
+                            $edit = '<a class="btn btn-xs btn-primary mx-1 shadow" title="Editar" href="'.route('admin.course-modules.edit', ['module' => $row->id]).'"><i class="fa fa-lg fa-fw fa-pen"></i></a>';
+                            $delete = '<form method="POST" action="'.route('admin.course-modules.destroy', ['module' => $row->id]).'" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="'.$token.'"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão deste módulo?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>';
+                        } else {
+                            $edit = '';
+                            $delete = '';
+                        }
 
                         return '<div class="d-flex justify-content-center align-items-center">'.$link.$classes_link.$edit.$delete.'</div>';
                     })
@@ -583,6 +650,13 @@ class CourseController extends Controller
                         $q->where('user_id', auth()->user()->id);
                     });
             })->find($id);
+        } elseif (auth()->user()->hasRole('Monitor')) {
+            $course = Course::where(function ($query) {
+                $query->where('user_id', auth()->user()->id)
+                    ->orWhereHas('monitors', function ($q) {
+                        $q->where('user_id', auth()->user()->id);
+                    });
+            })->find($id);
         } else {
             $course = null;
         }
@@ -599,6 +673,15 @@ class CourseController extends Controller
                     $query->where('user_id', auth()->user()->id)
                         ->orWhereHas('course', function ($q) {
                             $q->whereHas('instructors', function ($q) {
+                                $q->where('user_id', auth()->user()->id);
+                            });
+                        });
+                })->where('course_id', $course->id)->get();
+            } elseif (auth()->user()->hasRole('Monitor')) {
+                $classes = Classroom::where(function ($query) {
+                    $query->where('user_id', auth()->user()->id)
+                        ->orWhereHas('course', function ($q) {
+                            $q->whereHas('monitors', function ($q) {
                                 $q->where('user_id', auth()->user()->id);
                             });
                         });
@@ -628,8 +711,13 @@ class CourseController extends Controller
                         } else {
                             $link = '';
                         }
-                        $edit = '<a class="btn btn-xs btn-primary mx-1 shadow" title="Editar" href="'.route('admin.classes.edit', ['class' => $row->id]).'"><i class="fa fa-lg fa-fw fa-pen"></i></a>';
-                        $delete = '<form method="POST" action="'.route('admin.classes.destroy', ['class' => $row->id]).'" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="'.$token.'"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão desta aula?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>';
+                        if (Auth::user()->hasPermissionTo('Editar Aulas') && Auth::user()->hasPermissionTo('Excluir Aulas')) {
+                            $edit = '<a class="btn btn-xs btn-primary mx-1 shadow" title="Editar" href="'.route('admin.classes.edit', ['class' => $row->id]).'"><i class="fa fa-lg fa-fw fa-pen"></i></a>';
+                            $delete = '<form method="POST" action="'.route('admin.classes.destroy', ['class' => $row->id]).'" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="'.$token.'"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão desta aula?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>';
+                        } else {
+                            $edit = '';
+                            $delete = '';
+                        }
 
                         return '<div class="d-flex justify-content-center align-items-center">'.$link.$edit.$delete.'</div>';
                     })
@@ -660,6 +748,13 @@ class CourseController extends Controller
             $course = Course::where(function ($query) {
                 $query->where('user_id', auth()->user()->id)
                     ->orWhereHas('instructors', function ($q) {
+                        $q->where('user_id', auth()->user()->id);
+                    });
+            })->find($id);
+        } elseif (auth()->user()->hasRole('Monitor')) {
+            $course = Course::where(function ($query) {
+                $query->where('user_id', auth()->user()->id)
+                    ->orWhereHas('monitors', function ($q) {
                         $q->where('user_id', auth()->user()->id);
                     });
             })->find($id);

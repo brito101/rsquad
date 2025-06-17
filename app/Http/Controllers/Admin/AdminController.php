@@ -30,6 +30,7 @@ class AdminController extends Controller
 
         $administrators = ViewsUser::where('type', 'Administrador')->count();
         $instructors = ViewsUser::where('type', 'Instrutor')->count();
+        $monitors = ViewsUser::where('type', 'Monitor')->count();
         $students = ViewsUser::where('type', 'Aluno')->get();
 
         if (auth()->user()->hasRole(['Programador', 'Administrador'])) {
@@ -41,21 +42,31 @@ class AdminController extends Controller
                         $q->where('user_id', auth()->user()->id);
                     });
             })->with(['students', 'modules', 'classes'])->get();
+        } elseif (auth()->user()->hasRole('Monitor')) {
+            $courses = Course::where(function ($query) {
+                $query->where('user_id', auth()->user()->id)
+                    ->orWhereHas('monitors', function ($q) {
+                        $q->where('user_id', auth()->user()->id);
+                    });
+            })->with(['students', 'modules', 'classes'])->get();
         } else {
             $courses = new Course;
         }
 
         $modules = new Collection;
-        foreach ($courses as $course) {
-            foreach ($course->modules as $module) {
-                $modules[] = $module;
-            }
-        }
-
         $classes = new Collection;
-        foreach ($courses as $course) {
-            foreach ($course->classes as $classe) {
-                $classes[] = $classe;
+
+        if ($courses->count() > 0) {
+            foreach ($courses as $course) {
+                foreach ($course->modules as $module) {
+                    $modules[] = $module;
+                }
+            }
+
+            foreach ($courses as $course) {
+                foreach ($course->classes as $classe) {
+                    $classes[] = $classe;
+                }
             }
         }
 
@@ -96,9 +107,14 @@ class AdminController extends Controller
         }
 
         $studentCourseChart = ['label' => [], 'data' => []];
-        foreach ($courses as $course) {
-            $studentCourseChart['label'][] = Str::limit($course->name, 25);
-            $studentCourseChart['data'][] = (int) $course->students->count();
+        if ($courses->count() === 0) {
+            $studentCourseChart['label'][] = 'Nenhum curso encontrado';
+            $studentCourseChart['data'][] = 0;
+        } else {
+            foreach ($courses as $course) {
+                $studentCourseChart['label'][] = Str::limit($course->name, 25);
+                $studentCourseChart['data'][] = (int) $course->students->count();
+            }
         }
 
         /** Statistics */
@@ -112,6 +128,7 @@ class AdminController extends Controller
             'administrators',
             'instructors',
             'courses',
+            'monitors',
             'students',
             'onlineUsers',
             'percent',

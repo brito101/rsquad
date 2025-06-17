@@ -11,6 +11,7 @@ use App\Models\Course;
 use App\Models\CourseModule;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
@@ -33,6 +34,15 @@ class CourseModuleController extends Controller
                     $query->where('user_id', auth()->user()->id)
                         ->orWhereHas('course', function ($q) {
                             $q->whereHas('instructors', function ($q) {
+                                $q->where('user_id', auth()->user()->id);
+                            });
+                        });
+                })->with(['course', 'classes'])->orderBy('course_id')->orderBy('order')->get();
+            } elseif (auth()->user()->hasRole('Monitor')) {
+                $modules = CourseModule::where(function ($query) {
+                    $query->where('user_id', auth()->user()->id)
+                        ->orWhereHas('course', function ($q) {
+                            $q->whereHas('monitors', function ($q) {
                                 $q->where('user_id', auth()->user()->id);
                             });
                         });
@@ -72,12 +82,17 @@ class CourseModuleController extends Controller
                             $link = '';
                         }
                         if ($row->classes->count() > 0) {
-                            $classes_link = '<a class="btn btn-xs btn-warning mx-1 shadow" title="Aulas" href="course-modules/'.$row->id.'/classes"><i class="fa fa-lg fa-fw fa-chalkboard-teacher"></i></a>';
+                            $classes_link = '<a class="btn btn-xs btn-warning mx-1 shadow" title="Aulas" href="'.route('admin.course-modules.classes', ['module' => $row->id]).'"><i class="fa fa-lg fa-fw fa-chalkboard-teacher"></i></a>';
                         } else {
                             $classes_link = '';
                         }
-                        $edit = '<a class="btn btn-xs btn-primary mx-1 shadow" title="Editar" href="'.route('admin.course-modules.edit', ['course_module' => $row->id]).'"><i class="fa fa-lg fa-fw fa-pen"></i></a>';
-                        $delete = '<form method="POST" action="'.route('admin.course-modules.destroy', ['course_module' => $row->id]).'" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="'.$token.'"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão desta aula?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>';
+                        if (Auth::user()->hasPermissionTo('Editar Módulos de Cursos') && Auth::user()->hasPermissionTo('Excluir Módulos de Cursos')) {
+                            $edit = '<a class="btn btn-xs btn-primary mx-1 shadow" title="Editar" href="'.route('admin.course-modules.edit', ['course_module' => $row->id]).'"><i class="fa fa-lg fa-fw fa-pen"></i></a>';
+                            $delete = '<form method="POST" action="'.route('admin.course-modules.destroy', ['course_module' => $row->id]).'" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="'.$token.'"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão desta aula?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>';
+                        } else {
+                            $edit = '';
+                            $delete = '';
+                        }
 
                         return '<div class="d-flex justify-content-center align-items-center">'.$link.$classes_link.$edit.$delete.'</div>';
                     })
@@ -469,6 +484,15 @@ class CourseModuleController extends Controller
                         });
                     });
             })->find($id);
+        } elseif (auth()->user()->hasRole('Monitor')) {
+            $module = Classroom::where(function ($query) {
+                $query->where('user_id', auth()->user()->id)
+                    ->orWhereHas('course', function ($q) {
+                        $q->whereHas('monitors', function ($q) {
+                            $q->where('user_id', auth()->user()->id);
+                        });
+                    });
+            })->find($id);
         } else {
             $module = null;
         }
@@ -485,6 +509,15 @@ class CourseModuleController extends Controller
                     $query->where('user_id', auth()->user()->id)
                         ->orWhereHas('course', function ($q) {
                             $q->whereHas('instructors', function ($q) {
+                                $q->where('user_id', auth()->user()->id);
+                            });
+                        });
+                })->where('course_module_id', $module->id)->get();
+            } elseif (auth()->user()->hasRole('Monitor')) {
+                $classes = Classroom::where(function ($query) {
+                    $query->where('user_id', auth()->user()->id)
+                        ->orWhereHas('course', function ($q) {
+                            $q->whereHas('monitors', function ($q) {
                                 $q->where('user_id', auth()->user()->id);
                             });
                         });
@@ -517,8 +550,13 @@ class CourseModuleController extends Controller
                         } else {
                             $link = '';
                         }
-                        $edit = '<a class="btn btn-xs btn-primary mx-1 shadow" title="Editar" href="'.route('admin.classes.edit', ['class' => $row->id]).'"><i class="fa fa-lg fa-fw fa-pen"></i></a>';
-                        $delete = '<form method="POST" action="'.route('admin.classes.destroy', ['class' => $row->id]).'" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="'.$token.'"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão desta aula?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>';
+                        if (Auth::user()->hasPermissionTo('Editar Aulas') && Auth::user()->hasPermissionTo('Excluir Aulas')) {
+                            $edit = '<a class="btn btn-xs btn-primary mx-1 shadow" title="Editar" href="'.route('admin.classes.edit', ['class' => $row->id]).'"><i class="fa fa-lg fa-fw fa-pen"></i></a>';
+                            $delete = '<form method="POST" action="'.route('admin.classes.destroy', ['class' => $row->id]).'" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="'.$token.'"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão desta aula?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>';
+                        } else {
+                            $edit = '';
+                            $delete = '';
+                        }
 
                         return '<div class="d-flex justify-content-center align-items-center">'.$link.$edit.$delete.'</div>';
                     })

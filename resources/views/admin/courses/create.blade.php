@@ -85,7 +85,7 @@
                                         ];
                                     @endphp
 
-                                    <div class="col-12 col-md-6 form-group px-0 pr-md-2 mb-0">
+                                    <div class="col-12 col-md-4 form-group px-0 pr-md-2 mb-0">
                                         <x-adminlte-select-bs id="categories" name="categories[]" label="Categorias"
                                             label-class="text-dark" igroup-size="md" :config="$config" multiple
                                             class="border">
@@ -96,13 +96,24 @@
                                             @endforeach
                                         </x-adminlte-select-bs>
                                     </div>
-                                    <div class="col-12 col-md-6 form-group px-0 pl-md-2 mb-0">
+                                    <div class="col-12 col-md-4 form-group px-0 px-md-2 mb-0">
                                         <x-adminlte-select-bs id="instructors" name="instructors[]" label="Instrutores"
                                             label-class="text-dark" igroup-size="md" :config="$config" multiple
                                             class="border">
                                             @foreach ($instructors as $instructor)
                                                 <option value="{{ $instructor->id }}">
                                                     {{ $instructor->name }}
+                                                </option>
+                                            @endforeach
+                                        </x-adminlte-select-bs>
+                                    </div>
+                                    <div class="col-12 col-md-4 form-group px-0 pl-md-2 mb-0">
+                                        <x-adminlte-select-bs id="monitors" name="monitors[]" label="Monitores"
+                                            label-class="text-dark" igroup-size="md" :config="$config" multiple
+                                            class="border">
+                                            @foreach ($monitors as $monitor)
+                                                <option value="{{ $monitor->id }}">
+                                                    {{ $monitor->name }}
                                                 </option>
                                             @endforeach
                                         </x-adminlte-select-bs>
@@ -127,9 +138,9 @@
                                     </div>
                                     <div class="col-12 col-md-2 form-group px-0 pl-md-2">
                                         <label class="align-self-center mr-2">Promoção Ativa?</label>
-                                        <x-adminlte-input-switch name="is_promotional" id="is_promotional" data-on-color="success"
-                                            data-off-color="danger" data-on-text="Sim" data-off-text="Não"
-                                            enable-old-support />
+                                        <x-adminlte-input-switch name="is_promotional" id="is_promotional"
+                                            data-on-color="success" data-off-color="danger" data-on-text="Sim"
+                                            data-off-text="Não" enable-old-support />
                                     </div>
                                 </div>
 

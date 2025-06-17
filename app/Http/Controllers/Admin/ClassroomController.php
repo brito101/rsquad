@@ -10,6 +10,7 @@ use App\Models\Course;
 use App\Models\CourseModule;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
 
 class ClassroomController extends Controller
@@ -29,6 +30,15 @@ class ClassroomController extends Controller
                     $query->where('user_id', auth()->user()->id)
                         ->orWhereHas('course', function ($q) {
                             $q->whereHas('instructors', function ($q) {
+                                $q->where('user_id', auth()->user()->id);
+                            });
+                        });
+                })->with(['course', 'module'])->get();
+            } elseif (auth()->user()->hasRole('Monitor')) {
+                $classes = Classroom::where(function ($query) {
+                    $query->where('user_id', auth()->user()->id)
+                        ->orWhereHas('course', function ($q) {
+                            $q->whereHas('monitors', function ($q) {
                                 $q->where('user_id', auth()->user()->id);
                             });
                         });
@@ -61,8 +71,13 @@ class ClassroomController extends Controller
                         } else {
                             $link = '';
                         }
-                        $edit = '<a class="btn btn-xs btn-primary mx-1 shadow" title="Editar" href="'.route('admin.classes.edit', ['class' => $row->id]).'"><i class="fa fa-lg fa-fw fa-pen"></i></a>';
-                        $delete = '<form method="POST" action="'.route('admin.classes.destroy', ['class' => $row->id]).'" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="'.$token.'"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão desta aula?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>';
+                        if (Auth::user()->hasPermissionTo('Editar Aulas') && Auth::user()->hasPermissionTo('Excluir Aulas')) {
+                            $edit = '<a class="btn btn-xs btn-primary mx-1 shadow" title="Editar" href="'.route('admin.classes.edit', ['class' => $row->id]).'"><i class="fa fa-lg fa-fw fa-pen"></i></a>';
+                            $delete = '<form method="POST" action="'.route('admin.classes.destroy', ['class' => $row->id]).'" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="'.$token.'"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão desta aula?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>';
+                        } else {
+                            $edit = '';
+                            $delete = '';
+                        }
 
                         return '<div class="d-flex justify-content-center align-items-center">'.$link.$edit.$delete.'</div>';
                     })

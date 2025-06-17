@@ -96,7 +96,7 @@
                                         ];
                                     @endphp
 
-                                    <div class="col-12 col-md-6 form-group px-0 pr-md-2 mb-0">
+                                    <div class="col-12 col-md-4 form-group px-0 pr-md-2 mb-0">
                                         <x-adminlte-select-bs id="categories" name="categories[]" label="Categorias"
                                             label-class="text-dark" igroup-size="md" :config="$config" multiple
                                             class="border">
@@ -108,7 +108,7 @@
                                             @endforeach
                                         </x-adminlte-select-bs>
                                     </div>
-                                    <div class="col-12 col-md-6 form-group px-0 pl-md-2 mb-0">
+                                    <div class="col-12 col-md-4 form-group px-0 px-md-2 mb-0">
                                         <x-adminlte-select-bs id="instructors" name="instructors[]" label="Instrutores"
                                             label-class="text-dark" igroup-size="md" :config="$config" multiple
                                             class="border">
@@ -116,6 +116,18 @@
                                                 <option value="{{ $instructor->id }}"
                                                     {{ in_array($instructor->id, $course->instructors->pluck('user_id')->toArray()) ? 'selected' : '' }}>
                                                     {{ $instructor->name }}
+                                                </option>
+                                            @endforeach
+                                        </x-adminlte-select-bs>
+                                    </div>
+                                    <div class="col-12 col-md-4 form-group px-0 pl-md-2 mb-0">
+                                        <x-adminlte-select-bs id="monitors" name="monitors[]" label="Monitores"
+                                            label-class="text-dark" igroup-size="md" :config="$config" multiple
+                                            class="border">
+                                            @foreach ($monitors as $monitor)
+                                                <option value="{{ $monitor->id }}"
+                                                    {{ in_array($monitor->id, $course->monitors->pluck('user_id')->toArray()) ? 'selected' : '' }}>
+                                                    {{ $monitor->name }}
                                                 </option>
                                             @endforeach
                                         </x-adminlte-select-bs>
@@ -136,19 +148,19 @@
                                     <div class="col-12 col-md-6 form-group px-0 px-md-2">
                                         <label for="sales_link">Link de Venda</label>
                                         <input type="text" class="form-control" id="sales_link"
-                                            placeholder="Link do site utilizado para a aquisição do curso" name="sales_link"
-                                            value="{{ old('sales_link') ?? $course->sales_link }}">
+                                            placeholder="Link do site utilizado para a aquisição do curso"
+                                            name="sales_link" value="{{ old('sales_link') ?? $course->sales_link }}">
                                     </div>
                                     <div class="col-12 col-md-2 form-group px-0 pl-md-2">
                                         <label class="align-self-center mr-2">Promoção Ativa?</label>
                                         @if ($course->is_promotional == 1)
-                                            <x-adminlte-input-switch name="is_promotional" id="is_promotional" data-on-color="success"
-                                                data-off-color="danger" data-on-text="Sim" data-off-text="Não"
-                                                enable-old-support checked />
+                                            <x-adminlte-input-switch name="is_promotional" id="is_promotional"
+                                                data-on-color="success" data-off-color="danger" data-on-text="Sim"
+                                                data-off-text="Não" enable-old-support checked />
                                         @else
-                                            <x-adminlte-input-switch name="is_promotional" id="is_promotional" data-on-color="success"
-                                                data-off-color="danger" data-on-text="Sim" data-off-text="Não"
-                                                enable-old-support />
+                                            <x-adminlte-input-switch name="is_promotional" id="is_promotional"
+                                                data-on-color="success" data-off-color="danger" data-on-text="Sim"
+                                                data-off-text="Não" enable-old-support />
                                         @endif
                                     </div>
                                 </div>

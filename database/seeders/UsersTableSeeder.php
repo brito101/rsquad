@@ -35,6 +35,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => new DateTime('now'),
             ],
             [
+                'name' => 'Monitor',
+                'email' => env('MONITOR_EMAIL'),
+                'password' => bcrypt(env('MONITOR_PASSWD')),
+                'created_at' => new DateTime('now'),
+            ],
+            [
                 'name' => 'Aluno',
                 'email' => env('STUDENT_EMAIL'),
                 'password' => bcrypt(env('STUDENT_PASSWD')),

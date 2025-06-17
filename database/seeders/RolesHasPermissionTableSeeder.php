@@ -66,7 +66,6 @@ class RolesHasPermissionTableSeeder extends Seeder
                 'permission_id' => 11,
                 'role_id' => 2,
             ],
-
             /** Users from 12 to 17 (programmer and administrator) */
             [
                 'permission_id' => 12,
@@ -109,6 +108,10 @@ class RolesHasPermissionTableSeeder extends Seeder
                 'role_id' => 4,
             ],
             [
+                'permission_id' => 15,
+                'role_id' => 5,
+            ],
+            [
                 'permission_id' => 16,
                 'role_id' => 1,
             ],
@@ -124,7 +127,7 @@ class RolesHasPermissionTableSeeder extends Seeder
                 'permission_id' => 17,
                 'role_id' => 2,
             ],
-            /** Administration Dashboard 18 (Programmers, Administrators and Instructors) */
+            /** Administration Dashboard 18 (Programmers, Administrators, Instructors and Monitors) */
             [
                 'permission_id' => 18,
                 'role_id' => 1,
@@ -137,10 +140,14 @@ class RolesHasPermissionTableSeeder extends Seeder
                 'permission_id' => 18,
                 'role_id' => 3,
             ],
+            [
+                'permission_id' => 18,
+                'role_id' => 4,
+            ],
             /** Academy Dashboard 19 (Students) */
             [
                 'permission_id' => 19,
-                'role_id' => 4,
+                'role_id' => 5,
             ],
             /** Course Configurations 20 (Programmers and Administrators) */
             [
@@ -192,7 +199,7 @@ class RolesHasPermissionTableSeeder extends Seeder
                 'permission_id' => 25,
                 'role_id' => 2,
             ],
-            /** Courses from 26 to 30 (Programmers, Administrators and Instructors) */
+            /** Courses from 26 to 30 (Programmers, Administrators, Instructors and Monitors) */
             [
                 'permission_id' => 26,
                 'role_id' => 1,
@@ -206,6 +213,10 @@ class RolesHasPermissionTableSeeder extends Seeder
                 'role_id' => 3,
             ],
             [
+                'permission_id' => 26,
+                'role_id' => 4,
+            ],
+            [
                 'permission_id' => 27,
                 'role_id' => 1,
             ],
@@ -216,6 +227,10 @@ class RolesHasPermissionTableSeeder extends Seeder
             [
                 'permission_id' => 27,
                 'role_id' => 3,
+            ],
+            [
+                'permission_id' => 27,
+                'role_id' => 4,
             ],
             [
                 'permission_id' => 28,
@@ -253,7 +268,7 @@ class RolesHasPermissionTableSeeder extends Seeder
                 'permission_id' => 30,
                 'role_id' => 3,
             ],
-            /** Classroom from 31 to 35 (Programmers, Administrators and Instructors) */
+            /** Classroom from 31 to 35 (Programmers, Administrators, Instructors and Monitors) */
             [
                 'permission_id' => 31,
                 'role_id' => 1,
@@ -267,6 +282,10 @@ class RolesHasPermissionTableSeeder extends Seeder
                 'role_id' => 3,
             ],
             [
+                'permission_id' => 31,
+                'role_id' => 4,
+            ],
+            [
                 'permission_id' => 32,
                 'role_id' => 1,
             ],
@@ -277,6 +296,10 @@ class RolesHasPermissionTableSeeder extends Seeder
             [
                 'permission_id' => 32,
                 'role_id' => 3,
+            ],
+            [
+                'permission_id' => 32,
+                'role_id' => 4,
             ],
             [
                 'permission_id' => 33,
@@ -314,7 +337,7 @@ class RolesHasPermissionTableSeeder extends Seeder
                 'permission_id' => 35,
                 'role_id' => 3,
             ],
-            /** Students from 36 to 40 (programmers, Administrators, Instructors (list and show))*/
+            /** Students from 36 to 40 (programmers, Administrators, Instructors and Monitors (list and show))*/
             [
                 'permission_id' => 36,
                 'role_id' => 1,
@@ -328,6 +351,10 @@ class RolesHasPermissionTableSeeder extends Seeder
                 'role_id' => 3,
             ],
             [
+                'permission_id' => 36,
+                'role_id' => 4,
+            ],
+            [
                 'permission_id' => 37,
                 'role_id' => 1,
             ],
@@ -338,6 +365,10 @@ class RolesHasPermissionTableSeeder extends Seeder
             [
                 'permission_id' => 37,
                 'role_id' => 3,
+            ],
+            [
+                'permission_id' => 37,
+                'role_id' => 4,
             ],
             [
                 'permission_id' => 38,
@@ -363,7 +394,7 @@ class RolesHasPermissionTableSeeder extends Seeder
                 'permission_id' => 40,
                 'role_id' => 2,
             ],
-            /** Blog 41 (Programmer, Administrator and Instructors) */
+            /** Blog 41 (Programmer, Administrator, Instructors and Monitor) */
             [
                 'permission_id' => 41,
                 'role_id' => 1,
@@ -376,7 +407,11 @@ class RolesHasPermissionTableSeeder extends Seeder
                 'permission_id' => 41,
                 'role_id' => 3,
             ],
-            /** Blog Posts from 42 to 45 (Programmer and Administrator)*/
+            [
+                'permission_id' => 41,
+                'role_id' => 4,
+            ],
+            /** Blog Categories from 42 to 45 (Programmer and Administrator)*/
             [
                 'permission_id' => 42,
                 'role_id' => 1,
@@ -409,7 +444,7 @@ class RolesHasPermissionTableSeeder extends Seeder
                 'permission_id' => 45,
                 'role_id' => 2,
             ],
-            /** Blog Posts from 46 to 49 (Programmer, Administrator and Instructors)*/
+            /** Blog Posts from 46 to 49 (Programmer, Administrator, Instructors and Monitors)*/
             [
                 'permission_id' => 46,
                 'role_id' => 1,
@@ -421,6 +456,10 @@ class RolesHasPermissionTableSeeder extends Seeder
             [
                 'permission_id' => 46,
                 'role_id' => 3,
+            ],
+            [
+                'permission_id' => 46,
+                'role_id' => 4,
             ],
             [
                 'permission_id' => 47,
@@ -435,6 +474,10 @@ class RolesHasPermissionTableSeeder extends Seeder
                 'role_id' => 3,
             ],
             [
+                'permission_id' => 47,
+                'role_id' => 4,
+            ],
+            [
                 'permission_id' => 48,
                 'role_id' => 1,
             ],
@@ -445,6 +488,10 @@ class RolesHasPermissionTableSeeder extends Seeder
             [
                 'permission_id' => 48,
                 'role_id' => 3,
+            ],
+            [
+                'permission_id' => 48,
+                'role_id' => 4,
             ],
             [
                 'permission_id' => 49,
@@ -458,7 +505,11 @@ class RolesHasPermissionTableSeeder extends Seeder
                 'permission_id' => 49,
                 'role_id' => 3,
             ],
-            /** Cheat Sheet 50 (Programmer, Administrator and Instructors) */
+            [
+                'permission_id' => 49,
+                'role_id' => 4,
+            ],
+            /** Cheat Sheet 50 (Programmer, Administrator, Instructors and Monitors) */
             [
                 'permission_id' => 50,
                 'role_id' => 1,
@@ -470,6 +521,10 @@ class RolesHasPermissionTableSeeder extends Seeder
             [
                 'permission_id' => 50,
                 'role_id' => 3,
+            ],
+            [
+                'permission_id' => 50,
+                'role_id' => 4,
             ],
             /** Cheat Sheet Posts from 51 to 54 (Programmer and Administrator)*/
             [
@@ -504,7 +559,7 @@ class RolesHasPermissionTableSeeder extends Seeder
                 'permission_id' => 54,
                 'role_id' => 2,
             ],
-            /** Cheat Sheet Posts from 46 to 49 (Programmer, Administrator and Instructors)*/
+            /** Cheat Sheet Posts from 55 to 58 (Programmer, Administrator, Instructors and Monitors)*/
             [
                 'permission_id' => 55,
                 'role_id' => 1,
@@ -516,6 +571,10 @@ class RolesHasPermissionTableSeeder extends Seeder
             [
                 'permission_id' => 55,
                 'role_id' => 3,
+            ],
+            [
+                'permission_id' => 55,
+                'role_id' => 4,
             ],
             [
                 'permission_id' => 56,
@@ -530,6 +589,10 @@ class RolesHasPermissionTableSeeder extends Seeder
                 'role_id' => 3,
             ],
             [
+                'permission_id' => 56,
+                'role_id' => 4,
+            ],
+            [
                 'permission_id' => 57,
                 'role_id' => 1,
             ],
@@ -540,6 +603,10 @@ class RolesHasPermissionTableSeeder extends Seeder
             [
                 'permission_id' => 57,
                 'role_id' => 3,
+            ],
+            [
+                'permission_id' => 57,
+                'role_id' => 4,
             ],
             [
                 'permission_id' => 58,
@@ -553,7 +620,11 @@ class RolesHasPermissionTableSeeder extends Seeder
                 'permission_id' => 58,
                 'role_id' => 3,
             ],
-            /** Course Modules from 59 to 63 (Programmers, Administrators and Instructors) */
+            [
+                'permission_id' => 58,
+                'role_id' => 4,
+            ],
+            /** Course Modules from 59 to 63 (Programmers, Administrators, Instructors and Monitors) */
             [
                 'permission_id' => 59,
                 'role_id' => 1,
@@ -567,6 +638,10 @@ class RolesHasPermissionTableSeeder extends Seeder
                 'role_id' => 3,
             ],
             [
+                'permission_id' => 59,
+                'role_id' => 4,
+            ],
+            [
                 'permission_id' => 60,
                 'role_id' => 1,
             ],
@@ -577,6 +652,10 @@ class RolesHasPermissionTableSeeder extends Seeder
             [
                 'permission_id' => 60,
                 'role_id' => 3,
+            ],
+            [
+                'permission_id' => 60,
+                'role_id' => 4,
             ],
             [
                 'permission_id' => 61,

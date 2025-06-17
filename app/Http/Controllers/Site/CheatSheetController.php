@@ -12,7 +12,7 @@ class CheatSheetController extends Controller
 {
     public function index()
     {
-        $title = env('APP_NAME') . ' - Cheat Sheet';
+        $title = env('APP_NAME').' - Cheat Sheet';
         $route = route('site.cheat-sheets');
         $description = 'Confira nosso Cheat Sheet.';
         /** Meta */
@@ -33,6 +33,7 @@ class CheatSheetController extends Controller
 
         return view('site.cheat-sheets.index', compact('categories'));
     }
+
     public function post($uri)
     {
         $uri = filter_var($uri, 513);
@@ -40,7 +41,7 @@ class CheatSheetController extends Controller
 
         if ($post) {
 
-            $title = env('APP_NAME') . ' - ' . $post->title;
+            $title = env('APP_NAME').' - '.$post->title;
             $route = route('site.blog.post', ['uri' => $uri]);
             $description = 'Cheat Sheet';
 
@@ -53,7 +54,7 @@ class CheatSheetController extends Controller
             Meta::set('og:url', $route);
             Meta::set('twitter:url', $route);
             Meta::set('robots', 'index,follow');
-            Meta::set('image', url('storage/blog/min/' . $post->cover));
+            Meta::set('image', url('storage/blog/min/'.$post->cover));
             Meta::set('canonical', $route);
 
             if (! Auth::user()) {

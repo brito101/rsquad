@@ -14,7 +14,7 @@ class BlogController extends Controller
 {
     public function index()
     {
-        $title = env('APP_NAME') . ' - Blog';
+        $title = env('APP_NAME').' - Blog';
         $route = route('site.blog');
         $description = 'Confira nosso Blog.';
         /** Meta */
@@ -43,7 +43,7 @@ class BlogController extends Controller
 
         if ($post) {
 
-            $title = env('APP_NAME') . ' - ' . $post->title;
+            $title = env('APP_NAME').' - '.$post->title;
             $route = route('site.blog.post', ['uri' => $uri]);
             $description = $post->subtitle;
 
@@ -56,7 +56,7 @@ class BlogController extends Controller
             Meta::set('og:url', $route);
             Meta::set('twitter:url', $route);
             Meta::set('robots', 'index,follow');
-            Meta::set('image', url('storage/blog/min/' . $post->cover));
+            Meta::set('image', url('storage/blog/min/'.$post->cover));
             Meta::set('canonical', $route);
 
             $categories = [];
@@ -87,9 +87,9 @@ class BlogController extends Controller
 
         if ($category) {
 
-            $title = env('APP_NAME') . ' - Blog em: ' . $category->title;
+            $title = env('APP_NAME').' - Blog em: '.$category->title;
             $route = route('site.blog.category', ['category' => $category->uri]);
-            $description = 'Confira nosso Blog em: ' . $category->title;
+            $description = 'Confira nosso Blog em: '.$category->title;
             /** Meta */
             Meta::title($title);
             Meta::set('description', $description);
@@ -99,7 +99,7 @@ class BlogController extends Controller
             Meta::set('og:url', $route);
             Meta::set('twitter:url', $route);
             Meta::set('robots', 'index,follow');
-            Meta::set('image', url('storage/blog-categories/min/' . $category->cover));
+            Meta::set('image', url('storage/blog-categories/min/'.$category->cover));
             Meta::set('canonical', $route);
 
             $blogCategories = BlogCategoriesPivot::where('blog_category_id', $category->id)->pluck('blog_id');

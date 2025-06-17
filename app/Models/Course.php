@@ -49,6 +49,11 @@ class Course extends Model
         return $this->hasMany(CourseInstructor::class, 'course_id');
     }
 
+    public function monitors()
+    {
+        return $this->hasMany(CourseMonitor::class, 'course_id');
+    }
+
     public function students()
     {
         return $this->hasMany(CourseStudent::class, 'course_id');
@@ -82,6 +87,7 @@ class Course extends Model
         static::deleting(function ($course) {
             $course->categories()->delete();
             $course->instructors()->delete();
+            $course->monitors()->delete();
             $course->students()->delete();
             $course->modules()->delete();
             $course->classes()->delete();
