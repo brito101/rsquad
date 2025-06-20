@@ -418,26 +418,26 @@
 
                         <div class="card-body p-0">
                             <ul class="users-list clearfix">
-                                @foreach ($students->take(8) as $tudent)
+                                @foreach ($students->take(8)->revert() as $student)
                                     <li>
-                                        @if ($tudent->photo)
-                                            <img src="{{ url('storage/users/' . $tudent->photo) }}"
-                                                alt="{{ $tudent->name }}" class="img-circle img-fluid"
+                                        @if ($student->photo)
+                                            <img src="{{ url('storage/users/' . $student->photo) }}"
+                                                alt="{{ $student->name }}" class="img-circle img-fluid"
                                                 style="object-fit: cover; width: 100%; aspect-ratio: 1;">
                                         @else
                                             <img src="{{ asset('vendor/adminlte/dist/img/avatar.png') }}"
-                                                alt="{{ $tudent->name }}">
+                                                alt="{{ $student->name }}">
                                         @endif
 
                                         @if (Auth::user()->hasPermissionTo('Listar Alunos'))
                                             <a class="users-list-name"
-                                                href="{{ route('admin.students.show', ['student' => $tudent->id]) }}">{{ $tudent->name }}</a>
+                                                href="{{ route('admin.students.show', ['student' => $student->id]) }}">{{ $student->name }}</a>
                                         @else
-                                            <p class="users-list-name mb-n1" href="#">{{ $tudent->name }}</p>
+                                            <p class="users-list-name mb-n1" href="#">{{ $student->name }}</p>
                                         @endif
 
                                         <span
-                                            class="users-list-date">{{ date('d/m/Y', strtotime($tudent->created_at)) }}</span>
+                                            class="users-list-date">{{ date('d/m/Y', strtotime($student->created_at)) }}</span>
                                     </li>
                                 @endforeach
                             </ul>
