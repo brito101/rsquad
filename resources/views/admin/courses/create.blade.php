@@ -130,22 +130,24 @@
                                             placeholder="Preço Promocional do Curso" name="promotional_price"
                                             value="{{ old('promotional_price') }}">
                                     </div>
+                                    
+                                    <div class="col-12 col-md-2 form-group px-0 px-md-2">
+                                        <label class="align-self-center mr-2">Promoção Ativa?</label>
+                                        <x-adminlte-input-switch name="is_promotional" id="is_promotional"
+                                            data-on-color="success" data-off-color="danger" data-on-text="Sim"
+                                            data-off-text="Não" enable-old-support />
+                                    </div>
+
                                     <div class="col-12 col-md-4 form-group px-0 px-md-2">
                                         <label for="sales_link">Link de Venda</label>
                                         <input type="text" class="form-control" id="sales_link"
                                             placeholder="Link do site utilizado para a aquisição do curso" name="sales_link"
                                             value="{{ old('sales_link') }}">
                                     </div>
-                                    <div class="col-12 col-md-2 form-group px-0 px-md-2">
+                                    <div class="col-12 col-md-2 form-group px-0 pl-md-2">
                                         <label for="coupon_code">Cupom de Desconto</label>
                                         <input type="text" class="form-control" id="coupon_code" placeholder="Código"
                                             name="coupon_code" value="{{ old('coupon_code') }}">
-                                    </div>
-                                    <div class="col-12 col-md-2 form-group px-0 pl-md-2">
-                                        <label class="align-self-center mr-2">Promoção Ativa?</label>
-                                        <x-adminlte-input-switch name="is_promotional" id="is_promotional"
-                                            data-on-color="success" data-off-color="danger" data-on-text="Sim"
-                                            data-off-text="Não" enable-old-support />
                                     </div>
                                 </div>
 
