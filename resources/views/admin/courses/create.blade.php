@@ -71,7 +71,7 @@
                                     <div class="col-12 form-group px-0 mb-0">
                                         <x-adminlte-textarea name="description" label="Descrição" igroup-size="md"
                                             placeholder="Descrição do curso..." rows=5>
-                                            {{ old('description') }}
+                                            {!! old('description') !!}
                                         </x-adminlte-textarea>
                                     </div>
 
