@@ -23,7 +23,8 @@
     grid-area: 1/1;
     border: 1px solid var(--color-6);
     border-radius: 4px;
-    box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px,
+        rgba(0, 0, 0, 0.22) 0px 10px 10px;
 }
 
 .courses-image span {
@@ -71,12 +72,21 @@
 .courses li {
     display: flex;
     align-items: center;
-    font-size: 1rem;        
+    font-size: 1rem;
 }
 
 .courses ul {
     display: grid;
     gap: 16px;
+    min-height: 150px;
+
+    @media (max-width: 1100px) {
+        min-height: 75px;
+    }
+
+    @media (max-width: 600px) {
+        min-height: unset;
+    }
 }
 
 .courses-content img {
