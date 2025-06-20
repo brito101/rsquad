@@ -39,6 +39,7 @@ class CourseRequest extends FormRequest
             'active' => 'nullable|boolean',
             'sales_link' => 'nullable|url|max:191',
             'price' => 'required|numeric|min:0|max:999999.99',
+            'coupon_code' => 'nullable|string|max:191',
             'promotional_price' => 'nullable|numeric|min:0|max:999999.99',
             'is_promotional' => 'nullable|boolean',
         ];

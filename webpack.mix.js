@@ -16,7 +16,7 @@ mix.js("resources/js/app.js", "public/js")
     .copy("resources/img", "public/img")
     .sass("resources/sass/app.scss", "public/css")
     .sass("resources/sass/login.scss", "public/css")
-    .sass("resources/sass/site.scss", "public/css/site-v1.css")
+    .sass("resources/sass/site.scss", "public/css/site-v2.css")
     /** Dependencies */
     .copy(["node_modules/jquery/dist/jquery.min.js"], "public/vendor/jquery/jquery.min.js")
     /** Admin */

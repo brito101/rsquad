@@ -23,7 +23,7 @@
         {{-- @laravelPWA --}}
         <link rel="icon" href="{{ asset('img/logo-rounded.png') }}" type="image/png">
         <link rel="preload" href="{{ asset('css/site.css') }}" as="style">
-        <link rel="stylesheet" href="{{ asset('css/site-v1.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/site-v2.css') }}">
 
         <script>
             document.documentElement.classList.add('js');

@@ -1,6 +1,6 @@
 .course {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    flex-wrap: wrap;
     align-items: start;
     gap: 40px;
     padding-top: 60px;
@@ -12,53 +12,125 @@
 }
 
 .course-images {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
+    flex-basis: 100%;
+
+    img {
+        margin: 0 auto;
+        min-width: 200px;
+        border-radius: 4px;
+        box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px,
+            rgba(0, 0, 0, 0.22) 0px 10px 10px;
+    }
 }
 
-.course-images img {
-    flex: 1;
-    min-width: 200px;
-}
+.course-content {
+    h2 {
+        text-transform: uppercase;
+        letter-spacing: 0.015em;
+        margin-bottom: 12px;
+    }
 
-.course-images img:first-child {
-    min-width: 100%;
-}
+    & > p {
+        margin-bottom: 32px;
+    }
 
-.course-content > p {
-    margin-bottom: 32px;
-}
+    & > div {
+        margin-bottom: 40px;
+    }
 
-.course-buy {
-    display: grid;
-    grid-template-columns: max-content auto;
-    align-items: center;
-    justify-items: start;
-    gap: 8px 12px;
-}
+    #course-details {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
 
-.course-buy a {
-    grid-row: span 2;
-}
+        .course-buy {
+            display: grid;
+            grid-template-columns: max-content auto;
+            align-items: center;
+            justify-items: start;
+            gap: 8px 12px;
 
-.course-buy span {
-    display: flex;
-    align-items: center;
-    background-color: var(--cor-12);
-    gap: 8px;
-    padding: 4px 8px;
-    border-radius: 4px;
-}
+            a {
+                grid-row: span 2;
+            }
 
-.course-content h2 {
-    text-transform: uppercase;
-    letter-spacing: 0.015em;
-    margin-bottom: 12px;
-}
+            span {
+                display: flex;
+                align-items: center;
+                background-color: var(--color-12);
+                gap: 8px;
+                padding: 4px 8px;
+                border-radius: 4px;
+            }
+        }
 
-.course-content > div {
-    margin-bottom: 40px;
+        #course-coupon {
+            margin-left: 30px;
+            color: var(--color-0);
+            font-size: 1rem;
+            color: #fff;
+            padding: 1rem 2rem;
+            text-align: center;
+            position: relative;
+            display: inline-block;
+            border-radius: 8px;
+            background-color: transparent;
+            overflow: hidden;
+
+            span {
+                font-weight: bold;
+            }
+
+            &::before {
+                content: "";
+                position: absolute;
+                top: -2px;
+                left: -2px;
+                right: -2px;
+                bottom: -2px;
+                background: linear-gradient(270deg, #024ba9, #00c6ff, #024ba9);
+                background-size: 600% 600%;
+                animation: borderAnimation 4s ease infinite;
+                z-index: 0;
+                border-radius: 10px;
+            }
+
+            &::after {
+                content: "";
+                position: absolute;
+                top: 2px;
+                left: 2px;
+                right: 2px;
+                bottom: 2px;
+                background-color: var(--color-12); 
+                border-radius: 6px;
+                z-index: 0;
+            }
+
+            @keyframes borderAnimation {
+                0% {
+                    background-position: 0% 50%;
+                }
+                50% {
+                    background-position: 100% 50%;
+                }
+                100% {
+                    background-position: 0% 50%;
+                }
+            }
+
+            p {
+                position: relative;
+                z-index: 1;
+            }
+
+            @media (max-width: 630px) {
+                margin-top: 60px;
+                flex-basis: 100%;
+                margin-left: unset;
+            }
+        }
+    }
 }
 
 .course-instructors,
@@ -70,11 +142,11 @@
 
 .course-instructors {
     margin-bottom: 40px;
-    display: flex;  
+    display: flex;
     flex-direction: wrap;
     align-items: center;
-    justify-content: space-between;
     padding: 20px;
+    gap: 40px;
 }
 
 .course-instructors img {
@@ -113,14 +185,5 @@
     }
     .course-images {
         grid-row: 2;
-    }
-}
-
-@media (max-width: 400px) {
-    .course-instructors {
-        grid-template-columns: 1fr;
-    }
-    .course-buy {
-        grid-template-columns: 1fr;
     }
 }

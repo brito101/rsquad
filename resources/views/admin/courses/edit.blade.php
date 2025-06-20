@@ -145,11 +145,16 @@
                                             placeholder="Preço Promocional do Curso" name="promotional_price"
                                             value="{{ old('promotional_price') ?? number_format($course->promotional_price, 2, ',', '.') }}">
                                     </div>
-                                    <div class="col-12 col-md-6 form-group px-0 px-md-2">
+                                    <div class="col-12 col-md-4 form-group px-0 px-md-2">
                                         <label for="sales_link">Link de Venda</label>
                                         <input type="text" class="form-control" id="sales_link"
                                             placeholder="Link do site utilizado para a aquisição do curso"
                                             name="sales_link" value="{{ old('sales_link') ?? $course->sales_link }}">
+                                    </div>
+                                    <div class="col-12 col-md-2 form-group px-0 px-md-2">
+                                        <label for="coupon_code">Cupom de Desconto</label>
+                                        <input type="text" class="form-control" id="coupon_code" placeholder="Código"
+                                            name="coupon_code" value="{{ old('coupon_code') ?? $course->coupon_code }}">
                                     </div>
                                     <div class="col-12 col-md-2 form-group px-0 pl-md-2">
                                         <label class="align-self-center mr-2">Promoção Ativa?</label>

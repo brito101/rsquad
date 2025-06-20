@@ -26,6 +26,7 @@ class Course extends Model
         'sales_link',
         'user_id',
         'price',
+        'coupon_code',
         'promotional_price',
         'is_promotional',
         'uri',

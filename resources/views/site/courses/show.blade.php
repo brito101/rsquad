@@ -24,11 +24,20 @@
             </div>
             <div class="course-content">
                 <div class="font-2-l color-5">{!! nl2br($course->description) !!}</div>
-                @if ($course->sales_link)
-                    <div class="course-buy">
-                        <a class="btn" href="{{ $course->sales_link }}" target="_blank">Adquira Agora!</a>
-                    </div>
-                @endif
+                <div id="course-details">
+                    @if ($course->sales_link)
+                        <div class="course-buy">
+                            <a class="btn" href="{{ $course->sales_link }}" target="_blank">Adquira Agora!</a>
+                        </div>
+                    @endif
+
+                    @if ($course->coupon_code)
+                        <div id="course-coupon">
+                            <p>Cupom de Desconto: <span>{{ $course->coupon_code }}</span></p>
+                        </div>
+                    @endif
+                </div>
+
                 @if ($course->instructorsInfo->count() > 0)
                     <h2 class="font-1-xs color-0">Instrutores</h2>
                     <ul class="course-instructors">
@@ -73,7 +82,8 @@
             </div>
             <div class="about-content">
                 <h2 class="font-1-xxl color-0">Evolua com a R<span class="color-p2">Squad</span>.</h2>
-                <p class="font-2-l color-5">Participe dos nossos cursos e domine a resposta a incidentes com aulas práticas e conteúdo de alto nível.</p>
+                <p class="font-2-l color-5">Participe dos nossos cursos e domine a resposta a incidentes com aulas práticas
+                    e conteúdo de alto nível.</p>
                 <a class="btn" href="{{ route('site.about') }}">Conheça Mais</a>
             </div>
         </div>

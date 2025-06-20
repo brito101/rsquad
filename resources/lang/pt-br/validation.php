@@ -234,6 +234,7 @@ return [
         'price' => 'preço',
         'promotional_price' => 'preço promocional',
         'is_promotional' => 'promocção ativa',
+        'coupon_code' => 'código de cupom',
     ],
 
 ];
