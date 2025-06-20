@@ -418,7 +418,7 @@
 
                         <div class="card-body p-0">
                             <ul class="users-list clearfix">
-                                @foreach ($students->take(8)->revert() as $student)
+                                @foreach ($students->take(8)->reverse() as $student)
                                     <li>
                                         @if ($student->photo)
                                             <img src="{{ url('storage/users/' . $student->photo) }}"
