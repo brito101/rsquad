@@ -35,7 +35,7 @@ class UserController extends Controller
             if (Auth::user()->hasRole('Programador')) {
                 $users = ViewsUser::whereNot('type', 'Aluno')->get(['id', 'name', 'email', 'type', 'photo']);
             } elseif (Auth::user()->hasRole('Administrador')) {
-                $users = ViewsUser::whereIn('type', ['Administrador', 'Instrutor'])->get(['id', 'name', 'email', 'type', 'photo']);
+                $users = ViewsUser::whereIn('type', ['Administrador', 'Instrutor', 'Monitor'])->get(['id', 'name', 'email', 'type', 'photo']);
             } else {
                 $users = null;
             }
