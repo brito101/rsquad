@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
+use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
 
 class StudentController extends Controller
@@ -171,7 +172,13 @@ class StudentController extends Controller
 
         $courses = Course::where('active', true)->get();
 
-        return view('admin.students.edit', compact('user', 'pivot', 'courses'));
+        if (Auth::user()->hasRole('Programador')) {
+            $roles = Role::all(['id', 'name']);
+        } else {
+            $roles = Role::whereNotIn('name', ['Programador'])->get(['id', 'name']);
+        }
+
+        return view('admin.students.edit', compact('user', 'pivot', 'courses', 'roles'));
     }
 
     /**
