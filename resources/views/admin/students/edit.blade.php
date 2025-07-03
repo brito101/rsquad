@@ -135,6 +135,21 @@
                                     </x-adminlte-select-bs>
                                 </div>
 
+                                <div class="d-flex flex-wrap justify-content-between">
+                                    @can('Atribuir Perfis')
+                                        <div class="col-12 col-md-6 form-group px-0 pl-md-2">
+                                            <label for="role">Tipo de Usuário</label>
+                                            <x-adminlte-select2 name="role">
+                                                @foreach ($roles as $role)
+                                                    <option
+                                                        {{ old('role') == $role->name ? 'selected' : ($user->role_id == $role->id ? 'selected' : '') }}
+                                                        value="{{ $role->name }}">{{ $role->name }}</option>
+                                                @endforeach
+                                            </x-adminlte-select2>
+                                        </div>
+                                    @endcan
+                                </div>
+
                                 <div
                                     class="col-12 col-md-6 form-group px-0 {{ Auth::user()->hasPermissionTo('Atribuir Perfis') ? 'pr-md-2' : 'pl-md-2' }} d-flex flex-wrap justify-content-start">
                                     @if ($user->google2fa_secret_enabled)

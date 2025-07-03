@@ -242,6 +242,10 @@ class StudentController extends Controller
                 }
             }
 
+             if (! empty($request->role) && Auth::user()->hasPermissionTo('Atribuir Perfis')) {
+                $this->saveRole($request->role, $user);
+            }
+
             return redirect()
                 ->route('admin.students.index')
                 ->with('success', 'Atualização realizada!');
