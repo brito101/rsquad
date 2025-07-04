@@ -250,7 +250,7 @@ class StudentController extends Controller
             }
 
              if (! empty($request->role) && Auth::user()->hasPermissionTo('Atribuir Perfis')) {
-                $this->saveRole($request->role, $user);
+                $user->syncRoles($request->role);
             }
 
             return redirect()
