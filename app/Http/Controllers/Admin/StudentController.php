@@ -42,13 +42,13 @@ class StudentController extends Controller
                     })->implode(' - ');
                 })
                 ->addColumn('action', function ($row) use ($token) {
-                    return '<a class="btn btn-xs btn-success mx-1 shadow" title="Visualizar" href="'.route('admin.students.show', ['student' => $row->id]).'"><i class="fa fa-lg fa-fw fa-eye"></i></a>'.
-                        (Auth::user()->hasPermissionTo('Editar Alunos') ? '<a class="btn btn-xs btn-primary mx-1 shadow" title="Editar" href="'.route('admin.students.edit', ['student' => $row->id]).'"><i class="fa fa-lg fa-fw fa-pen"></i></a>' : '').
-                        (Auth::user()->hasPermissionTo('Excluir Alunos') ? '<form method="POST" action="'.route('admin.students.destroy', ['student' => $row->id]).'" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="'.$token.'"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão deste usuário?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>' : '');
+                    return '<a class="btn btn-xs btn-success mx-1 shadow" title="Visualizar" href="' . route('admin.students.show', ['student' => $row->id]) . '"><i class="fa fa-lg fa-fw fa-eye"></i></a>' .
+                        (Auth::user()->hasPermissionTo('Editar Alunos') ? '<a class="btn btn-xs btn-primary mx-1 shadow" title="Editar" href="' . route('admin.students.edit', ['student' => $row->id]) . '"><i class="fa fa-lg fa-fw fa-pen"></i></a>' : '') .
+                        (Auth::user()->hasPermissionTo('Excluir Alunos') ? '<form method="POST" action="' . route('admin.students.destroy', ['student' => $row->id]) . '" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="' . $token . '"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão deste usuário?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>' : '');
                 })
                 ->addColumn('photo', function ($row) {
-                    return '<img src="'.($row->photo ? url('storage/users/'.$row->photo) : asset('vendor/adminlte/dist/img/avatar.png')).'"
-                    alt="'.$row->name.'" class="img-circle img-size-32 mr-2 border" style="object-fit: cover; width:75px; height: 75px; aspect-ratio: 1;">';
+                    return '<img src="' . ($row->photo ? url('storage/users/' . $row->photo) : asset('vendor/adminlte/dist/img/avatar.png')) . '"
+                    alt="' . $row->name . '" class="img-circle img-size-32 mr-2 border" style="object-fit: cover; width:75px; height: 75px; aspect-ratio: 1;">';
                 })
                 ->rawColumns(['courses', 'action', 'photo'])
                 ->make(true);
@@ -91,7 +91,7 @@ class StudentController extends Controller
         $data['password'] = bcrypt($request->password);
 
         if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
-            $name = Str::slug(mb_substr($data['name'], 0, 100)).time();
+            $name = Str::slug(mb_substr($data['name'], 0, 100)) . time();
             $data = $this->saveImage($request, $name, $data);
         }
 
@@ -213,8 +213,8 @@ class StudentController extends Controller
         }
 
         if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
-            $name = Str::slug(mb_substr($data['name'], 0, 200)).'-'.time();
-            $imagePath = storage_path().'/app/public/users/'.$user->photo;
+            $name = Str::slug(mb_substr($data['name'], 0, 200)) . '-' . time();
+            $imagePath = storage_path() . '/app/public/users/' . $user->photo;
 
             if (File::isFile($imagePath)) {
                 unlink($imagePath);
@@ -249,8 +249,12 @@ class StudentController extends Controller
                 }
             }
 
-             if (! empty($request->role) && Auth::user()->hasPermissionTo('Atribuir Perfis')) {
-                $user->syncRoles($request->role);
+            if (! empty($request->role) && Auth::user()->hasPermissionTo('Atribuir Perfis')) {
+                if (Auth::user()->hasRole('Programador')) {
+                    $user->syncRoles($request->role);
+                } elseif ($request->role != 'Programador') {
+                    $user->syncRoles($request->role);
+                }
             }
 
             return redirect()
@@ -279,7 +283,7 @@ class StudentController extends Controller
             abort(403, 'Acesso não autorizado');
         }
 
-        $imagePath = storage_path().'/app/public/users/'.$user->photo;
+        $imagePath = storage_path() . '/app/public/users/' . $user->photo;
         if ($user->delete()) {
             if (File::isFile($imagePath)) {
                 unlink($imagePath);
@@ -306,7 +310,7 @@ class StudentController extends Controller
 
         $data['photo'] = $nameFile;
 
-        $destinationPath = storage_path().'/app/public/users';
+        $destinationPath = storage_path() . '/app/public/users';
 
         if (! file_exists($destinationPath)) {
             mkdir($destinationPath, 755, true);
@@ -316,7 +320,7 @@ class StudentController extends Controller
         $img->resize(null, 100, function ($constraint) {
             $constraint->aspectRatio();
             $constraint->upsize();
-        })->crop(100, 100)->save($destinationPath.'/'.$nameFile);
+        })->crop(100, 100)->save($destinationPath . '/' . $nameFile);
 
         return $data;
     }
