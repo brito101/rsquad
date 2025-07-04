@@ -124,7 +124,7 @@ class UserController extends Controller
         if (Auth::user()->hasRole('Programador')) {
             $user = ViewsUser::find($id);
         } else {
-            $user = ViewsUser::whereNotIn('type', ['Programador', 'Aluno'])->find($id);
+            $user = ViewsUser::whereNotIn('type', ['Programador'])->find($id);
         }
 
         if (! $user) {
