@@ -45,11 +45,11 @@ class UserController extends Controller
             return DataTables::of($users)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) use ($token) {
-                    return '<a class="btn btn-xs btn-primary mx-1 shadow" title="Editar" href="users/' . $row->id . '/edit"><i class="fa fa-lg fa-fw fa-pen"></i></a>' . '<form method="POST" action="users/' . $row->id . '" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="' . $token . '"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão deste usuário?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>';
+                    return '<a class="btn btn-xs btn-primary mx-1 shadow" title="Editar" href="users/'.$row->id.'/edit"><i class="fa fa-lg fa-fw fa-pen"></i></a>'.'<form method="POST" action="users/'.$row->id.'" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="'.$token.'"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão deste usuário?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>';
                 })
                 ->addColumn('photo', function ($row) {
-                    return '<img src="' . ($row->photo ? url('storage/users/' . $row->photo) : asset('vendor/adminlte/dist/img/avatar.png')) . '"
-                    alt="' . $row->name . '" class="img-circle img-size-32 mr-2 border" style="object-fit: cover; width:75px; height: 75px; aspect-ratio: 1;">';
+                    return '<img src="'.($row->photo ? url('storage/users/'.$row->photo) : asset('vendor/adminlte/dist/img/avatar.png')).'"
+                    alt="'.$row->name.'" class="img-circle img-size-32 mr-2 border" style="object-fit: cover; width:75px; height: 75px; aspect-ratio: 1;">';
                 })
                 ->rawColumns(['action', 'photo'])
                 ->make(true);
@@ -85,7 +85,7 @@ class UserController extends Controller
         $data['password'] = bcrypt($request->password);
 
         if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
-            $name = Str::slug(mb_substr($data['name'], 0, 100)) . time();
+            $name = Str::slug(mb_substr($data['name'], 0, 100)).time();
             $data = $this->saveImage($request, $name, $data);
         }
 
@@ -179,8 +179,8 @@ class UserController extends Controller
         }
 
         if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
-            $name = Str::slug(mb_substr($data['name'], 0, 200)) . '-' . time();
-            $imagePath = storage_path() . '/app/public/users/' . $user->photo;
+            $name = Str::slug(mb_substr($data['name'], 0, 200)).'-'.time();
+            $imagePath = storage_path().'/app/public/users/'.$user->photo;
 
             if (File::isFile($imagePath)) {
                 unlink($imagePath);
@@ -234,7 +234,7 @@ class UserController extends Controller
             abort(403, 'Acesso não autorizado');
         }
 
-        $imagePath = storage_path() . '/app/public/users/' . $user->photo;
+        $imagePath = storage_path().'/app/public/users/'.$user->photo;
         if ($user->delete()) {
             if (File::isFile($imagePath)) {
                 unlink($imagePath);
@@ -261,7 +261,7 @@ class UserController extends Controller
 
         $data['photo'] = $nameFile;
 
-        $destinationPath = storage_path() . '/app/public/users';
+        $destinationPath = storage_path().'/app/public/users';
 
         if (! file_exists($destinationPath)) {
             mkdir($destinationPath, 755, true);
@@ -271,7 +271,7 @@ class UserController extends Controller
         $img->resize(null, 100, function ($constraint) {
             $constraint->aspectRatio();
             $constraint->upsize();
-        })->crop(100, 100)->save($destinationPath . '/' . $nameFile);
+        })->crop(100, 100)->save($destinationPath.'/'.$nameFile);
 
         return $data;
     }

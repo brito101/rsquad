@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use Vimeo\Vimeo;
 use Vimeo\Exceptions\VimeoUploadException;
+use Vimeo\Vimeo;
 
 class VimeoService
 {
@@ -17,8 +17,8 @@ class VimeoService
     /**
      * Upload video to Vimeo
      *
-     * @param string $filePath Full path to video file
-     * @param array $params Video metadata (name, description, etc)
+     * @param  string  $filePath  Full path to video file
+     * @param  array  $params  Video metadata (name, description, etc)
      * @return array|false Returns video data or false on failure
      */
     public function upload($filePath, array $params = [])
@@ -48,7 +48,7 @@ class VimeoService
             // Upload the video
             $uri = $this->vimeo->upload($filePath, $uploadParams);
 
-            if (!$uri) {
+            if (! $uri) {
                 return false;
             }
 
@@ -61,7 +61,7 @@ class VimeoService
             if ($videoData['status'] === 200) {
                 // Get the largest thumbnail
                 $thumbnail = null;
-                if (isset($videoData['body']['pictures']['sizes']) && !empty($videoData['body']['pictures']['sizes'])) {
+                if (isset($videoData['body']['pictures']['sizes']) && ! empty($videoData['body']['pictures']['sizes'])) {
                     $sizes = $videoData['body']['pictures']['sizes'];
                     $thumbnail = end($sizes)['link'] ?? null;
                 }
@@ -81,10 +81,12 @@ class VimeoService
 
             return false;
         } catch (VimeoUploadException $e) {
-            \Log::error('Vimeo Upload Error: ' . $e->getMessage());
+            \Log::error('Vimeo Upload Error: '.$e->getMessage());
+
             return false;
         } catch (\Exception $e) {
-            \Log::error('Vimeo Error: ' . $e->getMessage());
+            \Log::error('Vimeo Error: '.$e->getMessage());
+
             return false;
         }
     }
@@ -92,16 +94,18 @@ class VimeoService
     /**
      * Delete video from Vimeo
      *
-     * @param string $videoUri Video URI (format: /videos/123456)
+     * @param  string  $videoUri  Video URI (format: /videos/123456)
      * @return bool
      */
     public function delete($videoUri)
     {
         try {
             $response = $this->vimeo->request($videoUri, [], 'DELETE');
+
             return $response['status'] === 204;
         } catch (\Exception $e) {
-            \Log::error('Vimeo Delete Error: ' . $e->getMessage());
+            \Log::error('Vimeo Delete Error: '.$e->getMessage());
+
             return false;
         }
     }
@@ -109,17 +113,19 @@ class VimeoService
     /**
      * Update video details
      *
-     * @param string $videoUri Video URI
-     * @param array $params Parameters to update
+     * @param  string  $videoUri  Video URI
+     * @param  array  $params  Parameters to update
      * @return bool
      */
     public function update($videoUri, array $params)
     {
         try {
             $response = $this->vimeo->request($videoUri, $params, 'PATCH');
+
             return $response['status'] === 200;
         } catch (\Exception $e) {
-            \Log::error('Vimeo Update Error: ' . $e->getMessage());
+            \Log::error('Vimeo Update Error: '.$e->getMessage());
+
             return false;
         }
     }
@@ -127,21 +133,22 @@ class VimeoService
     /**
      * Get video details
      *
-     * @param string $videoUri Video URI
+     * @param  string  $videoUri  Video URI
      * @return array|false
      */
     public function getVideo($videoUri)
     {
         try {
             $response = $this->vimeo->request($videoUri);
-            
+
             if ($response['status'] === 200) {
                 return $response['body'];
             }
-            
+
             return false;
         } catch (\Exception $e) {
-            \Log::error('Vimeo Get Video Error: ' . $e->getMessage());
+            \Log::error('Vimeo Get Video Error: '.$e->getMessage());
+
             return false;
         }
     }
@@ -149,17 +156,19 @@ class VimeoService
     /**
      * Set video thumbnail
      *
-     * @param string $videoUri Video URI
-     * @param string $imagePath Path to thumbnail image
+     * @param  string  $videoUri  Video URI
+     * @param  string  $imagePath  Path to thumbnail image
      * @return bool
      */
     public function setThumbnail($videoUri, $imagePath)
     {
         try {
             $response = $this->vimeo->uploadImage($videoUri, $imagePath, true);
-            return !empty($response);
+
+            return ! empty($response);
         } catch (\Exception $e) {
-            \Log::error('Vimeo Thumbnail Error: ' . $e->getMessage());
+            \Log::error('Vimeo Thumbnail Error: '.$e->getMessage());
+
             return false;
         }
     }
@@ -167,9 +176,9 @@ class VimeoService
     /**
      * Get embed code for video
      *
-     * @param string $videoId Video ID (just the number)
-     * @param int $width
-     * @param int $height
+     * @param  string  $videoId  Video ID (just the number)
+     * @param  int  $width
+     * @param  int  $height
      * @return string
      */
     public function getEmbedCode($videoId, $width = 640, $height = 360)
@@ -185,7 +194,7 @@ class VimeoService
     /**
      * Get video player URL
      *
-     * @param string $videoId Video ID
+     * @param  string  $videoId  Video ID
      * @return string
      */
     public function getPlayerUrl($videoId)
@@ -196,8 +205,8 @@ class VimeoService
     /**
      * Update video embed domains whitelist
      *
-     * @param string $videoUri Video URI (e.g., /videos/123456)
-     * @param array $domains Array of allowed domains
+     * @param  string  $videoUri  Video URI (e.g., /videos/123456)
+     * @param  array  $domains  Array of allowed domains
      * @return bool
      */
     public function updateEmbedWhitelist($videoUri, array $domains)
@@ -205,16 +214,17 @@ class VimeoService
         try {
             $response = $this->vimeo->request($videoUri, [
                 'privacy' => [
-                    'embed' => 'whitelist'
+                    'embed' => 'whitelist',
                 ],
                 'embed' => [
-                    'domains' => $domains
-                ]
+                    'domains' => $domains,
+                ],
             ], 'PATCH');
-            
+
             return $response['status'] === 200;
         } catch (\Exception $e) {
-            \Log::error('Vimeo Whitelist Update Error: ' . $e->getMessage());
+            \Log::error('Vimeo Whitelist Update Error: '.$e->getMessage());
+
             return false;
         }
     }

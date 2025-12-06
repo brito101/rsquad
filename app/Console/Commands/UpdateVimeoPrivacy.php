@@ -28,15 +28,15 @@ class UpdateVimeoPrivacy extends Command
     public function handle(VimeoService $vimeoService)
     {
         $classrooms = Classroom::whereNotNull('vimeo_uri')->get();
-        
+
         $this->info("Encontrados {$classrooms->count()} vídeos para atualizar...");
-        
+
         $bar = $this->output->createProgressBar($classrooms->count());
         $bar->start();
-        
+
         $updated = 0;
         $failed = 0;
-        
+
         foreach ($classrooms as $classroom) {
             try {
                 $response = $vimeoService->update($classroom->vimeo_uri, [
@@ -55,7 +55,7 @@ class UpdateVimeoPrivacy extends Command
                         ],
                     ],
                 ]);
-                
+
                 if ($response) {
                     $updated++;
                 } else {
@@ -65,19 +65,19 @@ class UpdateVimeoPrivacy extends Command
                 $this->error("\nErro ao atualizar vídeo {$classroom->vimeo_id}: {$e->getMessage()}");
                 $failed++;
             }
-            
+
             $bar->advance();
         }
-        
+
         $bar->finish();
         $this->newLine(2);
-        
-        $this->info("Atualização concluída!");
+
+        $this->info('Atualização concluída!');
         $this->info("✓ Atualizados: {$updated}");
         if ($failed > 0) {
             $this->error("✗ Falhas: {$failed}");
         }
-        
+
         return Command::SUCCESS;
     }
 }

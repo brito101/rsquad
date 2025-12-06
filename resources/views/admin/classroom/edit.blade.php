@@ -127,10 +127,17 @@
                                     </div>
 
                                     @if($classroom->vimeo_id)
-                                        <div class="col-12 form-group px-0 mb-3">
+                                        <div class="col-12 form-group px-0 mb-3" id="vimeo-video-container">
                                             <div class="card">
-                                                <div class="card-header">
+                                                <div class="card-header d-flex justify-content-between align-items-center">
                                                     <h5 class="mb-0 h6 text-bold"><i class="fas fa-video"></i> Vídeo Atual no Vimeo</h5>
+                                                    <a href="javascript:void(0)" 
+                                                       id="delete-video-btn" 
+                                                       data-url="{{ route('admin.classes.delete-video', $classroom->id) }}"
+                                                       class="btn btn-sm btn-warning" 
+                                                       title="Remover apenas o vídeo (a aula será mantida)">
+                                                        <i class="fas fa-video-slash"></i> Remover Vídeo
+                                                    </a>
                                                 </div>
                                                 <div class="card-body">
                                                     <div class="row">
@@ -178,8 +185,8 @@
                                             Formatos aceitos: JPG, PNG, GIF. Se não enviar, usará a thumbnail automática do Vimeo.
                                         </small>
                                         @if($classroom->vimeo_thumbnail)
-                                            <div class="mt-2">
-                                                <img src="{{ $classroom->vimeo_thumbnail }}" id="thumbnail-preview" class="img-thumbnail" style="max-width: 200px;" alt="Preview">
+                                            <div class="mt-2" id="current-thumbnail-preview">
+                                                <img src="{{ $classroom->vimeo_thumbnail }}" class="img-thumbnail" style="max-width: 200px;" alt="Preview">
                                             </div>
                                         @else
                                             <div class="mt-2" id="thumbnail-preview-container" style="display: none;">
@@ -224,6 +231,67 @@
                 }
                 reader.readAsDataURL(file);
             }
+        });
+
+        // Delete video via AJAX
+        $('#delete-video-btn').on('click', function(e) {
+            e.preventDefault();
+            
+            if (!confirm('⚠️ ATENÇÃO: Você está removendo APENAS o VÍDEO do Vimeo.\n\nA aula será mantida e você poderá adicionar um link do YouTube no campo "Link Externo".\n\nDeseja continuar?')) {
+                return;
+            }
+            
+            const url = $(this).data('url');
+            const btn = $(this);
+            
+            btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Removendo...');
+            
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    _method: 'DELETE'
+                },
+                success: function(response) {
+                    // Remove o container do vídeo da tela
+                    $('#vimeo-video-container').fadeOut(300, function() {
+                        $(this).remove();
+                    });
+                    
+                    // Remove a thumbnail preview atual se existir
+                    $('#current-thumbnail-preview').fadeOut(300, function() {
+                        $(this).remove();
+                    });
+                    
+                    // Mostra mensagem de sucesso
+                    const alertHtml = '<div class="alert alert-success alert-dismissible fade show" role="alert">' +
+                        '<i class="fas fa-check-circle"></i> Vídeo removido com sucesso! A aula foi mantida.' +
+                        '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+                        '<span aria-hidden="true">&times;</span></button></div>';
+                    
+                    $('.content-header').after(alertHtml);
+                    
+                    // Remove o alerta após 5 segundos
+                    setTimeout(function() {
+                        $('.alert-success').fadeOut(300, function() {
+                            $(this).remove();
+                        });
+                    }, 5000);
+                },
+                error: function(xhr) {
+                    btn.prop('disabled', false).html('<i class="fas fa-video-slash"></i> Remover Vídeo');
+                    
+                    const errorMsg = xhr.responseJSON?.message || 'Erro ao remover vídeo. Tente novamente.';
+                    
+                    const alertHtml = '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                        '<i class="fas fa-exclamation-circle"></i> ' + errorMsg +
+                        '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+                        '<span aria-hidden="true">&times;</span></button></div>';
+                    
+                    $('.content-header').after(alertHtml);
+                }
+            });
         });
     </script>
 @endsection

@@ -27,7 +27,7 @@ class ClassroomProgressController extends Controller
             ->where('course_id', $classroom->course_id)
             ->exists();
 
-        if (!$isEnrolled) {
+        if (! $isEnrolled) {
             abort(403, 'Você não está matriculado neste curso.');
         }
 
@@ -87,7 +87,7 @@ class ClassroomProgressController extends Controller
                 ->where('course_id', $classroom->course_id)
                 ->exists();
 
-            if (!$isEnrolled) {
+            if (! $isEnrolled) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Você não está matriculado neste curso.',
@@ -155,7 +155,7 @@ class ClassroomProgressController extends Controller
                 ->where('course_id', $classroom->course_id)
                 ->exists();
 
-            if (!$isEnrolled) {
+            if (! $isEnrolled) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Você não está matriculado neste curso.',
@@ -231,7 +231,7 @@ class ClassroomProgressController extends Controller
                 ->where('course_id', $classroom->course_id)
                 ->exists();
 
-            if (!$isEnrolled) {
+            if (! $isEnrolled) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Você não está matriculado neste curso.',
@@ -293,7 +293,7 @@ class ClassroomProgressController extends Controller
                 ->where('classroom_id', $classroomId)
                 ->first();
 
-            if (!$progress) {
+            if (! $progress) {
                 return response()->json([
                     'success' => true,
                     'data' => [
@@ -338,7 +338,7 @@ class ClassroomProgressController extends Controller
                 ->where('course_id', $courseId)
                 ->exists();
 
-            if (!$isEnrolled) {
+            if (! $isEnrolled) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Você não está matriculado neste curso.',
@@ -358,8 +358,8 @@ class ClassroomProgressController extends Controller
                 ->where('watched', true)
                 ->count();
 
-            $progressPercentage = $totalClassrooms > 0 
-                ? round(($watchedCount / $totalClassrooms) * 100, 2) 
+            $progressPercentage = $totalClassrooms > 0
+                ? round(($watchedCount / $totalClassrooms) * 100, 2)
                 : 0;
 
             return response()->json([

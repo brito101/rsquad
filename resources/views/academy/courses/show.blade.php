@@ -150,7 +150,7 @@
                                                                     <li class="list-group-item">
                                                                         <div class="d-flex justify-content-between align-items-center">
                                                                             <div class="d-flex align-items-center flex-grow-1">
-                                                                                @if (($classroom->vimeo_id || $classroom->link) && $isReleased)
+                                                                                @if ($isReleased)
                                                                                     <div class="icheck-primary mr-3">
                                                                                         <input type="checkbox" 
                                                                                                style="cursor: pointer" 

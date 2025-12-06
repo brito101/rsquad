@@ -107,6 +107,7 @@ Route::group(['middleware' => ['auth', 'access']], function () {
         Route::resource('course-modules', CourseModuleController::class)->except(['show']);
 
         /** Classes */
+        Route::delete('classes/{class}/video', [ClassroomController::class, 'deleteVideo'])->name('classes.delete-video');
         Route::resource('classes', ClassroomController::class)->except(['show']);
 
         /** Blog */
@@ -145,7 +146,7 @@ Route::group(['middleware' => ['auth', 'access']], function () {
         Route::get('/courses', [AcademyCourseController::class, 'index'])->name('courses.index');
         Route::get('/courses/{course}', [AcademyCourseController::class, 'show'])->name('courses.show');
         Route::get('/classroom/{classroom}', [ClassroomProgressController::class, 'show'])->name('classroom.show');
-        
+
         /** Classroom Progress */
         Route::prefix('classroom-progress')->name('classroom-progress.')->group(function () {
             Route::post('{classroom}/view', [ClassroomProgressController::class, 'registerView'])->name('register-view');

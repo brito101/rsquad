@@ -77,12 +77,14 @@ class ClassroomProgress extends Model
     public function markAsWatched(): bool
     {
         $this->watched = true;
+
         return $this->save();
     }
 
     public function markAsUnwatched(): bool
     {
         $this->watched = false;
+
         return $this->save();
     }
 
@@ -90,17 +92,18 @@ class ClassroomProgress extends Model
     {
         $this->view_count++;
         $this->last_viewed_at = now();
-        
-        if (!$this->first_viewed_at) {
+
+        if (! $this->first_viewed_at) {
             $this->first_viewed_at = now();
         }
-        
+
         return $this->save();
     }
 
     public function addWatchTime(int $seconds): bool
     {
         $this->watch_time_seconds += $seconds;
+
         return $this->save();
     }
 }

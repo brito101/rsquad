@@ -12,6 +12,12 @@
 -   Visitors log
 -   API routes with JWT auth
 -   Courses with categories, classes and students
+    -   Vimeo video integration with upload and management
+    -   External video links support (YouTube, etc)
+    -   Custom thumbnails for videos
+    -   Student progress tracking with watched/completed status
+    -   Individual video page with navigation between classes
+    -   AJAX video deletion without page reload
 -   Blog
 -   Cheat Sheet
 -   Contacts

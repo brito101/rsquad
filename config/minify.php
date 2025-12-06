@@ -132,7 +132,7 @@ return [
 
     'ignore' => [
         //   "*/download/*",
-          "admin/courses/*",
+        'admin/courses/*',
         //   "*/user"
     ],
 

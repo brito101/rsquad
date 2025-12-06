@@ -49,7 +49,7 @@
                 rel="noreferrer" title="Rodrigo Brito Desenvolvedor Web">rodrigobrito.dev.br</a>.</strong>
         Todos os direitos Reservados.
         <div class="float-right d-none d-sm-inline-block">
-            <b>Versão</b> 1.0.0
+            <b>Versão</b> 1.2.0
         </div>
     </footer>
 @stop
