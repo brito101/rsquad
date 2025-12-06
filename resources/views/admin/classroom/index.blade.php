@@ -43,6 +43,7 @@
                         @php
                             $heads = [
                                 ['label' => 'ID', 'width' => 10],
+                                ['label' => 'Thumb', 'width' => 10],
                                 'Nome',
                                 'Ordem',
                                 'Curso',
@@ -57,6 +58,7 @@
                                 'ajax' => route('admin.classes.index'),
                                 'columns' => [
                                     ['data' => 'id', 'name' => 'id'],
+                                    ['data' => 'thumbnail', 'name' => 'thumbnail', 'orderable' => false, 'searchable' => false],
                                     ['data' => 'name', 'name' => 'name'],
                                     ['data' => 'order', 'name' => 'order'],
                                     ['data' => 'course', 'name' => 'course'],

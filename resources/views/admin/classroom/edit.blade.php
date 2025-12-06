@@ -37,7 +37,7 @@
                             <h3 class="card-title">Dados Cadastrais da Aula</h3>
                         </div>
 
-                        <form method="POST" action="{{ route('admin.classes.update', ['class' => $classroom->id]) }}">
+                        <form method="POST" action="{{ route('admin.classes.update', ['class' => $classroom->id]) }}" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
                             <input type="hidden" name="id" value="{{ $classroom->id }}">
@@ -102,7 +102,7 @@
                                     </div>
 
                                     <div class="col-12 col-md-6 form-group px-0 px-md-2">
-                                        <label for="link">Link</label>
+                                        <label for="link">Link <small class="text-muted">(opcional se enviar vídeo)</small></label>
                                         <input type="text" class="form-control" id="sales_link"
                                             placeholder="Link da Aula" name="link"
                                             value="{{ old(key: 'link') ?? $classroom->link }}">
@@ -125,6 +125,68 @@
                                                 enable-old-support />
                                         @endif
                                     </div>
+
+                                    @if($classroom->vimeo_id)
+                                        <div class="col-12 form-group px-0 mb-3">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h5 class="mb-0 h6 text-bold"><i class="fas fa-video"></i> Vídeo Atual no Vimeo</h5>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <div class="embed-responsive embed-responsive-16by9">
+                                                                @php
+                                                                    $playerUrl = $classroom->vimeo_player_url ?? 'https://player.vimeo.com/video/' . $classroom->vimeo_id;
+                                                                    $playerUrl .= (strpos($playerUrl, '?') !== false ? '&' : '?') . 't=' . time();
+                                                                @endphp
+                                                                <iframe src="{{ $playerUrl }}" 
+                                                                        class="embed-responsive-item" 
+                                                                        frameborder="0" 
+                                                                        allow="autoplay; fullscreen; picture-in-picture" 
+                                                                        allowfullscreen>
+                                                                </iframe>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <p><strong>Vimeo ID:</strong> {{ $classroom->vimeo_id }}</p>                        
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
+
+                                    <div class="col-12 col-md-6 form-group px-0 pr-md-2">
+                                        <label for="video">{{ $classroom->vimeo_id ? 'Substituir Vídeo da Aula' : 'Vídeo da Aula' }}</label>
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="video" name="video" accept="video/*">
+                                            <label class="custom-file-label" for="video">Escolher arquivo de vídeo...</label>
+                                        </div>
+                                        <small class="form-text text-muted">
+                                            Formatos aceitos: MP4, MOV, AVI. O vídeo será enviado para o Vimeo.
+                                        </small>
+                                    </div>
+
+                                    <div class="col-12 col-md-6 form-group px-0 pl-md-2">
+                                        <label for="thumbnail">Thumbnail Personalizada <small class="text-muted">(opcional)</small></label>
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="thumbnail" name="thumbnail" accept="image/*">
+                                            <label class="custom-file-label" for="thumbnail">Escolher imagem...</label>
+                                        </div>
+                                        <small class="form-text text-muted">
+                                            Formatos aceitos: JPG, PNG, GIF. Se não enviar, usará a thumbnail automática do Vimeo.
+                                        </small>
+                                        @if($classroom->vimeo_thumbnail)
+                                            <div class="mt-2">
+                                                <img src="{{ $classroom->vimeo_thumbnail }}" id="thumbnail-preview" class="img-thumbnail" style="max-width: 200px;" alt="Preview">
+                                            </div>
+                                        @else
+                                            <div class="mt-2" id="thumbnail-preview-container" style="display: none;">
+                                                <img src="" id="thumbnail-preview" class="img-thumbnail" style="max-width: 200px;" alt="Preview">
+                                            </div>
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
 
@@ -138,4 +200,30 @@
             </div>
         </div>
     </section>
+@endsection
+
+@section('js')
+    <script>
+        // Update file input label with selected filename
+        $('#video').on('change', function() {
+            const fileName = $(this).val().split('\\').pop();
+            $(this).next('.custom-file-label').html(fileName || 'Escolher arquivo de vídeo...');
+        });
+
+        $('#thumbnail').on('change', function() {
+            const fileName = $(this).val().split('\\').pop();
+            $(this).next('.custom-file-label').html(fileName || 'Escolher imagem...');
+            
+            // Preview thumbnail
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#thumbnail-preview').attr('src', e.target.result);
+                    $('#thumbnail-preview-container').show();
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
 @endsection

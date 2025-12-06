@@ -37,7 +37,7 @@
                             <h3 class="card-title">Dados Cadastrais da Aula</h3>
                         </div>
 
-                        <form method="POST" action="{{ route('admin.classes.store') }}">
+                        <form method="POST" action="{{ route('admin.classes.store') }}" enctype="multipart/form-data">
                             @csrf
                             <div class="card-body">
 
@@ -88,7 +88,7 @@
                                     </div>
 
                                     <div class="col-12 col-md-6 form-group px-0 px-md-2">
-                                        <label for="link">Link</label>
+                                        <label for="link">Link <small class="text-muted">(opcional se enviar vídeo)</small></label>
                                         <input type="text" class="form-control" id="sales_link"
                                             placeholder="Link do Módulo" name="link" value="{{ old(key: 'link') }}">
                                     </div>
@@ -105,6 +105,31 @@
                                             data-off-color="danger" data-on-text="Sim" data-off-text="Não"
                                             enable-old-support />
                                     </div>
+
+                                    <div class="col-12 col-md-6 form-group px-0 pr-md-2">
+                                        <label for="video">Vídeo da Aula</label>
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="video" name="video" accept="video/*">
+                                            <label class="custom-file-label" for="video">Escolher arquivo de vídeo...</label>
+                                        </div>
+                                        <small class="form-text text-muted">
+                                            Formatos aceitos: MP4, MOV, AVI. O vídeo será enviado para o Vimeo.
+                                        </small>
+                                    </div>
+
+                                    <div class="col-12 col-md-6 form-group px-0 pl-md-2">
+                                        <label for="thumbnail">Thumbnail Personalizada <small class="text-muted">(opcional)</small></label>
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="thumbnail" name="thumbnail" accept="image/*">
+                                            <label class="custom-file-label" for="thumbnail">Escolher imagem...</label>
+                                        </div>
+                                        <small class="form-text text-muted">
+                                            Formatos aceitos: JPG, PNG, GIF. Se não enviar, usará a thumbnail automática do Vimeo.
+                                        </small>
+                                        <div class="mt-2" id="thumbnail-preview-container" style="display: none;">
+                                            <img src="" id="thumbnail-preview" class="img-thumbnail" style="max-width: 200px;" alt="Preview">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -118,4 +143,30 @@
             </div>
         </div>
     </section>
+@endsection
+
+@section('js')
+    <script>
+        // Update file input label with selected filename
+        $('#video').on('change', function() {
+            const fileName = $(this).val().split('\\').pop();
+            $(this).next('.custom-file-label').html(fileName || 'Escolher arquivo de vídeo...');
+        });
+
+        $('#thumbnail').on('change', function() {
+            const fileName = $(this).val().split('\\').pop();
+            $(this).next('.custom-file-label').html(fileName || 'Escolher imagem...');
+            
+            // Preview thumbnail
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#thumbnail-preview').attr('src', e.target.result);
+                    $('#thumbnail-preview-container').show();
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
 @endsection

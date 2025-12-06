@@ -8,9 +8,12 @@ use App\Http\Requests\Admin\ClassroomRequest;
 use App\Models\Classroom;
 use App\Models\Course;
 use App\Models\CourseModule;
+use App\Services\VimeoService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
 
 class ClassroomController extends Controller
@@ -52,6 +55,15 @@ class ClassroomController extends Controller
             try {
                 return DataTables::of($classes)
                     ->addIndexColumn()
+                    ->addColumn('thumbnail', function ($row) {
+                        if ($row->vimeo_thumbnail) {
+                            return '<img src="'.$row->vimeo_thumbnail.'" class="img-thumbnail" style="max-width: 80px; max-height: 60px;" alt="Thumbnail">';
+                        } elseif ($row->vimeo_id) {
+                            return '<i class="fas fa-video fa-2x text-muted"></i>';
+                        } else {
+                            return '<i class="fas fa-file-video fa-2x text-secondary"></i>';
+                        }
+                    })
                     ->addColumn('course', function ($row) {
                         return $row->course->name;
                     })
@@ -81,7 +93,7 @@ class ClassroomController extends Controller
 
                         return '<div class="d-flex justify-content-center align-items-center">'.$link.$edit.$delete.'</div>';
                     })
-                    ->rawColumns(['course', 'module', 'active', 'action'])
+                    ->rawColumns(['thumbnail', 'course', 'module', 'active', 'action'])
                     ->make(true);
             } catch (Exception $e) {
                 return response([
@@ -141,7 +153,7 @@ class ClassroomController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(ClassroomRequest $request)
+    public function store(ClassroomRequest $request, VimeoService $vimeoService)
     {
         CheckPermission::checkAuth('Criar Aulas');
 
@@ -174,9 +186,60 @@ class ClassroomController extends Controller
         $data['course_module_id'] = $module->id;
         $data['user_id'] = auth()->user()->id;
 
-        $course = Classroom::create($data);
+        // Handle video upload to Vimeo
+        if ($request->hasFile('video')) {
+            try {
+                $video = $request->file('video');
+                
+                $uploadResponse = $vimeoService->upload($video->getPathname(), [
+                    'name' => $data['name'],
+                    'description' => 'Aula: ' . $data['name'],
+                    'privacy' => [
+                        'view' => 'unlisted', // unlisted = não aparece em buscas, mas pode ser embedado
+                        'embed' => 'public', // permite embed em qualquer domínio
+                    ],
+                    'embed' => [
+                        'buttons' => [
+                            'like' => false,
+                            'watchlater' => false,
+                            'share' => false,
+                        ],
+                        'logos' => [
+                            'vimeo' => false,
+                        ],
+                    ],
+                ]);
 
-        if ($course->save()) {
+                if ($uploadResponse && isset($uploadResponse['uri'])) {
+                    $data['vimeo_uri'] = $uploadResponse['uri'];
+                    $data['vimeo_id'] = basename($uploadResponse['uri']);
+                    $data['vimeo_player_url'] = $uploadResponse['player_embed_url'] ?? null;
+                    
+                    // Save custom thumbnail locally if provided
+                    if ($request->hasFile('thumbnail')) {
+                        $thumbnail = $request->file('thumbnail');
+                        $thumbnailPath = $thumbnail->store('classrooms/thumbnails', 'public');
+                        $data['vimeo_thumbnail'] = Storage::url($thumbnailPath);
+                    }
+                } else {
+                    Log::error('Vimeo upload failed: Invalid response', ['response' => $uploadResponse]);
+                    return redirect()
+                        ->back()
+                        ->withInput()
+                        ->with('error', 'Erro ao fazer upload do vídeo para o Vimeo!');
+                }
+            } catch (Exception $e) {
+                Log::error('Vimeo upload error: ' . $e->getMessage());
+                return redirect()
+                    ->back()
+                    ->withInput()
+                    ->with('error', 'Erro ao fazer upload do vídeo: ' . $e->getMessage());
+            }
+        }
+
+        $classroom = Classroom::create($data);
+
+        if ($classroom->save()) {
             return redirect()
                 ->route('admin.classes.index')
                 ->with('success', 'Cadastro realizado!');
@@ -241,7 +304,7 @@ class ClassroomController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ClassroomRequest $request, string $id)
+    public function update(ClassroomRequest $request, string $id, VimeoService $vimeoService)
     {
         CheckPermission::checkAuth(auth: 'Editar Aulas');
 
@@ -283,6 +346,83 @@ class ClassroomController extends Controller
         $data['course_module_id'] = $module->id;
         $data['user_id'] = auth()->user()->id;
 
+        // Handle video upload to Vimeo
+        if ($request->hasFile('video')) {
+            try {
+                // Delete old video if exists
+                if ($classroom->vimeo_uri) {
+                    try {
+                        $vimeoService->delete($classroom->vimeo_uri);
+                    } catch (Exception $e) {
+                        Log::warning('Failed to delete old Vimeo video: ' . $e->getMessage());
+                        // Continue with upload even if delete fails
+                    }
+                }
+
+                // Upload new video
+                $video = $request->file('video');
+                
+                $uploadResponse = $vimeoService->upload($video->getPathname(), [
+                    'name' => $data['name'],
+                    'description' => 'Aula: ' . $data['name'],
+                    'privacy' => [
+                        'view' => 'unlisted', // unlisted = não aparece em buscas, mas pode ser embedado
+                        'embed' => 'public', // permite embed em qualquer domínio
+                    ],
+                    'embed' => [
+                        'buttons' => [
+                            'like' => false,
+                            'watchlater' => false,
+                            'share' => false,
+                        ],
+                        'logos' => [
+                            'vimeo' => false,
+                        ],
+                    ],
+                ]);
+
+                if ($uploadResponse && isset($uploadResponse['uri'])) {
+                    $data['vimeo_uri'] = $uploadResponse['uri'];
+                    $data['vimeo_id'] = basename($uploadResponse['uri']);
+                    $data['vimeo_player_url'] = $uploadResponse['player_embed_url'] ?? null;
+                    
+                    // Save custom thumbnail locally if provided
+                    if ($request->hasFile('thumbnail')) {
+                        // Delete old thumbnail if exists
+                        if ($classroom->vimeo_thumbnail && Storage::disk('public')->exists(str_replace('/storage/', '', $classroom->vimeo_thumbnail))) {
+                            Storage::disk('public')->delete(str_replace('/storage/', '', $classroom->vimeo_thumbnail));
+                        }
+                        
+                        $thumbnail = $request->file('thumbnail');
+                        $thumbnailPath = $thumbnail->store('classrooms/thumbnails', 'public');
+                        $data['vimeo_thumbnail'] = Storage::url($thumbnailPath);
+                    }
+                } else {
+                    Log::error('Vimeo upload failed: Invalid response', ['response' => $uploadResponse]);
+                    return redirect()
+                        ->back()
+                        ->withInput()
+                        ->with('error', 'Erro ao fazer upload do vídeo para o Vimeo!');
+                }
+            } catch (Exception $e) {
+                Log::error('Vimeo upload error: ' . $e->getMessage());
+                return redirect()
+                    ->back()
+                    ->withInput()
+                    ->with('error', 'Erro ao fazer upload do vídeo: ' . $e->getMessage());
+            }
+        } elseif ($request->hasFile('thumbnail')) {
+            // Update only thumbnail without uploading new video
+            // Delete old thumbnail if exists
+            if ($classroom->vimeo_thumbnail && Storage::disk('public')->exists(str_replace('/storage/', '', $classroom->vimeo_thumbnail))) {
+                Storage::disk('public')->delete(str_replace('/storage/', '', $classroom->vimeo_thumbnail));
+            }
+            
+            $thumbnail = $request->file('thumbnail');
+            $thumbnailPath = $thumbnail->store('classrooms/thumbnails', 'public');
+            $data['vimeo_thumbnail'] = Storage::url($thumbnailPath);
+        }
+
         if ($classroom->update($data)) {
 
             return redirect()
@@ -299,7 +439,7 @@ class ClassroomController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id, VimeoService $vimeoService)
     {
         CheckPermission::checkAuth(auth: 'Excluir Aulas');
 
@@ -320,6 +460,16 @@ class ClassroomController extends Controller
 
         if (! $classroom) {
             abort(403, 'Acesso não autorizado');
+        }
+
+        // Delete video from Vimeo if exists
+        if ($classroom->vimeo_uri) {
+            try {
+                $vimeoService->delete($classroom->vimeo_uri);
+            } catch (Exception $e) {
+                Log::warning('Failed to delete Vimeo video during classroom deletion: ' . $e->getMessage());
+                // Continue with classroom deletion even if Vimeo deletion fails
+            }
         }
 
         if ($classroom->delete()) {

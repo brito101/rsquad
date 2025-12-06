@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Academy;
 
 use App\Helpers\CheckPermission;
 use App\Http\Controllers\Controller;
+use App\Models\ClassroomProgress;
 use App\Models\Course;
 use App\Models\CourseStudent;
 use Exception;
@@ -35,10 +36,10 @@ class CourseController extends Controller
                         })->implode(' - ');
                     })
                     ->addColumn('modules', function ($row) {
-                        return $row->modules->count();
+                        return $row->modules->where('active', true)->count();
                     })
                     ->addColumn('classes', function ($row) {
-                        return $row->classes->count();
+                        return $row->classes->where('active', true)->count();
                     })
                     ->addColumn('instructors', function ($row) {
                         return $row->instructors->map(function ($pivot) {
@@ -88,10 +89,26 @@ class CourseController extends Controller
         $modules = $course->modules()->where('active', true)->orderBy('order')->get();
         $classes = $course->classes()->where('active', true)->orderBy('order')->get();
 
+        // Get user's progress for all classes in this course
+        $classIds = $classes->pluck('id')->toArray();
+        $userProgress = ClassroomProgress::where('user_id', auth()->user()->id)
+            ->whereIn('classroom_id', $classIds)
+            ->get()
+            ->keyBy('classroom_id');
+
+        // Calculate course progress
+        $totalClasses = $classes->count();
+        $watchedClasses = $userProgress->where('watched', true)->count();
+        $progressPercentage = $totalClasses > 0 ? round(($watchedClasses / $totalClasses) * 100, 2) : 0;
+
         return view('academy.courses.show', compact(
             'course',
             'modules',
             'classes',
+            'userProgress',
+            'progressPercentage',
+            'totalClasses',
+            'watchedClasses',
         ));
     }
 }

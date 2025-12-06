@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Academy\AcademyController;
+use App\Http\Controllers\Academy\ClassroomProgressController;
 use App\Http\Controllers\Academy\CourseController as AcademyCourseController;
 use App\Http\Controllers\Academy\UserController as AcademyUserController;
 use App\Http\Controllers\Admin\ACL\PermissionController;
@@ -143,6 +144,16 @@ Route::group(['middleware' => ['auth', 'access']], function () {
         /** Courses */
         Route::get('/courses', [AcademyCourseController::class, 'index'])->name('courses.index');
         Route::get('/courses/{course}', [AcademyCourseController::class, 'show'])->name('courses.show');
+        Route::get('/classroom/{classroom}', [ClassroomProgressController::class, 'show'])->name('classroom.show');
+        
+        /** Classroom Progress */
+        Route::prefix('classroom-progress')->name('classroom-progress.')->group(function () {
+            Route::post('{classroom}/view', [ClassroomProgressController::class, 'registerView'])->name('register-view');
+            Route::post('{classroom}/toggle-watched', [ClassroomProgressController::class, 'toggleWatched'])->name('toggle-watched');
+            Route::post('{classroom}/watch-time', [ClassroomProgressController::class, 'updateWatchTime'])->name('update-watch-time');
+            Route::get('{classroom}/progress', [ClassroomProgressController::class, 'getProgress'])->name('get-progress');
+            Route::get('course/{course}/summary', [ClassroomProgressController::class, 'getCourseProgress'])->name('course-summary');
+        });
     });
 });
 

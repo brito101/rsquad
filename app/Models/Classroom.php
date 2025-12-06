@@ -24,6 +24,10 @@ class Classroom extends Model
         'order',
         'active',
         'link',
+        'vimeo_id',
+        'vimeo_uri',
+        'vimeo_thumbnail',
+        'vimeo_player_url',
         'release_date',
         'course_id',
         'course_module_id',
@@ -54,6 +58,11 @@ class Classroom extends Model
         return $this->belongsTo(CourseModule::class, 'course_module_id')->withDefault([
             'name' => 'Módulo excluído',
         ]);
+    }
+
+    public function progress()
+    {
+        return $this->hasMany(ClassroomProgress::class);
     }
 
     /** Accessors */
