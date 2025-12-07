@@ -9,6 +9,7 @@ Após o aluno atingir 100% de conclusão dos vídeos/aulas do curso, será liber
 - Data de conclusão (data em que atingiu 100% do vídeo/conteúdo).
 
 Também será criada uma página específica para o aluno visualizar e baixar todos os certificados já conquistados.
+O certificado deve ter a opção de compartilhamento no Linkedin
 
 Escopo detalhado:
 

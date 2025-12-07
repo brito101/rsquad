@@ -34,6 +34,7 @@ class CourseRequest extends FormRequest
         return [
             'name' => "required|max:191|unique:courses,name,{$this->id},id,deleted_at,NULL",
             'description' => 'required|max:4294967295',
+            'total_hours' => 'required|integer|min:1|max:10000',
             'cover' => 'required_if:cover,null|image|mimes:jpg,png,jpeg,gif,bmp,webp|max:4096|dimensions:max_width=4000,max_height=4000',
             'status' => 'required|in:Planejamento,Previsto,Em Andamento,Concluído,Disponível,Sob Demanda,Suspenso,Cancelado,Arquivado',
             'active' => 'nullable|boolean',

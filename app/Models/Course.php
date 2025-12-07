@@ -23,6 +23,7 @@ class Course extends Model
         'description',
         'status',
         'active',
+        'total_hours',
         'sales_link',
         'user_id',
         'price',
