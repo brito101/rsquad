@@ -355,6 +355,12 @@ return [
             ],
         ],
         [
+            'text' => 'Depoimentos',
+            'url' => 'admin/testimonials',
+            'icon' => 'fas fa-fw fa-star mr-2',
+            'can' => 'Acessar Depoimentos',
+        ],
+        [
             'text' => 'Blog',
             'url' => '#',
             'icon' => 'fas fa-fw fa-blog mr-2',

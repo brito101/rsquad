@@ -235,6 +235,12 @@ return [
         'promotional_price' => 'preço promocional',
         'is_promotional' => 'promocção ativa',
         'coupon_code' => 'código de cupom',
+        'featured' => 'em destaque',
+        'video' => 'vídeo',
+        'vimeo_id' => 'vídeo do Vimeo',
+        'vimeo_uri' => 'vídeo do Vimeo',
+        'vimeo_thumbnail' => 'miniatura do Vimeo',
+        'vimeo_player_url' => 'player do Vimeo',
     ],
 
 ];

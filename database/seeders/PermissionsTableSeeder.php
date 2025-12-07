@@ -360,6 +360,32 @@ class PermissionsTableSeeder extends Seeder
                 'guard_name' => 'web',
                 'created_at' => new DateTime('now'),
             ],
+            /** Testimonials 66 to 70 */
+            [
+                'name' => 'Acessar Depoimentos',
+                'guard_name' => 'web',
+                'created_at' => new DateTime('now'),
+            ],
+            [
+                'name' => 'Listar Depoimentos',
+                'guard_name' => 'web',
+                'created_at' => new DateTime('now'),
+            ],
+            [
+                'name' => 'Criar Depoimentos',
+                'guard_name' => 'web',
+                'created_at' => new DateTime('now'),
+            ],
+            [
+                'name' => 'Editar Depoimentos',
+                'guard_name' => 'web',
+                'created_at' => new DateTime('now'),
+            ],
+            [
+                'name' => 'Excluir Depoimentos',
+                'guard_name' => 'web',
+                'created_at' => new DateTime('now'),
+            ],
         ]);
     }
 }

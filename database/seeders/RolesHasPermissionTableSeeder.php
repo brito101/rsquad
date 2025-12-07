@@ -710,6 +710,72 @@ class RolesHasPermissionTableSeeder extends Seeder
                 'permission_id' => 65,
                 'role_id' => 2,
             ],
+            /** Testimonials 66 to 70 */
+            // Programmers, Administrators, Instructors get all permissions (66-70)
+            [
+                'permission_id' => 66, // Acessar Depoimentos
+                'role_id' => 1,
+            ],
+            [
+                'permission_id' => 66,
+                'role_id' => 2,
+            ],
+            [
+                'permission_id' => 66,
+                'role_id' => 3,
+            ],
+            [
+                'permission_id' => 67, // Listar Depoimentos
+                'role_id' => 1,
+            ],
+            [
+                'permission_id' => 67,
+                'role_id' => 2,
+            ],
+            [
+                'permission_id' => 67,
+                'role_id' => 3,
+            ],
+            [
+                'permission_id' => 68, // Criar Depoimentos
+                'role_id' => 1,
+            ],
+            [
+                'permission_id' => 68,
+                'role_id' => 2,
+            ],
+            [
+                'permission_id' => 68,
+                'role_id' => 3,
+            ],
+            [
+                'permission_id' => 68, // Criar Depoimentos - Student
+                'role_id' => 4,
+            ],
+            [
+                'permission_id' => 69, // Editar Depoimentos
+                'role_id' => 1,
+            ],
+            [
+                'permission_id' => 69,
+                'role_id' => 2,
+            ],
+            [
+                'permission_id' => 69,
+                'role_id' => 3,
+            ],
+            [
+                'permission_id' => 70, // Excluir Depoimentos
+                'role_id' => 1,
+            ],
+            [
+                'permission_id' => 70,
+                'role_id' => 2,
+            ],
+            [
+                'permission_id' => 70,
+                'role_id' => 3,
+            ],
         ]);
     }
 }

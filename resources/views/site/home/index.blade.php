@@ -86,6 +86,62 @@
         </ul>
     </section>
 
+    {{-- Testimonials --}}
+    @if($testimonials->count() > 0)
+    <section class="testimonials" aria-label="Depoimentos">
+        <div class="container">
+            <h2 class="font-1-xxl">O que dizem nossos alunos<span class="color-p2">.</span></h2>
+            <div class="testimonials-carousel">
+                <div class="testimonials-wrapper">
+                    @foreach($testimonials as $testimonial)
+                    <div class="testimonial-item">
+                        <div class="testimonial-content">
+                        <div class="testimonial-header">
+                            <div class="testimonial-avatar">
+                                @if($testimonial->user->photo)
+                                    <img src="{{ asset('storage/users/' . $testimonial->user->photo) }}" 
+                                         alt="{{ $testimonial->user->name }}" 
+                                         width="60" height="60">
+                                @else
+                                    <div class="avatar-placeholder">
+                                        {{ strtoupper(substr($testimonial->user->name, 0, 1)) }}
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="testimonial-info">
+                                <h3 class="font-1-m color-0">{{ $testimonial->user->name }}</h3>
+                                <p class="font-2-s color-6">{{ $testimonial->course->name }}</p>
+                                <div class="testimonial-rating" aria-label="Avaliação: {{ $testimonial->rating }} estrelas">
+                                    @for($i = 1; $i <= 5; $i++)
+                                        <i class="fas fa-star {{ $i <= $testimonial->rating ? 'active' : '' }}"></i>
+                                    @endfor
+                                </div>
+                            </div>
+                        </div>
+                        <blockquote class="font-2-m color-5">
+                            <p><span class="color-p1">"</span>{{ $testimonial->testimonial }}<span class="color-p1">"</span></p>
+                        </blockquote>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+                
+                @if($testimonials->count() > 1)
+                <div class="testimonials-controls">
+                    <button class="testimonial-prev" aria-label="Depoimento anterior">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <div class="testimonials-dots"></div>
+                    <button class="testimonial-next" aria-label="Próximo depoimento">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                @endif
+            </div>
+        </div>
+    </section>
+    @endif
+
     <section class="phrase" aria-label="Frase">
         <div>
             <img src="{{ asset('img/soc.webp') }}" width="1560" height="1360"

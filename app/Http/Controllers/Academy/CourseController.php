@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ClassroomProgress;
 use App\Models\Course;
 use App\Models\CourseStudent;
+use App\Models\Testimonial;
 use Exception;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
@@ -101,6 +102,11 @@ class CourseController extends Controller
         $watchedClasses = $userProgress->where('watched', true)->count();
         $progressPercentage = $totalClasses > 0 ? round(($watchedClasses / $totalClasses) * 100, 2) : 0;
 
+        // Check if user already has a testimonial for this course
+        $userTestimonial = Testimonial::where('user_id', auth()->user()->id)
+            ->where('course_id', $course->id)
+            ->first();
+
         return view('academy.courses.show', compact(
             'course',
             'modules',
@@ -109,6 +115,79 @@ class CourseController extends Controller
             'progressPercentage',
             'totalClasses',
             'watchedClasses',
+            'userTestimonial',
         ));
+    }
+
+    /**
+     * Store a testimonial for a course
+     */
+    public function storeTestimonial(Request $request, Course $course)
+    {
+        CheckPermission::checkAuth('Criar Depoimentos');
+
+        // Verify user is enrolled in the course
+        $isEnrolled = CourseStudent::where('user_id', auth()->user()->id)
+            ->where('course_id', $course->id)
+            ->exists();
+
+        if (!$isEnrolled) {
+            return redirect()
+                ->back()
+                ->with('error', 'Você precisa estar matriculado no curso para enviar um depoimento.');
+        }
+
+        // Calculate course completion percentage
+        $classes = $course->classes()->where('active', true)->get();
+        $totalClasses = $classes->count();
+        
+        if ($totalClasses > 0) {
+            $classIds = $classes->pluck('id')->toArray();
+            $watchedClasses = ClassroomProgress::where('user_id', auth()->user()->id)
+                ->whereIn('classroom_id', $classIds)
+                ->where('watched', true)
+                ->count();
+            
+            $progressPercentage = round(($watchedClasses / $totalClasses) * 100, 2);
+            
+            if ($progressPercentage < 100) {
+                return redirect()
+                    ->back()
+                    ->with('error', 'Você precisa completar 100% do curso para enviar um depoimento. Seu progresso atual: ' . $progressPercentage . '%');
+            }
+        }
+
+        // Check if user already has a testimonial for this course
+        $existingTestimonial = Testimonial::where('user_id', auth()->user()->id)
+            ->where('course_id', $course->id)
+            ->first();
+
+        if ($existingTestimonial) {
+            return redirect()
+                ->back()
+                ->with('error', 'Você já enviou um depoimento para este curso.');
+        }
+
+        $data = $request->validate([
+            'rating' => 'required|integer|min:1|max:5',
+            'testimonial' => 'required|string|min:10|max:1000',
+        ], [
+            'rating.required' => 'Por favor, selecione uma avaliação.',
+            'rating.min' => 'A avaliação deve ser de no mínimo 1 estrela.',
+            'rating.max' => 'A avaliação deve ser de no máximo 5 estrelas.',
+            'testimonial.required' => 'Por favor, escreva seu depoimento.',
+            'testimonial.min' => 'O depoimento deve ter no mínimo 10 caracteres.',
+            'testimonial.max' => 'O depoimento deve ter no máximo 1000 caracteres.',
+        ]);
+
+        $data['user_id'] = auth()->user()->id;
+        $data['course_id'] = $course->id;
+        $data['status'] = 'pending';
+
+        Testimonial::create($data);
+
+        return redirect()
+            ->route('academy.courses.show', $course->id)
+            ->with('success', 'Depoimento enviado com sucesso! Ele será analisado pela equipe.');
     }
 }

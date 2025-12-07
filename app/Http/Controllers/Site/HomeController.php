@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
 use App\Models\Course;
+use App\Models\Testimonial;
 use Eusonlito\LaravelMeta\Facade as Meta;
 
 class HomeController extends Controller
@@ -27,6 +28,14 @@ class HomeController extends Controller
 
         $courses = Course::where('active', true)->orderBy('created_at', 'desc')->take(3)->with('instructorsInfo')->get();
 
-        return view('site.home.index', compact('courses'));
+        // Buscar depoimentos aprovados e destacados
+        $testimonials = Testimonial::approved()
+            ->featured()
+            ->with(['user', 'course'])
+            ->orderBy('created_at', 'desc')
+            ->take(6)
+            ->get();
+
+        return view('site.home.index', compact('courses', 'testimonials'));
     }
 }

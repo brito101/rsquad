@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\CourseCategoryController;
 use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Admin\CourseModuleController;
 use App\Http\Controllers\Admin\StudentController;
+use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Site\AboutController;
 use App\Http\Controllers\Site\BlogController as SiteBlogController;
@@ -121,6 +122,12 @@ Route::group(['middleware' => ['auth', 'access']], function () {
         /** Contacts */
         Route::resource('contacts', ContactController::class)->except(['show', 'edit', 'update']);
 
+        /** Testimonials */
+        Route::post('testimonials/{testimonial}/approve', [TestimonialController::class, 'approve'])->name('testimonials.approve');
+        Route::post('testimonials/{testimonial}/reject', [TestimonialController::class, 'reject'])->name('testimonials.reject');
+        Route::post('testimonials/{testimonial}/toggle-featured', [TestimonialController::class, 'toggleFeatured'])->name('testimonials.toggle-featured');
+        Route::resource('testimonials', TestimonialController::class)->except(['show', 'create', 'store']);
+
         /**
          * ACL
          * */
@@ -145,6 +152,7 @@ Route::group(['middleware' => ['auth', 'access']], function () {
         /** Courses */
         Route::get('/courses', [AcademyCourseController::class, 'index'])->name('courses.index');
         Route::get('/courses/{course}', [AcademyCourseController::class, 'show'])->name('courses.show');
+        Route::post('/courses/{course}/testimonial', [AcademyCourseController::class, 'storeTestimonial'])->name('courses.testimonial.store');
         Route::get('/classroom/{classroom}', [ClassroomProgressController::class, 'show'])->name('classroom.show');
 
         /** Classroom Progress */

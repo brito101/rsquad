@@ -224,6 +224,65 @@
                         </div>
 
                     </div>
+
+                    {{-- Testimonial Section - Only show when course is 100% complete and no testimonial exists --}}
+                    @can('Criar Depoimentos')
+                        @if(!$userTestimonial)
+                            <div class="card card-primary" id="testimonial-section" style="display: {{ $progressPercentage >= 100 ? 'block' : 'none' }};">
+                                <div class="card-header">
+                                    <h3 class="card-title"><i class="fas fa-comment-dots"></i> Avalie este Curso</h3>
+                                </div>
+                                <div class="card-body">
+                                    <p>Compartilhe sua experiência com este curso! Seu feedback é muito importante.</p>
+                                    
+                                    <form action="{{ route('academy.courses.testimonial.store', $course->id) }}" method="POST">
+                                        @csrf
+                                        
+                                        <div class="form-group">
+                                            <label for="rating">Sua Avaliação <span class="text-danger">*</span></label>
+                                            <div class="rating-stars">
+                                                <input type="hidden" name="rating" id="rating" value="{{ old('rating', 0) }}">
+                                                <div class="stars" style="font-size: 2rem; cursor: pointer;">
+                                                    <i class="far fa-star" data-value="1"></i>
+                                                    <i class="far fa-star" data-value="2"></i>
+                                                    <i class="far fa-star" data-value="3"></i>
+                                                    <i class="far fa-star" data-value="4"></i>
+                                                    <i class="far fa-star" data-value="5"></i>
+                                                </div>
+                                            </div>
+                                            @error('rating')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="testimonial">Seu Depoimento <span class="text-danger">*</span></label>
+                                            <textarea 
+                                                name="testimonial" 
+                                                id="testimonial" 
+                                                class="form-control @error('testimonial') is-invalid @enderror" 
+                                                rows="5" 
+                                                placeholder="Conte-nos sobre sua experiência com este curso..."
+                                                required
+                                                minlength="10"
+                                                maxlength="1000">{{ old('testimonial') }}</textarea>
+                                            <small class="form-text text-muted">
+                                                <span id="char-count">0</span>/1000 caracteres (mínimo 10)
+                                            </small>
+                                            @error('testimonial')
+                                                <span class="invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-paper-plane"></i> Enviar Depoimento
+                                        </button>
+                                    </form>
+                                @endif
+                            </div>
+                        </div>
+                    @endcan
+
                 </div>
             </div>
         </div>
@@ -252,6 +311,71 @@
             
             toggleWatchedStatus(classroomId, checkbox, isWatched);
         });
+
+        // Rating stars functionality
+        $('.stars i').on('click', function() {
+            const value = $(this).data('value');
+            $('#rating').val(value);
+            
+            // Update stars display
+            $('.stars i').each(function(index) {
+                if (index < value) {
+                    $(this).removeClass('far').addClass('fas text-warning');
+                } else {
+                    $(this).removeClass('fas text-warning').addClass('far');
+                }
+            });
+        });
+
+        // Stars hover effect
+        $('.stars i').on('mouseenter', function() {
+            const value = $(this).data('value');
+            $('.stars i').each(function(index) {
+                if (index < value) {
+                    $(this).removeClass('far').addClass('fas text-warning');
+                } else {
+                    $(this).removeClass('fas text-warning').addClass('far');
+                }
+            });
+        });
+
+        $('.stars').on('mouseleave', function() {
+            const currentValue = $('#rating').val();
+            $('.stars i').each(function(index) {
+                if (index < currentValue) {
+                    $(this).removeClass('far').addClass('fas text-warning');
+                } else {
+                    $(this).removeClass('fas text-warning').addClass('far');
+                }
+            });
+        });
+
+        // Character counter
+        $('#testimonial').on('input', function() {
+            const length = $(this).val().length;
+            $('#char-count').text(length);
+            
+            if (length < 10) {
+                $('#char-count').removeClass('text-success').addClass('text-danger');
+            } else {
+                $('#char-count').removeClass('text-danger').addClass('text-success');
+            }
+        });
+
+        // Initialize char count if there's old input
+        if ($('#testimonial').val().length > 0) {
+            $('#char-count').text($('#testimonial').val().length);
+        }
+
+        // Initialize stars if there's old rating
+        const oldRating = $('#rating').val();
+        if (oldRating > 0) {
+            $('.stars i').each(function(index) {
+                if (index < oldRating) {
+                    $(this).removeClass('far').addClass('fas text-warning');
+                }
+            });
+        }
     });
 
     function toggleWatchedStatus(classroomId, checkbox, isWatched) {
@@ -298,6 +422,16 @@
         $('#course-progress-bar').css('width', `${progressPercentage}%`);
         $('#course-progress-bar').attr('aria-valuenow', progressPercentage);
         $('#course-progress-bar').text(`${progressPercentage}%`);
+
+        // Show/hide testimonial section based on progress
+        const hasTestimonial = {{ $userTestimonial ? 'true' : 'false' }};
+        if (!hasTestimonial) {
+            if (progressPercentage >= 100) {
+                $('#testimonial-section').slideDown(400);
+            } else {
+                $('#testimonial-section').slideUp(400);
+            }
+        }
     }
 </script>
 @endsection

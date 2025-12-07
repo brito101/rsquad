@@ -1,14 +1,22 @@
 # TODO
 
-## 1. Integração com Vimeo para acompanhamento de aulas e marcação de "assistido"
+## 2/6 - Certificados dinâmicos por curso e área de certificados do aluno
 
-Implementar uma camada de integração com o player do Vimeo focada em acompanhamento de consumo de aulas, de forma que a cada abertura/execução do vídeo haja o registro de visualização do aluno no sistema.
-Além disso, será disponibilizada uma interação via JavaScript para que o aluno possa marcar ou desmarcar manualmente o status de “assistido”, permitindo uma melhor gestão do próprio progresso.
+Após o aluno atingir 100% de conclusão dos vídeos/aulas do curso, será liberado um certificado de conclusão. Esse certificado será gerado a partir de um template em HTML, permitindo geração dinâmica com os seguintes dados:
+
+- Nome do aluno;
+- Nome do curso; e
+- Data de conclusão (data em que atingiu 100% do vídeo/conteúdo).
+
+Também será criada uma página específica para o aluno visualizar e baixar todos os certificados já conquistados.
 
 Escopo detalhado:
 
-- Análise de requisitos e modelagem de dados para registro de visualizações por aluno, curso e aula (tabelas, relacionamentos, índices básicos). Estimativa: 2 horas;
-- Criação de migrações e models (Laravel Eloquent) para armazenamento de eventos de visualização e status “assistido”/“não assistido”. Estimativa: 2 horas;
-- Implementação de rotas e Controller/API interna para registrar eventos de play/visualização e atualização de status, respeitando autenticação do aluno. Estimativa: 3 horas;
-- Integração do player Vimeo com JavaScript (eventos do player, chamadas AJAX/fetch para a API interna) e atualização visual do progresso na interface do aluno. Estimativa: 4 horas;
-- Testes funcionais e ajustes finos (cenários de múltiplas visualizações, mudanças de status, comportamento em diferentes navegadores e telas). Estimativa: 2 horas.
+- Definição do layout e requisitos do certificado (logomarca, cores, fontes, assinaturas digitais/impressas, campo de código de verificação se desejado). Estimativa: 2 horas;
+- Desenvolvimento do template em HTML/CSS, preparado para conversão em PDF ou exibição para impressão. Estimativa: 4 horas;
+- Integração da lógica de conclusão do curso com o sistema de certificados. Estimativa: 4 horas;
+- Implementação de Service/Controller para geração de certificados (dinâmicos). Estimativa: 4 horas, incluindo:
+    - Rotas para visualização/download (PDF); e
+    - Armazenamento/registro de emissões.
+- Desenvolvimento de página “Meus Certificados” na área do aluno, listando todos os certificados disponíveis, com download rápido. Estimativa: 3 horas;
+- Testes de geração, verificação de dados e ajustes de layout em diferentes resoluções, além de testes com múltiplos cursos/alunos. Estimativa: 3 horas
