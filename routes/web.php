@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Academy\AcademyController;
+use App\Http\Controllers\Academy\CertificateController as AcademyCertificateController;
 use App\Http\Controllers\Academy\ClassroomProgressController;
 use App\Http\Controllers\Academy\CourseController as AcademyCourseController;
 use App\Http\Controllers\Academy\UserController as AcademyUserController;
@@ -163,7 +164,25 @@ Route::group(['middleware' => ['auth', 'access']], function () {
             Route::get('{classroom}/progress', [ClassroomProgressController::class, 'getProgress'])->name('get-progress');
             Route::get('course/{course}/summary', [ClassroomProgressController::class, 'getCourseProgress'])->name('course-summary');
         });
+
+        /** Certificates */
+        Route::prefix('certificates')->name('certificates.')->group(function () {
+            Route::get('/', [AcademyCertificateController::class, 'index'])->name('index');
+            Route::get('/{certificate}', [AcademyCertificateController::class, 'show'])->name('show');
+            Route::get('/{certificate}/view', [AcademyCertificateController::class, 'view'])->name('view');
+            Route::get('/{certificate}/download', [AcademyCertificateController::class, 'download'])->name('download');
+            Route::get('/statistics/get', [AcademyCertificateController::class, 'statistics'])->name('statistics');
+        });
     });
+});
+
+/** Public Certificate Verification (no auth required) */
+Route::prefix('certificates')->name('certificates.')->group(function () {
+    Route::get('/verify/{code}', [AcademyCertificateController::class, 'verify'])->name('verify');
+    Route::post('/verify', [AcademyCertificateController::class, 'verify'])->name('verify.search');
+    Route::get('/public/{code}', [AcademyCertificateController::class, 'publicView'])->name('public');
+    Route::get('/public/{code}/view', [AcademyCertificateController::class, 'publicViewHtml'])->name('public.view');
+    Route::get('/public/{code}/pdf', [AcademyCertificateController::class, 'publicPdf'])->name('public.pdf');
 });
 
 Auth::routes([

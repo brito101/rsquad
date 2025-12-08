@@ -13,6 +13,7 @@
         "ext-iconv": "*",
         "ext-libxml": "*",
         "bacon/bacon-qr-code": "^3.0",
+        "barryvdh/laravel-dompdf": "^3.1",
         "eusonlito/laravel-meta": "^3.2",
         "fahlisaputra/laravel-minify": "^1.1",
         "guzzlehttp/guzzle": "^7.2",

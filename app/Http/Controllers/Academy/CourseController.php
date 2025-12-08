@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Academy;
 
 use App\Helpers\CheckPermission;
 use App\Http\Controllers\Controller;
+use App\Models\Certificate;
 use App\Models\ClassroomProgress;
 use App\Models\Course;
 use App\Models\CourseStudent;
 use App\Models\Testimonial;
+use App\Services\CertificateService;
 use Exception;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
@@ -26,6 +28,9 @@ class CourseController extends Controller
                 ->get();
 
             try {
+                $certificateService = new CertificateService();
+                $userId = auth()->user()->id;
+
                 return DataTables::of($courses)
                     ->addIndexColumn()
                     ->addColumn('cover', function ($row) {
@@ -47,10 +52,55 @@ class CourseController extends Controller
                             return $pivot->user->name;
                         })->implode(' - ');
                     })
+                    ->addColumn('status', function ($row) use ($certificateService, $userId) {
+                        $percentage = $certificateService->getCompletionPercentage($userId, $row->id);
+                        
+                        // Verificar se tem certificado
+                        $certificate = Certificate::where('user_id', $userId)
+                            ->where('course_id', $row->id)
+                            ->first();
+                        
+                        if ($percentage == 100 && $certificate) {
+                            return '<div class="text-center">
+                                        <div class="badge badge-success mb-1" style="font-size: 14px;">
+                                            <i class="fas fa-check-circle"></i> Concluído (100%)
+                                        </div><br>
+                                        <a href="'.route('academy.certificates.show', $certificate->id).'" 
+                                           class="btn btn-sm btn-primary" 
+                                           title="Ver Certificado">
+                                            <i class="fas fa-certificate"></i> Certificado
+                                        </a>
+                                    </div>';
+                        } else if ($percentage == 100) {
+                            return '<div class="text-center">
+                                        <span class="badge badge-success" style="font-size: 14px;">
+                                            <i class="fas fa-check-circle"></i> Concluído (100%)
+                                        </span>
+                                    </div>';
+                        } else if ($percentage > 0) {
+                            return '<div class="text-center">
+                                        <div class="progress" style="height: 25px; min-width: 120px;">
+                                            <div class="progress-bar" role="progressbar" 
+                                                 style="width: '.$percentage.'%;" 
+                                                 aria-valuenow="'.$percentage.'" 
+                                                 aria-valuemin="0" 
+                                                 aria-valuemax="100">
+                                                '.$percentage.'%
+                                            </div>
+                                        </div>
+                                    </div>';
+                        } else {
+                            return '<div class="text-center">
+                                        <span class="badge badge-secondary" style="font-size: 14px;">
+                                            <i class="fas fa-hourglass-start"></i> Não iniciado
+                                        </span>
+                                    </div>';
+                        }
+                    })
                     ->addColumn('action', function ($row) {
                         return '<a class="btn btn-xs btn-success mx-1 shadow" title="Editar" href="'.route('academy.courses.show', ['course' => $row->id]).'"><i class="fa fa-lg fa-fw fa-eye"></i></a>';
                     })
-                    ->rawColumns(['cover', 'categories', 'modules', 'instructors', 'action'])
+                    ->rawColumns(['cover', 'categories', 'modules', 'instructors', 'status', 'action'])
                     ->make(true);
             } catch (Exception $e) {
                 return response([

@@ -119,16 +119,18 @@
                                         </x-adminlte-select-bs>
                                     </div>
                                     <div class="col-12 col-md-2 form-group px-0 pr-md-2">
+                                        <label for="total_hours">Carga horária (horas)</label>
+                                        <input type="number" class="form-control" id="total_hours" name="total_hours"
+                                            min="1" step="1" value="{{ old('total_hours') }}" placeholder="e.g. 40" required>
+                                    </div>
+
+                                    <div class="col-12 col-md-2 form-group px-0 px-md-2">
                                         <label for="price">Preço</label>
                                         <input type="text" class="form-control money_format_2" id="price"
                                             placeholder="Preço do Curso" name="price" value="{{ old('price') }}"
                                             required>
                                     </div>
-                                    <div class="col-12 col-md-2 form-group px-0 px-md-2">
-                                        <label for="total_hours">Carga horária (horas)</label>
-                                        <input type="number" class="form-control" id="total_hours" name="total_hours"
-                                            min="1" step="1" value="{{ old('total_hours') }}" placeholder="e.g. 40" required>
-                                    </div>
+                                    
                                     <div class="col-12 col-md-2 form-group px-0 px-md-2">
                                         <label for="promotional_price">Preço Promocional</label>
                                         <input type="text" class="form-control money_format_2" id="promotional_price"

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Classroom;
 use App\Models\ClassroomProgress;
 use App\Models\CourseStudent;
+use App\Services\CertificateService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -179,9 +180,23 @@ class ClassroomProgressController extends Controller
             if ($progress->watched) {
                 $progress->markAsUnwatched();
                 $message = 'Aula marcada como não assistida.';
+                $certificateGenerated = false;
             } else {
                 $progress->markAsWatched();
                 $message = 'Aula marcada como assistida.';
+                
+                // Check if course is completed and generate certificate
+                $certificateService = new CertificateService();
+                $certificateGenerated = false;
+                
+                if ($certificateService->checkEligibility($user->id, $classroom->course_id)) {
+                    $certificate = $certificateService->generateCertificate($user->id, $classroom->course_id);
+                    
+                    if ($certificate) {
+                        $certificateGenerated = true;
+                        $message .= ' Parabéns! Você completou o curso e seu certificado foi gerado.';
+                    }
+                }
             }
 
             return response()->json([
@@ -190,6 +205,7 @@ class ClassroomProgressController extends Controller
                 'data' => [
                     'watched' => $progress->watched,
                     'view_count' => $progress->view_count,
+                    'certificate_generated' => $certificateGenerated ?? false,
                 ],
             ]);
         } catch (\Exception $e) {

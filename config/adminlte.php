@@ -311,6 +311,12 @@ return [
             'can' => 'Acessar Academia',
         ],
         [
+            'text' => 'Meus Certificados',
+            'url' => 'academy/certificates',
+            'icon' => 'fa fa-fw fa-certificate mr-2',
+            'can' => 'Acessar Academia',
+        ],
+        [
             'text' => 'Cursos',
             'url' => '#',
             'icon' => 'fas fa-fw fa-newspaper mr-2',
