@@ -139,8 +139,8 @@ class CertificateService
     {
         $certificate->load(['user', 'course']);
 
-        // Render the certificate HTML
-        $html = view('certificates.template', [
+        // Render the certificate HTML (PDF-specific template)
+        $html = view('certificates.pdf', [
             'certificate' => $certificate,
             'user' => $certificate->user,
             'course' => $certificate->course,
@@ -151,12 +151,12 @@ class CertificateService
             ->setPaper('a4', 'landscape')
             ->setOptions([
                 'isHtml5ParserEnabled' => true,
-                'isRemoteEnabled' => true,
-                'isPhpEnabled' => true,
-                'defaultFont' => 'sans-serif',
-                'dpi' => 150,
+                'isRemoteEnabled' => false,
+                'isPhpEnabled' => false,
+                'defaultFont' => 'Arial',
+                'dpi' => 96,
                 'defaultMediaType' => 'print',
-                'isFontSubsettingEnabled' => true,
+                'isFontSubsettingEnabled' => false,
             ]);
 
         // Define storage path

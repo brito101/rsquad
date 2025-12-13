@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Certificado - {{ $certificate->course->name }}</title>
+    <link rel="icon" href="{{ asset('img/logo-rounded.png') }}" type="image/png">
+    <title>RSquad Academy - Certificado: {{ $certificate->course->name }}</title>
     <style>
         * {
             margin: 0;

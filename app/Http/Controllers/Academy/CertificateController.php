@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Academy;
 use App\Http\Controllers\Controller;
 use App\Models\Certificate;
 use App\Services\CertificateService;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 

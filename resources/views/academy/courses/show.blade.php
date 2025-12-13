@@ -134,7 +134,7 @@
                                                                     class="h3 text-primary">{{ $module->name }}</a>
                                                             @endif
                                                         </span>
-                                                        {!! $module->description !!}
+                                                        <p class="mt-3 text-muted">{!! $module->description !!}</p>
                                                     </div>
 
                                                     <div class="card-body">

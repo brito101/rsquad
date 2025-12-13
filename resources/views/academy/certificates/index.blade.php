@@ -117,11 +117,12 @@
                                            title="Visualizar">
                                             <i class="fas fa-eye"></i>
                                         </a>
-                                        <a href="{{ route('academy.certificates.download', $certificate->id) }}" 
-                                           class="btn btn-sm btn-danger"
-                                           title="Baixar PDF">
+                                        <button type="button" 
+                                                class="btn btn-sm btn-danger"
+                                                onclick="downloadCertificateAsPDF('{{ $certificate->id }}', '{{ $certificate->verification_code }}')"
+                                                title="Baixar PDF">
                                             <i class="fas fa-download"></i>
-                                        </a>
+                                        </button>
                                         <a href="{{ $certificate->getLinkedInCertificationUrl() }}" 
                                            class="btn btn-sm btn-info"
                                            target="_blank"
@@ -161,21 +162,102 @@
 @endsection
 
 @section('js')
+<!-- Modal de Loading -->
+<div class="modal fade" id="pdfLoadingModal" data-backdrop="static" data-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body text-center py-4">
+                <div class="spinner-border text-primary mb-3" role="status" style="width: 3rem; height: 3rem;">
+                    <span class="sr-only">Carregando...</span>
+                </div>
+                <h5>Gerando PDF...</h5>
+                <p class="text-muted mb-0">Aguarde enquanto preparamos seu certificado.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- html2canvas + jsPDF -->
+<script src="{{ asset('vendor/pdf/html2canvas.min.js')}}"></script>
+<script src="{{ asset('vendor/pdf/jspdf.umd.min.js')}}"></script>
+
 <script>
+function downloadCertificateAsPDF(certificateId, verificationCode) {
+    // Mostra modal de loading
+    $('#pdfLoadingModal').modal('show');
+
+    const certificateUrl = `/certificates/public/${verificationCode}/view`;
+    const iframe = document.createElement('iframe');
+    iframe.style.position = 'fixed';
+    iframe.style.top = '-9999px';
+    iframe.style.width = '1246px';
+    iframe.style.height = '882px';
+    iframe.style.border = 'none';
+    document.body.appendChild(iframe);
+    
+    iframe.onload = function() {
+        setTimeout(() => {
+            try {
+                const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                const studentName = iframeDoc.querySelector('.student-name');
+                
+                if (!studentName || !studentName.textContent.trim()) {
+                    setTimeout(arguments.callee, 500);
+                    return;
+                }
+                
+                const body = iframeDoc.body;
+                
+                html2canvas(body, {
+                    scale: 2,
+                    useCORS: true,
+                    allowTaint: true,
+                    backgroundColor: '#ffffff',
+                    width: 1246,
+                    height: 882,
+                    windowWidth: 1246,
+                    windowHeight: 882,
+                    scrollX: 0,
+                    scrollY: 0,
+                    logging: false
+                }).then(canvas => {
+                    const imgData = canvas.toDataURL('image/jpeg', 1.0);
+                    const { jsPDF } = window.jspdf;
+                    const pdf = new jsPDF({
+                        orientation: 'landscape',
+                        unit: 'px',
+                        format: [1246, 882]
+                    });
+                    
+                    pdf.addImage(imgData, 'JPEG', 0, 0, 1246, 882);
+                    pdf.save(`certificado-${verificationCode}.pdf`);
+                    
+                    document.body.removeChild(iframe);
+                    
+                    // Fecha modal
+                    $('#pdfLoadingModal').modal('hide');
+                }).catch(error => {
+                    console.error('Erro html2canvas:', error);
+                    document.body.removeChild(iframe);
+                    $('#pdfLoadingModal').modal('hide');
+                });
+                
+            } catch (error) {
+                console.error('Erro:', error);
+                if (document.body.contains(iframe)) {
+                    document.body.removeChild(iframe);
+                }
+                $('#pdfLoadingModal').modal('hide');
+            }
+        }, 2000);
+    };
+    
+    iframe.src = certificateUrl;
+}
+
 function copyVerificationUrl(url) {
     navigator.clipboard.writeText(url).then(function() {
-        // Using SweetAlert2 if available, otherwise alert
-        if (typeof Swal !== 'undefined') {
-            Swal.fire({
-                icon: 'success',
-                title: 'Link copiado!',
-                text: 'O link de verificação foi copiado para a área de transferência.',
-                timer: 2000,
-                showConfirmButton: false
-            });
-        } else {
-            alert('Link de verificação copiado para a área de transferência!');
-        }
+        alert('O link de verificação foi copiado para a área de transferência.', 'Link copiado!');
     }, function() {
         alert('Erro ao copiar o link. Por favor, copie manualmente: ' + url);
     });

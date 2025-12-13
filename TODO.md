@@ -1,23 +1,19 @@
 # TODO
 
-## 2/6 - Certificados dinâmicos por curso e área de certificados do aluno
+## 4/6 - Módulo de Workshops com página específica na camada externa
 
-Após o aluno atingir 100% de conclusão dos vídeos/aulas do curso, será liberado um certificado de conclusão. Esse certificado será gerado a partir de um template em HTML, permitindo geração dinâmica com os seguintes dados:
+Criação de um módulo específico para Workshops, com estrutura similar ao módulo de cursos, porém adaptado às características particulares deste formato (ex.: data/hora do evento, modalidade ao vivo ou gravado, carga horária específica, etc.).
+Esse módulo incluirá:
 
-- Nome do aluno;
-- Nome do curso; e
-- Data de conclusão (data em que atingiu 100% do vídeo/conteúdo).
-
-Também será criada uma página específica para o aluno visualizar e baixar todos os certificados já conquistados.
-O certificado deve ter a opção de compartilhamento no Linkedin
-
-Escopo detalhado:
-
-- Definição do layout e requisitos do certificado (logomarca, cores, fontes, assinaturas digitais/impressas, campo de código de verificação se desejado). Estimativa: 2 horas;
-- Desenvolvimento do template em HTML/CSS, preparado para conversão em PDF ou exibição para impressão. Estimativa: 4 horas;
-- Integração da lógica de conclusão do curso com o sistema de certificados. Estimativa: 4 horas;
-- Implementação de Service/Controller para geração de certificados (dinâmicos). Estimativa: 4 horas, incluindo:
-    - Rotas para visualização/download (PDF); e
-    - Armazenamento/registro de emissões.
-- Desenvolvimento de página “Meus Certificados” na área do aluno, listando todos os certificados disponíveis, com download rápido. Estimativa: 3 horas;
-- Testes de geração, verificação de dados e ajustes de layout em diferentes resoluções, além de testes com múltiplos cursos/alunos. Estimativa: 3 horas
+- Gestão de workshops no painel administrativo;
+- Página pública de listagem de workshops;
+- Página de detalhes de cada workshop na camada externa (informações, descrição, público-alvo, etc.); e
+- Reaproveitamento máximo da estrutura de cursos, quando aplicável, mantendo padronização de código e UX.
+Escopo detalhado
+- Modelagem de dados para workshops (tabela específica, campos para datas, status, descrição, vínculo com vídeos ou materiais, etc.). Estimativa: 2 horas;
+- Implementação de models, controllers e rotas para CRUD completo de workshops no backend (Laravel). Estimativa: 5 horas;
+- Desenvolvimento de telas administrativas. Estimativa: 4 horas, incluindo:
+    - Listagem, criação, edição, remoção; e
+    - Definição de campos de destaque (por exemplo, workshops em evidência).
+    - Criação da página pública de listagem de workshops (camada externa), com filtros simples se necessário. Estimativa: 4 horas;
+    - Testes integrados e ajustes de UX para garantir consistência com a experiência atual da RSquad Academy. Estimativa: 3 horas
