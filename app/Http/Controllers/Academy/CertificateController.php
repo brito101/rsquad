@@ -54,38 +54,20 @@ class CertificateController extends Controller
             ->firstOrFail();
 
         // Generate PDF if not exists
-        if (!$certificate->hasPdf()) {
+        if (! $certificate->hasPdf()) {
             $this->certificateService->generatePDF($certificate);
         }
 
         $pdfPath = $certificate->getPdfFullPath();
 
-        if (!$pdfPath || !file_exists($pdfPath)) {
+        if (! $pdfPath || ! file_exists($pdfPath)) {
             abort(404, 'Certificado não encontrado.');
         }
 
-        $filename = 'certificado-' . $certificate->course->uri . '-' . $certificate->verification_code . '.pdf';
+        $filename = 'certificado-'.$certificate->course->uri.'-'.$certificate->verification_code.'.pdf';
 
         return Response::download($pdfPath, $filename, [
             'Content-Type' => 'application/pdf',
-        ]);
-    }
-
-    /**
-     * View certificate in browser
-     */
-    public function view($id)
-    {
-        $certificate = Certificate::with(['user', 'course'])
-            ->where('id', $id)
-            ->where('user_id', Auth::id())
-            ->firstOrFail();
-
-        // Render certificate HTML
-        return view('certificates.template', [
-            'certificate' => $certificate,
-            'user' => $certificate->user,
-            'course' => $certificate->course,
         ]);
     }
 
@@ -104,29 +86,6 @@ class CertificateController extends Controller
             'user' => $certificate->user,
             'course' => $certificate->course,
         ]);
-    }
-
-    /**
-     * Public certificate verification by code
-     */
-    public function verify(Request $request, $code = null)
-    {
-        // If accessed via GET with code in URL
-        if ($code) {
-            $certificate = $this->certificateService->verifyCertificate($code);
-
-            return view('certificates.verify', compact('certificate', 'code'));
-        }
-
-        // If accessed via POST (search form)
-        $request->validate([
-            'verification_code' => 'required|string|max:64',
-        ]);
-
-        $code = strtoupper($request->verification_code);
-        $certificate = $this->certificateService->verifyCertificate($code);
-
-        return view('certificates.verify', compact('certificate', 'code'));
     }
 
     /**
@@ -164,17 +123,17 @@ class CertificateController extends Controller
             ->firstOrFail();
 
         // Generate PDF if not exists
-        if (!$certificate->hasPdf()) {
+        if (! $certificate->hasPdf()) {
             $this->certificateService->generatePDF($certificate);
         }
 
         $pdfPath = $certificate->getPdfFullPath();
 
-        if (!$pdfPath || !file_exists($pdfPath)) {
+        if (! $pdfPath || ! file_exists($pdfPath)) {
             abort(404, 'Certificado não encontrado.');
         }
 
-        $filename = 'certificado-' . $certificate->course->uri . '-' . $certificate->verification_code . '.pdf';
+        $filename = 'certificado-'.$certificate->course->uri.'-'.$certificate->verification_code.'.pdf';
 
         return Response::download($pdfPath, $filename, [
             'Content-Type' => 'application/pdf',

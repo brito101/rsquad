@@ -12,7 +12,7 @@
         }
 
         body {
-            background: #1a1a2e;
+            background: #030303;
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -23,39 +23,34 @@
         }
 
         .certificate-container {
-            max-width: 1400px;
-            width: 100%;
+            width: 1246px;
+            height: 882px;
+            max-width: 100%;
+            max-height: calc(100vh - 40px);
             background: white;
-            border-radius: 8px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
             position: relative;
         }
 
         .certificate-frame {
             width: 100%;
-            height: 0;
-            padding-bottom: 70.71%; /* Proporção A4 landscape (210/297) */
+            height: 100%;
             position: relative;
-            background: white;
         }
 
         .certificate-frame iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
             width: 100%;
             height: 100%;
             border: none;
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 1280px) {
             body {
                 padding: 10px;
             }
             
             .certificate-container {
-                border-radius: 4px;
+                max-height: calc(100vh - 20px);
             }
         }
     </style>

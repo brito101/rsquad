@@ -25,7 +25,7 @@ return new class extends Migration
             $table->index(['status', 'featured']);
             $table->index('course_id');
             $table->index('user_id');
-            
+
             // Unique constraint: one testimonial per user per course
             $table->unique(['user_id', 'course_id']);
         });

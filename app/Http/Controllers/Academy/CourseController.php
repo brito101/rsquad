@@ -28,7 +28,7 @@ class CourseController extends Controller
                 ->get();
 
             try {
-                $certificateService = new CertificateService();
+                $certificateService = new CertificateService;
                 $userId = auth()->user()->id;
 
                 return DataTables::of($courses)
@@ -54,30 +54,30 @@ class CourseController extends Controller
                     })
                     ->addColumn('status', function ($row) use ($certificateService, $userId) {
                         $percentage = $certificateService->getCompletionPercentage($userId, $row->id);
-                        
+
                         // Verificar se tem certificado
                         $certificate = Certificate::where('user_id', $userId)
                             ->where('course_id', $row->id)
                             ->first();
-                        
+
                         if ($percentage == 100 && $certificate) {
                             return '<div class="text-center">
                                         <div class="badge badge-success mb-1" style="font-size: 14px;">
                                             <i class="fas fa-check-circle"></i> Concluído (100%)
                                         </div><br>
-                                        <a href="'.route('academy.certificates.show', $certificate->id).'" 
+                                        <a target="_blank" href="'.route('certificates.public', $certificate->verification_code).'" 
                                            class="btn btn-sm btn-primary" 
                                            title="Ver Certificado">
                                             <i class="fas fa-certificate"></i> Certificado
                                         </a>
                                     </div>';
-                        } else if ($percentage == 100) {
+                        } elseif ($percentage == 100) {
                             return '<div class="text-center">
                                         <span class="badge badge-success" style="font-size: 14px;">
                                             <i class="fas fa-check-circle"></i> Concluído (100%)
                                         </span>
                                     </div>';
-                        } else if ($percentage > 0) {
+                        } elseif ($percentage > 0) {
                             return '<div class="text-center">
                                         <div class="progress" style="height: 25px; min-width: 120px;">
                                             <div class="progress-bar" role="progressbar" 
@@ -181,7 +181,7 @@ class CourseController extends Controller
             ->where('course_id', $course->id)
             ->exists();
 
-        if (!$isEnrolled) {
+        if (! $isEnrolled) {
             return redirect()
                 ->back()
                 ->with('error', 'Você precisa estar matriculado no curso para enviar um depoimento.');
@@ -190,20 +190,20 @@ class CourseController extends Controller
         // Calculate course completion percentage
         $classes = $course->classes()->where('active', true)->get();
         $totalClasses = $classes->count();
-        
+
         if ($totalClasses > 0) {
             $classIds = $classes->pluck('id')->toArray();
             $watchedClasses = ClassroomProgress::where('user_id', auth()->user()->id)
                 ->whereIn('classroom_id', $classIds)
                 ->where('watched', true)
                 ->count();
-            
+
             $progressPercentage = round(($watchedClasses / $totalClasses) * 100, 2);
-            
+
             if ($progressPercentage < 100) {
                 return redirect()
                     ->back()
-                    ->with('error', 'Você precisa completar 100% do curso para enviar um depoimento. Seu progresso atual: ' . $progressPercentage . '%');
+                    ->with('error', 'Você precisa completar 100% do curso para enviar um depoimento. Seu progresso atual: '.$progressPercentage.'%');
             }
         }
 

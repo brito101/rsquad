@@ -86,7 +86,7 @@ class Testimonial extends Model
      */
     public function getStarsAttribute(): string
     {
-        return str_repeat('★', $this->rating) . str_repeat('☆', 5 - $this->rating);
+        return str_repeat('★', $this->rating).str_repeat('☆', 5 - $this->rating);
     }
 
     /**
@@ -119,6 +119,7 @@ class Testimonial extends Model
     public function approve(): bool
     {
         $this->status = 'approved';
+
         return $this->save();
     }
 
@@ -128,6 +129,7 @@ class Testimonial extends Model
     public function reject(): bool
     {
         $this->status = 'rejected';
+
         return $this->save();
     }
 
@@ -136,7 +138,8 @@ class Testimonial extends Model
      */
     public function toggleFeatured(): bool
     {
-        $this->featured = !$this->featured;
+        $this->featured = ! $this->featured;
+
         return $this->save();
     }
 }

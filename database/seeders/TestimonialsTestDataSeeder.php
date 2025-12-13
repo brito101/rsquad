@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\CategoryCourse;
 use App\Models\Classroom;
 use App\Models\ClassroomProgress;
 use App\Models\Course;
-use App\Models\CategoryCourse;
 use App\Models\CourseCategoryPivot;
 use App\Models\CourseModule;
 use App\Models\CourseStudent;
@@ -30,11 +30,11 @@ class TestimonialsTestDataSeeder extends Seeder
             $roleAluno = Role::firstOrCreate(['name' => 'Aluno']);
 
             // Get first admin user for category
-            $adminUser = User::whereHas('roles', function($q) {
+            $adminUser = User::whereHas('roles', function ($q) {
                 $q->where('name', 'Administrador');
             })->first();
 
-            if (!$adminUser) {
+            if (! $adminUser) {
                 $adminUser = User::first(); // Fallback to any user
             }
 
@@ -43,27 +43,27 @@ class TestimonialsTestDataSeeder extends Seeder
                 ['name' => 'Segurança da Informação'],
                 [
                     'description' => 'Cursos de segurança cibernética',
-                    'user_id' => $adminUser->id
+                    'user_id' => $adminUser->id,
                 ]
             );
 
             // Get or use existing courses, create if needed
             $courses = Course::limit(3)->get();
-            
+
             // If less than 3 courses exist, create additional ones
             if ($courses->count() < 3) {
                 $coursesToCreate = 3 - $courses->count();
                 $courseNames = [
                     'Blue Team Fundamentals',
                     'SOC Analyst - Analista de Centro de Operações',
-                    'DFIR - Digital Forensics & Incident Response'
+                    'DFIR - Digital Forensics & Incident Response',
                 ];
                 $courseUris = [
                     'blue-team-fundamentals',
                     'soc-analyst',
-                    'dfir-digital-forensics'
+                    'dfir-digital-forensics',
                 ];
-                
+
                 for ($i = 0; $i < $coursesToCreate; $i++) {
                     $newCourse = Course::create([
                         'name' => $courseNames[$i],
@@ -74,22 +74,22 @@ class TestimonialsTestDataSeeder extends Seeder
                     ]);
                     CourseCategoryPivot::create([
                         'course_id' => $newCourse->id,
-                        'category_course_id' => $category->id
+                        'category_course_id' => $category->id,
                     ]);
                     $courses->push($newCourse);
                 }
             }
-            
+
             $courses = $courses->take(3);
 
             // Create modules and classes for each course
             foreach ($courses as $index => $course) {
                 $moduleCount = rand(3, 5);
-                
+
                 for ($m = 1; $m <= $moduleCount; $m++) {
                     $module = CourseModule::create([
                         'course_id' => $course->id,
-                        'name' => "Módulo {$m} - " . $this->getModuleName($index, $m),
+                        'name' => "Módulo {$m} - ".$this->getModuleName($index, $m),
                         'description' => "Conteúdo do módulo {$m}",
                         'active' => true,
                         'order' => $m,
@@ -102,7 +102,7 @@ class TestimonialsTestDataSeeder extends Seeder
                         Classroom::create([
                             'course_id' => $course->id,
                             'course_module_id' => $module->id,
-                            'name' => "Aula {$c} - " . $this->getClassName($index, $m, $c),
+                            'name' => "Aula {$c} - ".$this->getClassName($index, $m, $c),
                             'status' => 'Publicado',
                             'active' => true,
                             'order' => $c,
@@ -140,7 +140,7 @@ class TestimonialsTestDataSeeder extends Seeder
 
         } catch (\Exception $e) {
             DB::rollBack();
-            $this->command->error('❌ Erro ao criar dados: ' . $e->getMessage());
+            $this->command->error('❌ Erro ao criar dados: '.$e->getMessage());
             throw $e;
         }
     }
@@ -212,7 +212,7 @@ class TestimonialsTestDataSeeder extends Seeder
                 // Define completion percentage (varied)
                 $completionOptions = [0, 25, 50, 75, 100];
                 $completionPercentage = $completionOptions[array_rand($completionOptions)];
-                
+
                 $totalClasses = $classes->count();
                 $watchedCount = (int) ceil(($completionPercentage / 100) * $totalClasses);
 
@@ -292,7 +292,7 @@ class TestimonialsTestDataSeeder extends Seeder
                 $course = Course::find($enrollment->course_id);
                 $classes = Classroom::where('course_id', $course->id)->where('active', true)->get();
                 $totalClasses = $classes->count();
-                
+
                 $watchedClasses = ClassroomProgress::where('user_id', $student->id)
                     ->whereIn('classroom_id', $classes->pluck('id'))
                     ->where('watched', true)
@@ -304,7 +304,7 @@ class TestimonialsTestDataSeeder extends Seeder
                 if ($progressPercentage >= 100 && rand(1, 10) > 3) { // 70% chance
                     $testimonialData = $testimonialContents[$testimonialIndex % count($testimonialContents)];
                     $status = $statuses[array_rand($statuses)];
-                    
+
                     Testimonial::create([
                         'user_id' => $student->id,
                         'course_id' => $course->id,

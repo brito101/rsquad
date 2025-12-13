@@ -18,19 +18,21 @@
 
         body {
             font-family: 'Arial', 'Helvetica', sans-serif;
-            width: 297mm;
-            height: 210mm;
+            width: 1246px;
+            height: 882px;
             position: relative;
+            overflow-y: hidden;
             margin: 0;
             padding: 0;
+            margin-bottom: -32px;
         }
 
         .background-container {
             position: absolute;
             top: 0;
             left: 0;
-            width: 297mm;
-            height: 210mm;
+            width: 1246px;
+            height: 882px;
             z-index: 0;
         }
 
@@ -43,51 +45,47 @@
         .certificate-content {
             position: absolute;
             top: 0;
-            left: 0;
-            width: 100%;
+            left: 42%;
+            width: 58%;
             height: 100%;
+            overflow-y: hidden!important;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 60px 100px;
+            padding-right: 50px;
             z-index: 1;
         }
 
         .student-name {
-            position: absolute;
-            top: 43%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 70%;
+            width: 100%;
             text-align: center;
-            font-size: {{ strlen($user->name) > 30 ? '36px' : (strlen($user->name) > 25 ? '42px' : '48px') }};
-            font-weight: bold;
+            font-size: 40px;
+            font-weight: normal;
             color: #1a3a5c;
             letter-spacing: 1px;
             line-height: 1.2;
+            margin-top: -40px;
         }
 
         .course-details {
             position: absolute;
-            top: 54%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 75%;
+            top: 55%;
+            width: 85%;
             text-align: center;
-            font-size: 16px;
-            color: #8b7355;
-            line-height: 1.8;
+            font-size: 28px;
+            color: #AA8B34;
+            line-height: 1.25;
         }
 
         .course-name {
-            font-weight: bold;
-            color: #6b5840;
+            font-weight: normal;
+            color: #AA8B34;
         }
 
         .verification-code {
             position: absolute;
-            bottom: 20px;
+            bottom: 10px;
             right: 40px;
             font-size: 10px;
             color: #666;

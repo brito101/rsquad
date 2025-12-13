@@ -1,9 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -27,7 +25,7 @@ return new class extends Migration
                 ->where('guard_name', 'web')
                 ->exists();
 
-            if (!$exists) {
+            if (! $exists) {
                 DB::table('permissions')->insert([
                     'name' => $permission,
                     'guard_name' => 'web',
@@ -59,7 +57,7 @@ return new class extends Migration
                         ->where('role_id', $roles[$roleName])
                         ->exists();
 
-                    if (!$exists) {
+                    if (! $exists) {
                         $rolePermissions[] = [
                             'permission_id' => $permissionId,
                             'role_id' => $roles[$roleName],
@@ -77,7 +75,7 @@ return new class extends Migration
                     ->where('role_id', $roles['Instrutor'])
                     ->exists();
 
-                if (!$exists) {
+                if (! $exists) {
                     $rolePermissions[] = [
                         'permission_id' => $permissionId,
                         'role_id' => $roles['Instrutor'],
@@ -93,7 +91,7 @@ return new class extends Migration
                 ->where('role_id', $roles['Aluno'])
                 ->exists();
 
-            if (!$exists) {
+            if (! $exists) {
                 $rolePermissions[] = [
                     'permission_id' => $permissionIds['Criar Depoimentos'],
                     'role_id' => $roles['Aluno'],
@@ -102,7 +100,7 @@ return new class extends Migration
         }
 
         // Insert role permissions
-        if (!empty($rolePermissions)) {
+        if (! empty($rolePermissions)) {
             DB::table('role_has_permissions')->insert($rolePermissions);
         }
 

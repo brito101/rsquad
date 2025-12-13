@@ -46,6 +46,7 @@ class TestimonialController extends Controller
                                 $stars .= '<i class="far fa-star text-warning"></i>';
                             }
                         }
+
                         return $stars;
                     })
                     ->addColumn('status_badge', function ($row) {
@@ -62,6 +63,7 @@ class TestimonialController extends Controller
                         if ($row->featured) {
                             return '<span class="badge badge-primary"><i class="fas fa-star"></i> Destaque</span>';
                         }
+
                         return '-';
                     })
                     ->addColumn('created_at_formatted', function ($row) {
@@ -69,16 +71,17 @@ class TestimonialController extends Controller
                     })
                     ->addColumn('action', function ($row) use ($token) {
                         $actions = '<div class="d-flex justify-content-center align-items-center">';
-                        
+
                         if (Auth::user()->hasPermissionTo('Editar Depoimentos')) {
                             $actions .= '<a class="btn btn-xs btn-primary mx-1 shadow" title="Editar" href="'.route('admin.testimonials.edit', ['testimonial' => $row->id]).'"><i class="fa fa-lg fa-fw fa-pen"></i></a>';
                         }
-                        
+
                         if (Auth::user()->hasPermissionTo('Excluir Depoimentos')) {
                             $actions .= '<form method="POST" action="'.route('admin.testimonials.destroy', ['testimonial' => $row->id]).'" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="'.$token.'"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão deste depoimento?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>';
                         }
-                        
+
                         $actions .= '</div>';
+
                         return $actions;
                     })
                     ->rawColumns(['rating_stars', 'status_badge', 'featured_badge', 'action'])

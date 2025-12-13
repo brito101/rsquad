@@ -184,14 +184,14 @@ class ClassroomProgressController extends Controller
             } else {
                 $progress->markAsWatched();
                 $message = 'Aula marcada como assistida.';
-                
+
                 // Check if course is completed and generate certificate
-                $certificateService = new CertificateService();
+                $certificateService = new CertificateService;
                 $certificateGenerated = false;
-                
+
                 if ($certificateService->checkEligibility($user->id, $classroom->course_id)) {
                     $certificate = $certificateService->generateCertificate($user->id, $classroom->course_id);
-                    
+
                     if ($certificate) {
                         $certificateGenerated = true;
                         $message .= ' Parabéns! Você completou o curso e seu certificado foi gerado.';

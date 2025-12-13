@@ -5,11 +5,7 @@ namespace App\Services;
 use App\Models\Certificate;
 use App\Models\Classroom;
 use App\Models\ClassroomProgress;
-use App\Models\Course;
 use App\Models\CourseStudent;
-use App\Models\User;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 
 class CertificateService
 {
@@ -24,7 +20,7 @@ class CertificateService
             ->where('course_id', $courseId)
             ->first();
 
-        if (!$enrollment) {
+        if (! $enrollment) {
             return false;
         }
 
@@ -97,7 +93,7 @@ class CertificateService
     public function generateCertificate(int $userId, int $courseId): ?Certificate
     {
         // Check eligibility
-        if (!$this->checkEligibility($userId, $courseId)) {
+        if (! $this->checkEligibility($userId, $courseId)) {
             return null;
         }
 
@@ -164,12 +160,12 @@ class CertificateService
             ]);
 
         // Define storage path
-        $filename = 'certificates/' . $certificate->verification_code . '.pdf';
-        $fullPath = storage_path('app/private/' . $filename);
+        $filename = 'certificates/'.$certificate->verification_code.'.pdf';
+        $fullPath = storage_path('app/private/'.$filename);
 
         // Ensure directory exists
         $directory = dirname($fullPath);
-        if (!file_exists($directory)) {
+        if (! file_exists($directory)) {
             mkdir($directory, 0755, true);
         }
 
@@ -178,7 +174,7 @@ class CertificateService
 
         // Update certificate with PDF path
         $certificate->update([
-            'pdf_path' => 'private/' . $filename,
+            'pdf_path' => 'private/'.$filename,
         ]);
 
         return $fullPath;

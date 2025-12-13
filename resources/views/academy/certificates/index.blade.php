@@ -27,7 +27,7 @@
 
             {{-- Statistics Cards --}}
             @if($statistics['total_certificates'] > 0)
-            <div class="row mb-4">
+            <div class="row mb-4"> 
                 <div class="col-lg-3 col-6">
                     <div class="small-box bg-info">
                         <div class="inner">
@@ -81,54 +81,44 @@
                     @foreach($certificates as $certificate)
                         <div class="col-lg-4 col-md-6 col-12 mb-4">
                             <div class="card h-100 shadow-sm">
-                                <div class="card-header bg-gradient-primary">
+                                <div class="card-header bg-gradient-dark">
                                     <h5 class="card-title mb-0">
                                         <i class="fas fa-certificate mr-2"></i>
-                                        Certificado de Conclusão
+                                        {{ $certificate->course->name }}
                                     </h5>
                                 </div>
                                 
-                                <div class="card-body">
-                                    <div class="text-center mb-3">
-                                        <img src="{{ $certificate->course->cover ? asset('storage/courses/medium/' . $certificate->course->cover) : asset('img/defaults/medium/courses.webp') }}" 
-                                             alt="{{ $certificate->course->name }}" 
-                                             class="img-fluid rounded"
-                                             style="max-height: 200px; object-fit: cover;">
-                                    </div>
-                                    
-                                    <h6 class="font-weight-bold text-dark">{{ $certificate->course->name }}</h6>
-                                    
-                                    <div class="mt-3">
+                                <div class="card-body">                                                                        
+                                    <div>
                                         <p class="mb-2 text-sm">
-                                            <i class="fas fa-clock text-info mr-2"></i>
+                                            <i class="fas fa-clock mr-2"></i>
                                             <strong>Carga horária:</strong> {{ $certificate->course->total_hours }}h
                                         </p>
                                         <p class="mb-2 text-sm">
-                                            <i class="fas fa-calendar text-success mr-2"></i>
+                                            <i class="fas fa-calendar mr-2"></i>
                                             <strong>Emitido em:</strong> {{ $certificate->issued_at->format('d/m/Y') }}
                                         </p>
                                         <p class="mb-2 text-sm">
-                                            <i class="fas fa-calendar-check text-warning mr-2"></i>
+                                            <i class="fas fa-calendar-check mr-2"></i>
                                             <strong>Período:</strong> {{ $certificate->getFormattedPeriod() }}
                                         </p>
                                         <p class="mb-0 text-sm">
-                                            <i class="fas fa-shield-alt text-secondary mr-2"></i>
-                                            <strong>Código:</strong> 
-                                            <code class="text-xs">{{ $certificate->verification_code }}</code>
+                                            <i class="fas fa-shield-alt mr-2"></i>
+                                            <strong>Código:</strong> {{ $certificate->verification_code }}
                                         </p>
                                     </div>
                                 </div>
 
                                 <div class="card-footer bg-light">
                                     <div class="btn-group btn-block" role="group">
-                                        <a href="{{ route('academy.certificates.view', $certificate->id) }}" 
+                                        <a href="{{ $certificate->getPublicUrl() }}" 
                                            class="btn btn-sm btn-primary" 
                                            target="_blank"
                                            title="Visualizar">
                                             <i class="fas fa-eye"></i>
                                         </a>
                                         <a href="{{ route('academy.certificates.download', $certificate->id) }}" 
-                                           class="btn btn-sm btn-success"
+                                           class="btn btn-sm btn-danger"
                                            title="Baixar PDF">
                                             <i class="fas fa-download"></i>
                                         </a>

@@ -64,7 +64,7 @@ class Certificate extends Model
     }
 
     /** Helper Methods */
-    
+
     /**
      * Generate a unique verification code
      */
@@ -109,7 +109,7 @@ class Certificate extends Model
     {
         // LinkedIn Add to Profile URL format
         // https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME
-        
+
         $params = [
             'startTask' => 'CERTIFICATION_NAME',
             'name' => $this->course->name,
@@ -120,7 +120,7 @@ class Certificate extends Model
             'certId' => $this->verification_code,
         ];
 
-        return 'https://www.linkedin.com/profile/add?' . http_build_query($params);
+        return 'https://www.linkedin.com/profile/add?'.http_build_query($params);
     }
 
     /**
@@ -129,9 +129,9 @@ class Certificate extends Model
     public function getLinkedInShareUrl(): string
     {
         $url = $this->getPublicUrl();
-        $text = "Concluí o curso '{$this->course->name}' na " . config('app.name', 'RSquad Academy') . "!";
-        
-        return 'https://www.linkedin.com/sharing/share-offsite/?url=' . urlencode($url);
+        $text = "Concluí o curso '{$this->course->name}' na ".config('app.name', 'RSquad Academy').'!';
+
+        return 'https://www.linkedin.com/sharing/share-offsite/?url='.urlencode($url);
     }
 
     /**
@@ -139,10 +139,10 @@ class Certificate extends Model
      */
     public function getShareableText(): string
     {
-        return "🎓 Certificado de Conclusão\n\n" .
-               "Curso: {$this->course->name}\n" .
-               "Concluído em: {$this->issued_at->format('d/m/Y')}\n" .
-               "Carga horária: {$this->course->total_hours}h\n\n" .
+        return "🎓 Certificado de Conclusão\n\n".
+               "Curso: {$this->course->name}\n".
+               "Concluído em: {$this->issued_at->format('d/m/Y')}\n".
+               "Carga horária: {$this->course->total_hours}h\n\n".
                "Verifique a autenticidade: {$this->getVerificationUrl()}";
     }
 
@@ -151,7 +151,7 @@ class Certificate extends Model
      */
     public function getDurationInDays(): int
     {
-        if (!$this->started_at) {
+        if (! $this->started_at) {
             return 0;
         }
 
@@ -163,11 +163,11 @@ class Certificate extends Model
      */
     public function getFormattedPeriod(): string
     {
-        if (!$this->started_at) {
+        if (! $this->started_at) {
             return $this->issued_at->format('d/m/Y');
         }
 
-        return $this->started_at->format('d/m/Y') . ' a ' . $this->issued_at->format('d/m/Y');
+        return $this->started_at->format('d/m/Y').' a '.$this->issued_at->format('d/m/Y');
     }
 
     /**
@@ -175,11 +175,11 @@ class Certificate extends Model
      */
     public function hasPdf(): bool
     {
-        if (!$this->pdf_path) {
+        if (! $this->pdf_path) {
             return false;
         }
 
-        return file_exists(storage_path('app/' . $this->pdf_path));
+        return file_exists(storage_path('app/'.$this->pdf_path));
     }
 
     /**
@@ -187,10 +187,10 @@ class Certificate extends Model
      */
     public function getPdfFullPath(): ?string
     {
-        if (!$this->pdf_path) {
+        if (! $this->pdf_path) {
             return null;
         }
 
-        return storage_path('app/' . $this->pdf_path);
+        return storage_path('app/'.$this->pdf_path);
     }
 }
