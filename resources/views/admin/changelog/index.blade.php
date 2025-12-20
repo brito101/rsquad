@@ -48,10 +48,11 @@
                                 <h4>Versionamento:</h4>
                                  <x-adminlte-callout theme="primary" class="elevation-2"
                                     title-class="text-uppercase" title="1.2.0">
-                                    <x-adminlte-profile-row-item text="2025-12-07" url="#" badge="primary" />
+                                    <x-adminlte-profile-row-item text="2025-12-20" url="#" badge="primary" />
                                     <ul>
                                         <li>Implementação - Integração com o Vimeo</li>
                                         <li>Implementação - Módulo de depoimento de alunos com apresentação na home do site</li>
+                                        <li>Implementação - Módulo de workshops</li>
                                     </ul>
                                 </x-adminlte-callout>
                                 <x-adminlte-callout theme="primary" class="elevation-2" title-class="text-uppercase"

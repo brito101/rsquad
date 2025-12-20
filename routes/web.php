@@ -5,6 +5,7 @@ use App\Http\Controllers\Academy\CertificateController as AcademyCertificateCont
 use App\Http\Controllers\Academy\ClassroomProgressController;
 use App\Http\Controllers\Academy\CourseController as AcademyCourseController;
 use App\Http\Controllers\Academy\UserController as AcademyUserController;
+use App\Http\Controllers\Academy\WorkshopController as AcademyWorkshopController;
 use App\Http\Controllers\Admin\ACL\PermissionController;
 use App\Http\Controllers\Admin\ACL\RoleController;
 use App\Http\Controllers\Admin\AdminController;
@@ -21,6 +22,7 @@ use App\Http\Controllers\Admin\CourseModuleController;
 use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\WorkshopController as AdminWorkshopController;
 use App\Http\Controllers\Site\AboutController;
 use App\Http\Controllers\Site\BlogController as SiteBlogController;
 use App\Http\Controllers\Site\CheatSheetController as SiteCheatSheetController;
@@ -29,6 +31,7 @@ use App\Http\Controllers\Site\CookieController;
 use App\Http\Controllers\Site\CourseController as SiteCourseController;
 use App\Http\Controllers\Site\HomeController;
 use App\Http\Controllers\Site\TermController;
+use App\Http\Controllers\Site\WorkshopController as SiteWorkshopController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -61,6 +64,10 @@ Route::group(['middleware' => ['access']], function () {
         /** Cheat Sheet */
         Route::get('/cheat-sheets/{uri}', [SiteCheatSheetController::class, 'post'])->name('cheat-sheets.post');
         Route::get('/cheat-sheets', [SiteCheatSheetController::class, 'index'])->name('cheat-sheets');
+
+        /** Workshops */
+        Route::get('/workshops/{slug}', [SiteWorkshopController::class, 'show'])->name('workshops.show');
+        Route::get('/workshops', [SiteWorkshopController::class, 'index'])->name('workshops');
 
         /** About */
         Route::get('/sobre', [AboutController::class, 'index'])->name('about');
@@ -129,6 +136,9 @@ Route::group(['middleware' => ['auth', 'access']], function () {
         Route::post('testimonials/{testimonial}/toggle-featured', [TestimonialController::class, 'toggleFeatured'])->name('testimonials.toggle-featured');
         Route::resource('testimonials', TestimonialController::class)->except(['show', 'create', 'store']);
 
+        /** Workshops */
+        Route::resource('workshops', AdminWorkshopController::class)->except(['show']);
+
         /**
          * ACL
          * */
@@ -155,6 +165,10 @@ Route::group(['middleware' => ['auth', 'access']], function () {
         Route::get('/courses/{course}', [AcademyCourseController::class, 'show'])->name('courses.show');
         Route::post('/courses/{course}/testimonial', [AcademyCourseController::class, 'storeTestimonial'])->name('courses.testimonial.store');
         Route::get('/classroom/{classroom}', [ClassroomProgressController::class, 'show'])->name('classroom.show');
+
+        /** Workshops */
+        Route::get('/workshops', [AcademyWorkshopController::class, 'index'])->name('workshops.index');
+        Route::get('/workshops/{slug}', [AcademyWorkshopController::class, 'show'])->name('workshops.show');
 
         /** Classroom Progress */
         Route::prefix('classroom-progress')->name('classroom-progress.')->group(function () {

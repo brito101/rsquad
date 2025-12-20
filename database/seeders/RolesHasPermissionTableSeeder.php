@@ -776,6 +776,67 @@ class RolesHasPermissionTableSeeder extends Seeder
                 'permission_id' => 70,
                 'role_id' => 3,
             ],
+            /** Workshops 71 to 75 (Programador, Administrador, Instrutor) */
+            [
+                'permission_id' => 71, // Acessar Workshops
+                'role_id' => 1,
+            ],
+            [
+                'permission_id' => 71,
+                'role_id' => 2,
+            ],
+            [
+                'permission_id' => 71,
+                'role_id' => 3,
+            ],
+            [
+                'permission_id' => 72, // Listar Workshops
+                'role_id' => 1,
+            ],
+            [
+                'permission_id' => 72,
+                'role_id' => 2,
+            ],
+            [
+                'permission_id' => 72,
+                'role_id' => 3,
+            ],
+            [
+                'permission_id' => 73, // Criar Workshops
+                'role_id' => 1,
+            ],
+            [
+                'permission_id' => 73,
+                'role_id' => 2,
+            ],
+            [
+                'permission_id' => 73,
+                'role_id' => 3,
+            ],
+            [
+                'permission_id' => 74, // Editar Workshops
+                'role_id' => 1,
+            ],
+            [
+                'permission_id' => 74,
+                'role_id' => 2,
+            ],
+            [
+                'permission_id' => 74,
+                'role_id' => 3,
+            ],
+            [
+                'permission_id' => 75, // Excluir Workshops
+                'role_id' => 1,
+            ],
+            [
+                'permission_id' => 75,
+                'role_id' => 2,
+            ],
+            [
+                'permission_id' => 75,
+                'role_id' => 3,
+            ],
         ]);
     }
 }

@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Academy;
 
 use App\Helpers\CheckPermission;
 use App\Http\Controllers\Controller;
+use App\Models\Certificate;
 use App\Models\Course;
 use App\Models\CourseModule;
 use App\Models\CourseStudent;
 use App\Models\Views\Classroom;
+use App\Models\Workshop;
 use Illuminate\Http\Request;
 
 class AcademyController extends Controller
@@ -33,6 +35,20 @@ class AcademyController extends Controller
             ->where('active', true)
             ->get();
 
-        return view('academy.home.index', compact('courses', 'modules', 'classes', 'courses_avaliable'));
+        // Get latest workshops
+        $workshops = Workshop::where(function($query) {
+                $query->where('is_public', true)
+                      ->orWhere('is_public', false);
+            })
+            ->published()
+            ->orderBy('scheduled_at', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->limit(3)
+            ->get();
+
+        // Get user certificates
+        $certificates = Certificate::where('user_id', auth()->user()->id)->get();
+
+        return view('academy.home.index', compact('courses', 'modules', 'classes', 'courses_avaliable', 'workshops', 'certificates'));
     }
 }

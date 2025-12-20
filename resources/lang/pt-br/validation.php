@@ -241,6 +241,13 @@ return [
         'vimeo_uri' => 'vídeo do Vimeo',
         'vimeo_thumbnail' => 'miniatura do Vimeo',
         'vimeo_player_url' => 'player do Vimeo',
+        'slug' => 'slug',
+        'video_type' => 'tipo de vídeo',
+        'video_url' => 'URL do vídeo',
+        'is_public' => 'visibilidade',
+        'status' => 'status',
+        'scheduled_at' => 'data/hora de agendamento',
+        'duration' => 'duração',
     ],
 
 ];

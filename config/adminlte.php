@@ -311,11 +311,17 @@ return [
             'can' => 'Acessar Academia',
         ],
         [
+            'text' => 'Workshops',
+            'url' => 'academy/workshops',
+            'icon' => 'fa fa-fw fa-chalkboard-teacher mr-2',
+            'can' => 'Acessar Academia',
+        ],
+        [
             'text' => 'Meus Certificados',
             'url' => 'academy/certificates',
             'icon' => 'fa fa-fw fa-certificate mr-2',
             'can' => 'Acessar Academia',
-        ],
+        ],       
         [
             'text' => 'Cursos',
             'url' => '#',
@@ -365,6 +371,26 @@ return [
             'url' => 'admin/testimonials',
             'icon' => 'fas fa-fw fa-star mr-2',
             'can' => 'Acessar Depoimentos',
+        ],
+        [
+            'text' => 'Workshops',
+            'url' => '#',
+            'icon' => 'fas fa-fw fa-chalkboard-teacher mr-2',
+            'can' => 'Acessar Workshops',
+            'submenu' => [
+                [
+                    'text' => 'Listagem de Workshops',
+                    'url' => 'admin/workshops',
+                    'icon' => 'fas fa-fw fa-chevron-right',
+                    'can' => 'Listar Workshops',
+                ],
+                [
+                    'text' => 'Cadastro de Workshop',
+                    'url' => 'admin/workshops/create',
+                    'icon' => 'fas fa-fw fa-chevron-right',
+                    'can' => 'Criar Workshops',
+                ],
+            ],
         ],
         [
             'text' => 'Blog',
