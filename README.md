@@ -18,6 +18,7 @@
     -   Student progress tracking with watched/completed status
     -   Individual video page with navigation between classes
     -   AJAX video deletion without page reload
+-   Workshop
 -   Blog
 -   Cheat Sheet
 -   Contacts

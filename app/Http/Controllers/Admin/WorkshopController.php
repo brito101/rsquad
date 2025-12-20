@@ -35,6 +35,7 @@ class WorkshopController extends Controller
                         if ($row->is_public) {
                             return 'Público';
                         }
+
                         return 'Alunos';
                     })
                     ->addColumn('status_badge', function ($row) {
@@ -143,9 +144,9 @@ class WorkshopController extends Controller
         // Handle cover image upload
         if ($request->hasFile('cover')) {
             $image = $request->file('cover');
-            $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+            $imageName = time().'_'.uniqid().'.'.$image->getClientOriginalExtension();
             $image->storeAs('public/workshops', $imageName);
-            $validated['cover'] = 'storage/workshops/' . $imageName;
+            $validated['cover'] = 'storage/workshops/'.$imageName;
         }
 
         Workshop::create($validated);
@@ -204,9 +205,9 @@ class WorkshopController extends Controller
             }
 
             $image = $request->file('cover');
-            $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+            $imageName = time().'_'.uniqid().'.'.$image->getClientOriginalExtension();
             $image->storeAs('public/workshops', $imageName);
-            $validated['cover'] = 'storage/workshops/' . $imageName;
+            $validated['cover'] = 'storage/workshops/'.$imageName;
         }
 
         $workshop->update($validated);

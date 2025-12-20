@@ -36,10 +36,10 @@ class AcademyController extends Controller
             ->get();
 
         // Get latest workshops
-        $workshops = Workshop::where(function($query) {
-                $query->where('is_public', true)
-                      ->orWhere('is_public', false);
-            })
+        $workshops = Workshop::where(function ($query) {
+            $query->where('is_public', true)
+                ->orWhere('is_public', false);
+        })
             ->published()
             ->orderBy('scheduled_at', 'desc')
             ->orderBy('created_at', 'desc')

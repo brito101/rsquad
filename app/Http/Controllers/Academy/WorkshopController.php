@@ -14,15 +14,15 @@ class WorkshopController extends Controller
     public function index()
     {
         // Check if user is a student
-        if (!Auth::user()->hasRole('Aluno')) {
+        if (! Auth::user()->hasRole('Aluno')) {
             abort(403, 'Acesso não autorizado.');
         }
 
-        $workshops = Workshop::where(function($query) {
-                // Public workshops or private workshops for students
-                $query->where('is_public', true)
-                      ->orWhere('is_public', false);
-            })
+        $workshops = Workshop::where(function ($query) {
+            // Public workshops or private workshops for students
+            $query->where('is_public', true)
+                ->orWhere('is_public', false);
+        })
             ->published()
             ->orderBy('scheduled_at', 'desc')
             ->orderBy('created_at', 'desc')
@@ -38,24 +38,24 @@ class WorkshopController extends Controller
     public function show($slug)
     {
         // Check if user is a student
-        if (!Auth::user()->hasRole('Aluno')) {
+        if (! Auth::user()->hasRole('Aluno')) {
             abort(403, 'Acesso não autorizado.');
         }
 
         $workshop = Workshop::where('slug', $slug)
-            ->where(function($query) {
+            ->where(function ($query) {
                 // Public workshops or private workshops for students
                 $query->where('is_public', true)
-                      ->orWhere('is_public', false);
+                    ->orWhere('is_public', false);
             })
             ->published()
             ->with('user')
             ->firstOrFail();
 
-        $relatedWorkshops = Workshop::where(function($query) {
-                $query->where('is_public', true)
-                      ->orWhere('is_public', false);
-            })
+        $relatedWorkshops = Workshop::where(function ($query) {
+            $query->where('is_public', true)
+                ->orWhere('is_public', false);
+        })
             ->published()
             ->where('id', '!=', $workshop->id)
             ->inRandomOrder()

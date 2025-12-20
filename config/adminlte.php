@@ -321,7 +321,7 @@ return [
             'url' => 'academy/certificates',
             'icon' => 'fa fa-fw fa-certificate mr-2',
             'can' => 'Acessar Academia',
-        ],       
+        ],
         [
             'text' => 'Cursos',
             'url' => '#',

@@ -13,7 +13,7 @@ class WorkshopController extends Controller
         $title = env('APP_NAME').' - Workshops';
         $route = route('site.workshops');
         $description = 'Confira nossos workshops.';
-        
+
         /** Meta */
         Meta::title($title);
         Meta::set('description', $description);
@@ -47,7 +47,7 @@ class WorkshopController extends Controller
         $title = env('APP_NAME').' - '.$workshop->title;
         $route = route('site.workshops.show', ['slug' => $workshop->slug]);
         $description = $workshop->description ?? 'Workshop - '.$workshop->title;
-        
+
         /** Meta */
         Meta::title($title);
         Meta::set('description', $description);

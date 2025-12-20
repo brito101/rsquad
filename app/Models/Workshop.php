@@ -63,12 +63,12 @@ class Workshop extends Model
     {
         $slug = Str::slug($title);
         $count = 1;
-        
+
         while (self::where('slug', $slug)->exists()) {
-            $slug = Str::slug($title) . '-' . $count;
+            $slug = Str::slug($title).'-'.$count;
             $count++;
         }
-        
+
         return $slug;
     }
 
@@ -85,13 +85,13 @@ class Workshop extends Model
             // Extract YouTube ID from various URL formats
             preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i', $this->video_url, $matches);
             if (isset($matches[1])) {
-                return 'https://www.youtube.com/embed/' . $matches[1];
+                return 'https://www.youtube.com/embed/'.$matches[1];
             }
         } elseif ($this->video_type === 'vimeo') {
             // Extract Vimeo ID from URL
             preg_match('/vimeo\.com\/(?:video\/)?(\d+)/i', $this->video_url, $matches);
             if (isset($matches[1])) {
-                return 'https://player.vimeo.com/video/' . $matches[1];
+                return 'https://player.vimeo.com/video/'.$matches[1];
             }
         }
 
