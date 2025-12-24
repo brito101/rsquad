@@ -323,6 +323,12 @@ return [
             'can' => 'Acessar Academia',
         ],
         [
+            'text' => 'Minhas Badges',
+            'url' => 'academy/badges',
+            'icon' => 'fa fa-fw fa-medal mr-2',
+            'can' => 'Acessar Academia',
+        ],
+        [
             'text' => 'Cursos',
             'url' => '#',
             'icon' => 'fas fa-fw fa-newspaper mr-2',

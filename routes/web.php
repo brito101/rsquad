@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Academy\AcademyController;
+use App\Http\Controllers\Academy\BadgeController as AcademyBadgeController;
 use App\Http\Controllers\Academy\CertificateController as AcademyCertificateController;
 use App\Http\Controllers\Academy\ClassroomProgressController;
 use App\Http\Controllers\Academy\CourseController as AcademyCourseController;
@@ -187,6 +188,13 @@ Route::group(['middleware' => ['auth', 'access']], function () {
             Route::get('/{certificate}/download', [AcademyCertificateController::class, 'download'])->name('download');
             Route::get('/statistics/get', [AcademyCertificateController::class, 'statistics'])->name('statistics');
         });
+
+        /** Badges */
+        Route::prefix('badges')->name('badges.')->group(function () {
+            Route::get('/', [AcademyBadgeController::class, 'index'])->name('index');
+            Route::post('/{badge}/share', [AcademyBadgeController::class, 'generateShareToken'])->name('share');
+            Route::get('/course/{course}/progress', [AcademyBadgeController::class, 'courseProgress'])->name('course-progress');
+        });
     });
 });
 
@@ -195,6 +203,11 @@ Route::prefix('certificates')->name('certificates.')->group(function () {
     Route::get('/public/{code}', [AcademyCertificateController::class, 'publicView'])->name('public');
     Route::get('/public/{code}/view', [AcademyCertificateController::class, 'publicViewHtml'])->name('public.view');
     Route::get('/public/{code}/pdf', [AcademyCertificateController::class, 'publicPdf'])->name('public.pdf');
+});
+
+/** Public Badge Verification (no auth required) */
+Route::prefix('badges')->name('badges.')->group(function () {
+    Route::get('/public/{token}', [AcademyBadgeController::class, 'publicView'])->name('public');
 });
 
 Auth::routes([

@@ -132,7 +132,7 @@
                                             @endforeach
                                         </x-adminlte-select-bs>
                                     </div>
-
+                                    
                                     <div class="col-12 col-md-2 form-group px-0 pr-md-2">
                                         <label for="total_hours">Carga horária (horas)</label>
                                         <input type="number" class="form-control" id="total_hours" name="total_hours"
@@ -182,7 +182,7 @@
 
                                 <div class="d-flex flex-wrap justify-content-between">
                                     <div class="col-12 form-group px-0">
-                                        <x-adminlte-input-file name="cover"
+                                        <x-adminlte-input-file id="cover" name="cover"
                                             label="Imagem (preferencialmente 860 x 490 pixels)"
                                             placeholder="Selecione uma imagem..." legend="Selecionar" />
                                     </div>
@@ -195,6 +195,36 @@
                                             class="img-thumbnail d-block">
                                     </div>
                                 @endif
+
+                                <!-- Badge Section -->
+                                <div class="d-flex flex-wrap justify-content-start mt-3">
+                                    <div class="col-12 px-0 mb-2">
+                                        <h5 class="text-muted"><i class="fas fa-medal mr-2"></i>Badge de Conclusão</h5>
+                                        <small class="text-muted">Badge será conquistada pelo aluno ao completar 100% do curso.</small>
+                                    </div>
+                                    
+                                    <div class="col-12 col-md-6 form-group px-0 pr-md-2">
+                                        <label for="badge_name">Nome da Badge</label>
+                                        <input type="text" class="form-control" id="badge_name" 
+                                            placeholder="Ex: Expert em Laravel" name="badge_name" 
+                                            value="{{ old('badge_name') ?? $course->badge_name }}">
+                                        <small class="form-text text-muted">Nome que aparecerá no LinkedIn ao compartilhar.</small>
+                                    </div>
+
+                                    <div class="col-12 col-md-6 form-group px-0 pl-md-2">
+                                        <x-adminlte-input-file id="badge_image" name="badge_image"
+                                            label="Imagem da Badge (preferencialmente 400 x 400 pixels)"
+                                            placeholder="Selecione uma imagem..." legend="Selecionar" />
+                                    </div>
+
+                                    @if ($course->badge_image)
+                                        <div class='col-12 col-md-6 align-self-center mt-2 d-flex justify-content-center px-0 pr-md-2'>
+                                            <img src="{{ url('storage/badges/' . $course->badge_image) }}"
+                                                alt="Badge: {{ $course->badge_name }}" title="{{ $course->badge_name }}"
+                                                class="img-thumbnail d-block" style="max-width: 200px;">
+                                        </div>
+                                    @endif
+                                </div>
                             </div>
 
                             <div class="card-footer">

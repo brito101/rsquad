@@ -20,6 +20,8 @@ class Course extends Model
     protected $fillable = [
         'name',
         'cover',
+        'badge_name',
+        'badge_image',
         'description',
         'status',
         'active',
@@ -71,6 +73,11 @@ class Course extends Model
         return $this->hasMany(Classroom::class, 'course_id');
     }
 
+    public function badges()
+    {
+        return $this->hasMany(CourseBadge::class, 'course_id');
+    }
+
     public function instructorsInfo()
     {
         return $this->hasManyThrough(User::class, CourseInstructor::class, 'course_id', 'id', 'id', 'user_id');
@@ -93,6 +100,7 @@ class Course extends Model
             $course->students()->delete();
             $course->modules()->delete();
             $course->classes()->delete();
+            $course->badges()->delete();
         });
     }
 }

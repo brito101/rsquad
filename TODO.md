@@ -2,37 +2,7 @@
 
 ## Adicionais:
 
-### 1 – Sistema de Badges
-
-**Estrutura de Banco de Dados:**
-- Tabela `badges`: `id`, `name`, `description`, `image`, `criteria` (json com regras de conquista), `linkedin_share_text`, `timestamps`
-- Tabela pivot `course_badge`: vincular badges aos cursos (`course_id`, `badge_id`)
-- Tabela `user_badges`: registrar badges conquistadas (`user_id`, `badge_id`, `course_id`, `earned_at`, `share_token`)
-
-**Implementação Admin:**
-- CRUD completo de badges
-- Upload de imagem da badge (medalha/troféu)
-- Vinculação de badge ao curso
-
-**Implementação Academy:**
-- Página `/academy/badges` listando todas as badges do aluno (conquistadas e disponíveis)
-- Sidebar nos cursos mostrando badge disponível + progresso para conquistar
-- Botão "Compartilhar no LinkedIn" usando LinkedIn Share API
-- Notificação/modal quando aluno conquista uma badge
-
-**Design:**
-- Cards com visual de medalha/troféu
-- Badges em cinza quando não conquistadas, coloridas quando conquistadas
-- Animação ao conquistar nova badge
-- Visual moderno e gamificado
-
-**Regras de Conquista:**
-- Badge concedida automaticamente ao completar 100% do curso
-- Sistema verificar progresso e conceder badge
-
----
-
-### 2 – PDFs com Marca D'água
+### PDFs com Marca D'água
 
 **Estrutura de Banco de Dados:**
 - Adicionar campos nas tabelas existentes:

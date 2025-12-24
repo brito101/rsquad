@@ -122,4 +122,9 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(ClassroomProgress::class);
     }
+
+    public function badges(): HasMany
+    {
+        return $this->hasMany(UserBadge::class);
+    }
 }

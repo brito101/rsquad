@@ -15,7 +15,8 @@ class RolesHasPermissionTableSeeder extends Seeder
     public function run()
     {
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
-        DB::table('role_has_permissions')->insert([
+        
+        $rolePermissions = [
             /** ACL from 1 to  11 */
             [
                 'permission_id' => 1,
@@ -837,6 +838,75 @@ class RolesHasPermissionTableSeeder extends Seeder
                 'permission_id' => 75,
                 'role_id' => 3,
             ],
-        ]);
+            /** Badges 76 to 80 (Programmer, Administrator and Instructor) */
+            [
+                'permission_id' => 76, // Acessar Badges
+                'role_id' => 1,
+            ],
+            [
+                'permission_id' => 76,
+                'role_id' => 2,
+            ],
+            [
+                'permission_id' => 76,
+                'role_id' => 3,
+            ],
+            [
+                'permission_id' => 77, // Listar Badges
+                'role_id' => 1,
+            ],
+            [
+                'permission_id' => 77,
+                'role_id' => 2,
+            ],
+            [
+                'permission_id' => 77,
+                'role_id' => 3,
+            ],
+            [
+                'permission_id' => 78, // Criar Badges
+                'role_id' => 1,
+            ],
+            [
+                'permission_id' => 78,
+                'role_id' => 2,
+            ],
+            [
+                'permission_id' => 78,
+                'role_id' => 3,
+            ],
+            [
+                'permission_id' => 79, // Editar Badges
+                'role_id' => 1,
+            ],
+            [
+                'permission_id' => 79,
+                'role_id' => 2,
+            ],
+            [
+                'permission_id' => 79,
+                'role_id' => 3,
+            ],
+            [
+                'permission_id' => 80, // Excluir Badges
+                'role_id' => 1,
+            ],
+            [
+                'permission_id' => 80,
+                'role_id' => 2,
+            ],
+            [
+                'permission_id' => 80,
+                'role_id' => 3,
+            ],
+        ];
+
+        // Insert only role-permission associations that don't exist yet
+        foreach ($rolePermissions as $rolePermission) {
+            DB::table('role_has_permissions')->updateOrInsert(
+                ['permission_id' => $rolePermission['permission_id'], 'role_id' => $rolePermission['role_id']],
+                $rolePermission
+            );
+        }
     }
 }

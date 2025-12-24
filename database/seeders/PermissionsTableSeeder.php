@@ -16,7 +16,8 @@ class PermissionsTableSeeder extends Seeder
     public function run()
     {
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
-        DB::table('permissions')->insert([
+        
+        $permissions = [
             /** ACL  1 to 11 */
             [
                 'name' => 'Acessar ACL',
@@ -412,6 +413,40 @@ class PermissionsTableSeeder extends Seeder
                 'guard_name' => 'web',
                 'created_at' => new DateTime('now'),
             ],
-        ]);
+            /** Badges 76 to 80 */
+            [
+                'name' => 'Acessar Badges',
+                'guard_name' => 'web',
+                'created_at' => new DateTime('now'),
+            ],
+            [
+                'name' => 'Listar Badges',
+                'guard_name' => 'web',
+                'created_at' => new DateTime('now'),
+            ],
+            [
+                'name' => 'Criar Badges',
+                'guard_name' => 'web',
+                'created_at' => new DateTime('now'),
+            ],
+            [
+                'name' => 'Editar Badges',
+                'guard_name' => 'web',
+                'created_at' => new DateTime('now'),
+            ],
+            [
+                'name' => 'Excluir Badges',
+                'guard_name' => 'web',
+                'created_at' => new DateTime('now'),
+            ],
+        ];
+
+        // Insert only permissions that don't exist yet
+        foreach ($permissions as $permission) {
+            DB::table('permissions')->updateOrInsert(
+                ['name' => $permission['name'], 'guard_name' => $permission['guard_name']],
+                $permission
+            );
+        }
     }
 }

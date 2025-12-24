@@ -18,6 +18,12 @@
     -   Student progress tracking with watched/completed status
     -   Individual video page with navigation between classes
     -   AJAX video deletion without page reload
+    -   **Badge system** with automatic award on course completion
+        -   Each course can have a unique badge (name + image 400x400px)
+        -   Automatic badge award when student completes 100% of course
+        -   Badge gallery page showing earned and available badges
+        -   LinkedIn sharing with Open Graph meta tags
+        -   Public badge verification page with shareable link
 -   Workshop
 -   Blog
 -   Cheat Sheet
@@ -38,3 +44,4 @@
 -   `sail artisan storage:link`
 -   `sail artisan migrate --seed`
 -   `sail npm install && npm run dev`
+-   `sail artisan badges:award-missing`

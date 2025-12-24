@@ -62,6 +62,12 @@ class CourseController extends Controller
                     ->addColumn('cover', function ($row) {
                         return '<div class="d-flex justify-content-center align-items-center"><img src="'.($row->cover ? url('storage/courses/min/'.$row->cover) : asset('img/defaults/min/courses.webp')).'" class="img-thumbnail d-block" width="360" height="207" alt="'.$row->name.'" title="'.$row->name.'"/></div>';
                     })
+                    ->addColumn('badge', function ($row) {
+                        if ($row->badge_image) {
+                            return '<div class="d-flex justify-content-center align-items-center"><img src="'.url('storage/badges/'.$row->badge_image).'" class="img-thumbnail d-block" width="80" height="80" alt="Badge: '.$row->badge_name.'" title="'.$row->badge_name.'"/></div>';
+                        }
+                        return '';
+                    })
                     ->addColumn('categories', function ($row) {
                         return $row->categories->map(function ($pivot) {
                             return $pivot->category->name;
@@ -131,7 +137,7 @@ class CourseController extends Controller
 
                         return '<div class="d-flex justify-content-center align-items-center">'.$sales_link.$students.$modules_link.$classes_link.$edit.$delete.'</div>';
                     })
-                    ->rawColumns(['cover', 'categories', 'modules', 'instructors', 'monitors', 'students', 'active', 'price', 'action'])
+                    ->rawColumns(['cover', 'badge', 'categories', 'modules', 'instructors', 'monitors', 'students', 'active', 'price', 'action'])
                     ->make(true);
             } catch (Exception $e) {
                 return response([
@@ -224,6 +230,33 @@ class CourseController extends Controller
                     ->back()
                     ->withInput()
                     ->with('error', 'Falha ao fazer o upload da imagem');
+            }
+        }
+
+        // Upload da badge image
+        if ($request->hasFile('badge_image') && $request->file('badge_image')->isValid()) {
+            $badgeName = Str::slug(mb_substr($data['name'], 0, 100)).'-badge-'.time();
+            $extension = $request->badge_image->extension();
+            $badgeFileName = "{$badgeName}.{$extension}";
+
+            $data['badge_image'] = $badgeFileName;
+
+            $destinationPath = storage_path().'/app/public/badges';
+
+            if (! file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
+            $badgeImg = Image::make($request->badge_image)->resize(400, 400, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            })->save($destinationPath.'/'.$badgeFileName);
+
+            if (! $badgeImg) {
+                return redirect()
+                    ->back()
+                    ->withInput()
+                    ->with('error', 'Falha ao fazer o upload da imagem da badge');
             }
         }
 
@@ -407,6 +440,41 @@ class CourseController extends Controller
                     ->back()
                     ->withInput()
                     ->with('error', 'Falha ao fazer o upload da imagem');
+            }
+        }
+
+        // Upload da badge image
+        if ($request->hasFile('badge_image') && $request->file('badge_image')->isValid()) {
+            // Remove badge antiga se existir
+            if ($course->badge_image) {
+                $badgeImagePath = storage_path().'/app/public/badges/'.$course->badge_image;
+                if (File::isFile($badgeImagePath)) {
+                    unlink($badgeImagePath);
+                }
+            }
+
+            $badgeName = Str::slug(mb_substr($data['name'], 0, 100)).'-badge-'.time();
+            $extension = $request->badge_image->extension();
+            $badgeFileName = "{$badgeName}.{$extension}";
+
+            $data['badge_image'] = $badgeFileName;
+
+            $destinationPath = storage_path().'/app/public/badges';
+
+            if (! file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
+            $badgeImg = Image::make($request->badge_image)->resize(400, 400, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            })->save($destinationPath.'/'.$badgeFileName);
+
+            if (! $badgeImg) {
+                return redirect()
+                    ->back()
+                    ->withInput()
+                    ->with('error', 'Falha ao fazer o upload da imagem da badge');
             }
         }
 

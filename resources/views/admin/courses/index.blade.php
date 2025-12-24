@@ -43,6 +43,7 @@
                             $heads = [
                                 ['label' => 'ID', 'width' => 10],
                                 ['label' => 'Foto', 'no-export' => true],
+                                ['label' => 'Badge', 'no-export' => true],
                                 'Nome',
                                 'Categorias',
                                 'Módulos',
@@ -60,6 +61,7 @@
                                 'columns' => [
                                     ['data' => 'id', 'name' => 'id'],
                                     ['data' => 'cover', 'name' => 'cover', 'orderable' => false],
+                                    ['data' => 'badge', 'name' => 'badge', 'orderable' => false],
                                     ['data' => 'name', 'name' => 'name'],
                                     ['data' => 'categories', 'name' => 'categories'],
                                     ['data' => 'modules', 'name' => 'modules'],

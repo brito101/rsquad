@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Classroom;
 use App\Models\ClassroomProgress;
 use App\Models\CourseStudent;
+use App\Services\BadgeService;
 use App\Services\CertificateService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -181,6 +182,7 @@ class ClassroomProgressController extends Controller
                 $progress->markAsUnwatched();
                 $message = 'Aula marcada como não assistida.';
                 $certificateGenerated = false;
+                $badgesAwarded = [];
             } else {
                 $progress->markAsWatched();
                 $message = 'Aula marcada como assistida.';
@@ -188,6 +190,7 @@ class ClassroomProgressController extends Controller
                 // Check if course is completed and generate certificate
                 $certificateService = new CertificateService;
                 $certificateGenerated = false;
+                $badgesAwarded = [];
 
                 if ($certificateService->checkEligibility($user->id, $classroom->course_id)) {
                     $certificate = $certificateService->generateCertificate($user->id, $classroom->course_id);
@@ -195,6 +198,15 @@ class ClassroomProgressController extends Controller
                     if ($certificate) {
                         $certificateGenerated = true;
                         $message .= ' Parabéns! Você completou o curso e seu certificado foi gerado.';
+                    }
+
+                    // Award badge
+                    $badgeService = new BadgeService;
+                    $badgeAwarded = $badgeService->awardCourseBadge($user->id, $classroom->course_id);
+                    
+                    if ($badgeAwarded) {
+                        $badgesAwarded = [$badgeAwarded];
+                        $message .= ' Você conquistou a badge: ' . $badgeAwarded['badge_name'] . '!';
                     }
                 }
             }
@@ -206,6 +218,8 @@ class ClassroomProgressController extends Controller
                     'watched' => $progress->watched,
                     'view_count' => $progress->view_count,
                     'certificate_generated' => $certificateGenerated ?? false,
+                    'badges_awarded' => count($badgesAwarded ?? []),
+                    'badges' => $badgesAwarded ?? [],
                 ],
             ]);
         } catch (\Exception $e) {
