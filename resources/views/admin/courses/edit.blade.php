@@ -6,6 +6,10 @@
 @section('plugins.BootstrapSelect', true)
 @section('plugins.select2', true)
 
+@section('adminlte_css_pre')
+    <link rel="stylesheet" href="{{ asset('vendor/icheck-bootstrap/icheck-bootstrap.min.css') }}">
+@stop
+
 @section('content')
 
     <section class="content-header">
@@ -222,6 +226,37 @@
                                             <img src="{{ url('storage/badges/' . $course->badge_image) }}"
                                                 alt="Badge: {{ $course->badge_name }}" title="{{ $course->badge_name }}"
                                                 class="img-thumbnail d-block" style="max-width: 200px;">
+                                        </div>
+                                    @endif
+                                </div>
+
+                                <!-- PDF Section -->
+                                <div class="d-flex flex-wrap justify-content-start mt-3">
+                                    <div class="col-12 px-0 mb-2">
+                                        <h5 class="text-muted"><i class="fas fa-file-pdf mr-2"></i>Material em PDF</h5>
+                                        <small class="text-muted">Alunos matriculados poderão baixar com marca d'água personalizada.</small>
+                                    </div>
+
+                                    <div class="col-12 form-group px-0">
+                                        <x-adminlte-input-file id="pdf_file" name="pdf_file"
+                                            label="Material em PDF (máximo 50MB)"
+                                            placeholder="Selecione um arquivo PDF..." legend="Selecionar" />
+                                    </div>
+
+                                    @if ($course->pdf_file)
+                                        <div class='col-12 px-0'>
+                                            <div class="alert alert-light">
+                                                <i class="fas fa-file-pdf mr-2"></i>
+                                                <strong>PDF atual:</strong> {{ $course->pdf_file }}
+                                            </div>
+                                            <div class="card-body icheck-primary">
+                                                <input type="checkbox" style="cursor: pointer" id="remove_pdf"
+                                                    name="remove_pdf" value="1">
+                                                <label for="remove_pdf" class="my-0 ml-2"><i
+                                                        class="fas fa-trash text-danger"></i> Remover arquivo PDF
+                                                    atual</label>
+                                                </label>
+                                            </div>
                                         </div>
                                     @endif
                                 </div>

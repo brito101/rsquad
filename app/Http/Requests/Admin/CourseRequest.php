@@ -36,6 +36,7 @@ class CourseRequest extends FormRequest
             'description' => 'required|max:4294967295',
             'total_hours' => 'required|integer|min:1|max:10000',
             'cover' => 'required_if:cover,null|image|mimes:jpg,png,jpeg,gif,bmp,webp|max:4096|dimensions:max_width=4000,max_height=4000',
+            'pdf_file' => 'nullable|file|mimes:pdf|max:51200',
             'status' => 'required|in:Planejamento,Previsto,Em Andamento,Concluído,Disponível,Sob Demanda,Suspenso,Cancelado,Arquivado',
             'active' => 'nullable|boolean',
             'sales_link' => 'nullable|url|max:191',

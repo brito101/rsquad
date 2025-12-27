@@ -15,7 +15,7 @@ class RolesHasPermissionTableSeeder extends Seeder
     public function run()
     {
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
-        
+
         $rolePermissions = [
             /** ACL from 1 to  11 */
             [

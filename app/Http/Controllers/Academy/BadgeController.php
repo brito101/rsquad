@@ -23,7 +23,7 @@ class BadgeController extends Controller
     public function index()
     {
         $user = Auth::user();
-        
+
         $earnedBadges = $this->badgeService->getUserBadges($user->id);
         $availableBadges = $this->badgeService->getAvailableBadges($user->id);
 

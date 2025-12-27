@@ -28,6 +28,7 @@ class Classroom extends Model
         'vimeo_uri',
         'vimeo_thumbnail',
         'vimeo_player_url',
+        'pdf_file',
         'release_date',
         'course_id',
         'course_module_id',
@@ -63,6 +64,26 @@ class Classroom extends Model
     public function progress()
     {
         return $this->hasMany(ClassroomProgress::class);
+    }
+
+    public function pdfDownloads()
+    {
+        return $this->morphMany(PdfDownload::class, 'downloadable');
+    }
+
+    /** Helpers */
+    public function hasPdf(): bool
+    {
+        return ! empty($this->pdf_file);
+    }
+
+    public function getPdfPath(): ?string
+    {
+        if (! $this->hasPdf()) {
+            return null;
+        }
+
+        return storage_path('app/private/pdfs/classes/'.$this->pdf_file);
     }
 
     /** Accessors */

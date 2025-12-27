@@ -4,6 +4,11 @@
 @section('plugins.BootstrapSwitch', true)
 @section('plugins.BootstrapSelect', true)
 @section('plugins.select2', true)
+@section('plugins.BsCustomFileInput', true)
+
+@section('adminlte_css_pre')
+    <link rel="stylesheet" href="{{ asset('vendor/icheck-bootstrap/icheck-bootstrap.min.css') }}">
+@stop
 
 @section('content')
 
@@ -37,7 +42,8 @@
                             <h3 class="card-title">Dados Cadastrais da Aula</h3>
                         </div>
 
-                        <form method="POST" action="{{ route('admin.classes.update', ['class' => $classroom->id]) }}" enctype="multipart/form-data">
+                        <form method="POST" action="{{ route('admin.classes.update', ['class' => $classroom->id]) }}"
+                            enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
                             <input type="hidden" name="id" value="{{ $classroom->id }}">
@@ -102,7 +108,8 @@
                                     </div>
 
                                     <div class="col-12 col-md-6 form-group px-0 px-md-2">
-                                        <label for="link">Link <small class="text-muted">(opcional se enviar vídeo)</small></label>
+                                        <label for="link">Link <small class="text-muted">(opcional se enviar
+                                                vídeo)</small></label>
                                         <input type="text" class="form-control" id="sales_link"
                                             placeholder="Link da Aula" name="link"
                                             value="{{ old(key: 'link') ?? $classroom->link }}">
@@ -126,16 +133,16 @@
                                         @endif
                                     </div>
 
-                                    @if($classroom->vimeo_id)
+                                    @if ($classroom->vimeo_id)
                                         <div class="col-12 form-group px-0 mb-3" id="vimeo-video-container">
                                             <div class="card">
                                                 <div class="card-header d-flex justify-content-between align-items-center">
-                                                    <h5 class="mb-0 h6 text-bold"><i class="fas fa-video"></i> Vídeo Atual no Vimeo</h5>
-                                                    <a href="javascript:void(0)" 
-                                                       id="delete-video-btn" 
-                                                       data-url="{{ route('admin.classes.delete-video', $classroom->id) }}"
-                                                       class="btn btn-sm btn-warning" 
-                                                       title="Remover apenas o vídeo (a aula será mantida)">
+                                                    <h5 class="mb-0 h6 text-bold"><i class="fas fa-video"></i> Vídeo Atual
+                                                        no Vimeo</h5>
+                                                    <a href="javascript:void(0)" id="delete-video-btn"
+                                                        data-url="{{ route('admin.classes.delete-video', $classroom->id) }}"
+                                                        class="btn btn-sm btn-warning"
+                                                        title="Remover apenas o vídeo (a aula será mantida)">
                                                         <i class="fas fa-video-slash"></i> Remover Vídeo
                                                     </a>
                                                 </div>
@@ -144,19 +151,26 @@
                                                         <div class="col-12">
                                                             <div class="embed-responsive embed-responsive-16by9">
                                                                 @php
-                                                                    $playerUrl = $classroom->vimeo_player_url ?? 'https://player.vimeo.com/video/' . $classroom->vimeo_id;
-                                                                    $playerUrl .= (strpos($playerUrl, '?') !== false ? '&' : '?') . 't=' . time();
+                                                                    $playerUrl =
+                                                                        $classroom->vimeo_player_url ??
+                                                                        'https://player.vimeo.com/video/' .
+                                                                            $classroom->vimeo_id;
+                                                                    $playerUrl .=
+                                                                        (strpos($playerUrl, '?') !== false
+                                                                            ? '&'
+                                                                            : '?') .
+                                                                        't=' .
+                                                                        time();
                                                                 @endphp
-                                                                <iframe src="{{ $playerUrl }}" 
-                                                                        class="embed-responsive-item" 
-                                                                        frameborder="0" 
-                                                                        allow="autoplay; fullscreen; picture-in-picture" 
-                                                                        allowfullscreen>
+                                                                <iframe src="{{ $playerUrl }}"
+                                                                    class="embed-responsive-item" frameborder="0"
+                                                                    allow="autoplay; fullscreen; picture-in-picture"
+                                                                    allowfullscreen>
                                                                 </iframe>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-4">
-                                                            <p><strong>Vimeo ID:</strong> {{ $classroom->vimeo_id }}</p>                        
+                                                            <p><strong>Vimeo ID:</strong> {{ $classroom->vimeo_id }}</p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -165,10 +179,13 @@
                                     @endif
 
                                     <div class="col-12 col-md-6 form-group px-0 pr-md-2">
-                                        <label for="video">{{ $classroom->vimeo_id ? 'Substituir Vídeo da Aula' : 'Vídeo da Aula' }}</label>
+                                        <label
+                                            for="video">{{ $classroom->vimeo_id ? 'Substituir Vídeo da Aula' : 'Vídeo da Aula' }}</label>
                                         <div class="custom-file">
-                                            <input type="file" class="custom-file-input" id="video" name="video" accept="video/*">
-                                            <label class="custom-file-label" for="video">Escolher arquivo de vídeo...</label>
+                                            <input type="file" class="custom-file-input" id="video"
+                                                name="video" accept="video/*">
+                                            <label class="custom-file-label" for="video">Escolher arquivo de
+                                                vídeo...</label>
                                         </div>
                                         <small class="form-text text-muted">
                                             Formatos aceitos: MP4, MOV, AVI. O vídeo será enviado para o Vimeo.
@@ -176,24 +193,54 @@
                                     </div>
 
                                     <div class="col-12 col-md-6 form-group px-0 pl-md-2">
-                                        <label for="thumbnail">Thumbnail Personalizada <small class="text-muted">(opcional)</small></label>
+                                        <label for="thumbnail">Thumbnail Personalizada <small
+                                                class="text-muted">(opcional)</small></label>
                                         <div class="custom-file">
-                                            <input type="file" class="custom-file-input" id="thumbnail" name="thumbnail" accept="image/*">
+                                            <input type="file" class="custom-file-input" id="thumbnail"
+                                                name="thumbnail" accept="image/*">
                                             <label class="custom-file-label" for="thumbnail">Escolher imagem...</label>
                                         </div>
                                         <small class="form-text text-muted">
-                                            Formatos aceitos: JPG, PNG, GIF. Se não enviar, usará a thumbnail automática do Vimeo.
+                                            Formatos aceitos: JPG, PNG, GIF. Se não enviar, usará a thumbnail automática do
+                                            Vimeo.
                                         </small>
-                                        @if($classroom->vimeo_thumbnail)
+                                        @if ($classroom->vimeo_thumbnail)
                                             <div class="mt-2" id="current-thumbnail-preview">
-                                                <img src="{{ $classroom->vimeo_thumbnail }}" class="img-thumbnail" style="max-width: 200px;" alt="Preview">
+                                                <img src="{{ $classroom->vimeo_thumbnail }}" class="img-thumbnail"
+                                                    style="max-width: 200px;" alt="Preview">
                                             </div>
                                         @else
                                             <div class="mt-2" id="thumbnail-preview-container" style="display: none;">
-                                                <img src="" id="thumbnail-preview" class="img-thumbnail" style="max-width: 200px;" alt="Preview">
+                                                <img src="" id="thumbnail-preview" class="img-thumbnail"
+                                                    style="max-width: 200px;" alt="Preview">
                                             </div>
                                         @endif
                                     </div>
+
+                                    <div class="col-12 form-group px-0 mt-3">
+                                        <x-adminlte-input-file id="pdf_file" name="pdf_file"
+                                            label="Material em PDF (máximo 50MB)"
+                                            placeholder="Selecione um arquivo PDF..." legend="Selecionar" />
+                                        <small class="form-text text-muted">Os alunos poderão baixar este PDF com marca
+                                            d'água personalizada.</small>
+                                    </div>
+
+                                    @if ($classroom->pdf_file)
+                                        <div class='col-12 px-0'>
+                                            <div class="alert alert-light">
+                                                <i class="fas fa-file-pdf mr-2"></i>
+                                                <strong>PDF atual:</strong> {{ $classroom->pdf_file }}
+                                            </div>
+                                            <div class="card-body icheck-primary">
+                                                <input type="checkbox" style="cursor: pointer" id="remove_pdf"
+                                                    name="remove_pdf" value="1">
+                                                <label for="remove_pdf" class="my-0 ml-2"><i
+                                                        class="fas fa-trash text-danger"></i> Remover arquivo PDF
+                                                    atual</label>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
 
@@ -220,7 +267,7 @@
         $('#thumbnail').on('change', function() {
             const fileName = $(this).val().split('\\').pop();
             $(this).next('.custom-file-label').html(fileName || 'Escolher imagem...');
-            
+
             // Preview thumbnail
             const file = this.files[0];
             if (file) {
@@ -236,16 +283,18 @@
         // Delete video via AJAX
         $('#delete-video-btn').on('click', function(e) {
             e.preventDefault();
-            
-            if (!confirm('⚠️ ATENÇÃO: Você está removendo APENAS o VÍDEO do Vimeo.\n\nA aula será mantida e você poderá adicionar um link do YouTube no campo "Link Externo".\n\nDeseja continuar?')) {
+
+            if (!confirm(
+                    '⚠️ ATENÇÃO: Você está removendo APENAS o VÍDEO do Vimeo.\n\nA aula será mantida e você poderá adicionar um link do YouTube no campo "Link Externo".\n\nDeseja continuar?'
+                    )) {
                 return;
             }
-            
+
             const url = $(this).data('url');
             const btn = $(this);
-            
+
             btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Removendo...');
-            
+
             $.ajax({
                 url: url,
                 type: 'POST',
@@ -258,20 +307,21 @@
                     $('#vimeo-video-container').fadeOut(300, function() {
                         $(this).remove();
                     });
-                    
+
                     // Remove a thumbnail preview atual se existir
                     $('#current-thumbnail-preview').fadeOut(300, function() {
                         $(this).remove();
                     });
-                    
+
                     // Mostra mensagem de sucesso
-                    const alertHtml = '<div class="alert alert-success alert-dismissible fade show" role="alert">' +
+                    const alertHtml =
+                        '<div class="alert alert-success alert-dismissible fade show" role="alert">' +
                         '<i class="fas fa-check-circle"></i> Vídeo removido com sucesso! A aula foi mantida.' +
                         '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
                         '<span aria-hidden="true">&times;</span></button></div>';
-                    
+
                     $('.content-header').after(alertHtml);
-                    
+
                     // Remove o alerta após 5 segundos
                     setTimeout(function() {
                         $('.alert-success').fadeOut(300, function() {
@@ -280,15 +330,18 @@
                     }, 5000);
                 },
                 error: function(xhr) {
-                    btn.prop('disabled', false).html('<i class="fas fa-video-slash"></i> Remover Vídeo');
-                    
-                    const errorMsg = xhr.responseJSON?.message || 'Erro ao remover vídeo. Tente novamente.';
-                    
-                    const alertHtml = '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                    btn.prop('disabled', false).html(
+                    '<i class="fas fa-video-slash"></i> Remover Vídeo');
+
+                    const errorMsg = xhr.responseJSON?.message ||
+                        'Erro ao remover vídeo. Tente novamente.';
+
+                    const alertHtml =
+                        '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
                         '<i class="fas fa-exclamation-circle"></i> ' + errorMsg +
                         '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
                         '<span aria-hidden="true">&times;</span></button></div>';
-                    
+
                     $('.content-header').after(alertHtml);
                 }
             });

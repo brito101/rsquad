@@ -66,6 +66,7 @@ class CourseController extends Controller
                         if ($row->badge_image) {
                             return '<div class="d-flex justify-content-center align-items-center"><img src="'.url('storage/badges/'.$row->badge_image).'" class="img-thumbnail d-block" width="80" height="80" alt="Badge: '.$row->badge_name.'" title="'.$row->badge_name.'"/></div>';
                         }
+
                         return '';
                     })
                     ->addColumn('categories', function ($row) {
@@ -258,6 +259,23 @@ class CourseController extends Controller
                     ->withInput()
                     ->with('error', 'Falha ao fazer o upload da imagem da badge');
             }
+        }
+
+        // Upload do PDF
+        if ($request->hasFile('pdf_file') && $request->file('pdf_file')->isValid()) {
+            $pdfName = Str::slug(mb_substr($data['name'], 0, 100)).'-'.time();
+            $extension = $request->pdf_file->extension();
+            $pdfFileName = "{$pdfName}.{$extension}";
+
+            $data['pdf_file'] = $pdfFileName;
+
+            $destinationPath = storage_path('app/private/pdfs/courses');
+
+            if (! file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
+            $request->pdf_file->move($destinationPath, $pdfFileName);
         }
 
         $data['uri'] = Str::slug($request->name);
@@ -476,6 +494,41 @@ class CourseController extends Controller
                     ->withInput()
                     ->with('error', 'Falha ao fazer o upload da imagem da badge');
             }
+        }
+
+        // Verifica se deve remover o PDF
+        if ($request->input('remove_pdf') == '1') {
+            if ($course->pdf_file) {
+                $oldPdfPath = storage_path('app/private/pdfs/courses/'.$course->pdf_file);
+                if (File::isFile($oldPdfPath)) {
+                    unlink($oldPdfPath);
+                }
+            }
+            $data['pdf_file'] = null;
+        }
+        // Upload do PDF se fornecido
+        elseif ($request->hasFile('pdf_file') && $request->file('pdf_file')->isValid()) {
+            // Remove PDF antigo se existir
+            if ($course->pdf_file) {
+                $oldPdfPath = storage_path('app/private/pdfs/courses/'.$course->pdf_file);
+                if (File::isFile($oldPdfPath)) {
+                    unlink($oldPdfPath);
+                }
+            }
+
+            $pdfName = Str::slug(mb_substr($data['name'], 0, 100)).'-'.time();
+            $extension = $request->pdf_file->extension();
+            $pdfFileName = "{$pdfName}.{$extension}";
+
+            $data['pdf_file'] = $pdfFileName;
+
+            $destinationPath = storage_path('app/private/pdfs/courses');
+
+            if (! file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
+            $request->pdf_file->move($destinationPath, $pdfFileName);
         }
 
         $data['uri'] = Str::slug($request->name);

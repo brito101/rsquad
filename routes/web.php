@@ -5,6 +5,7 @@ use App\Http\Controllers\Academy\BadgeController as AcademyBadgeController;
 use App\Http\Controllers\Academy\CertificateController as AcademyCertificateController;
 use App\Http\Controllers\Academy\ClassroomProgressController;
 use App\Http\Controllers\Academy\CourseController as AcademyCourseController;
+use App\Http\Controllers\Academy\PdfDownloadController;
 use App\Http\Controllers\Academy\UserController as AcademyUserController;
 use App\Http\Controllers\Academy\WorkshopController as AcademyWorkshopController;
 use App\Http\Controllers\Admin\ACL\PermissionController;
@@ -194,6 +195,13 @@ Route::group(['middleware' => ['auth', 'access']], function () {
             Route::get('/', [AcademyBadgeController::class, 'index'])->name('index');
             Route::post('/{badge}/share', [AcademyBadgeController::class, 'generateShareToken'])->name('share');
             Route::get('/course/{course}/progress', [AcademyBadgeController::class, 'courseProgress'])->name('course-progress');
+        });
+
+        /** PDF Downloads */
+        Route::prefix('pdf')->name('pdf.')->group(function () {
+            Route::get('/course/{course}/download', [PdfDownloadController::class, 'downloadCoursePdf'])->name('course.download');
+            Route::get('/module/{module}/download', [PdfDownloadController::class, 'downloadModulePdf'])->name('module.download');
+            Route::get('/classroom/{classroom}/download', [PdfDownloadController::class, 'downloadClassroomPdf'])->name('classroom.download');
         });
     });
 });

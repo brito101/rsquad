@@ -233,6 +233,23 @@ class CourseModuleController extends Controller
             }
         }
 
+        // Upload do PDF
+        if ($request->hasFile('pdf_file') && $request->file('pdf_file')->isValid()) {
+            $pdfName = Str::slug(mb_substr($data['name'], 0, 100)).'-'.time();
+            $extension = $request->pdf_file->extension();
+            $pdfFileName = "{$pdfName}.{$extension}";
+
+            $data['pdf_file'] = $pdfFileName;
+
+            $destinationPath = storage_path('app/private/pdfs/modules');
+
+            if (! file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
+            $request->pdf_file->move($destinationPath, $pdfFileName);
+        }
+
         if ($request->description) {
             $data['description'] = TextProcessor::store($request->name, 'course-modules/description', $request->description);
         }
@@ -386,6 +403,41 @@ class CourseModuleController extends Controller
                     ->withInput()
                     ->with('error', 'Falha ao fazer o upload da imagem');
             }
+        }
+
+        // Verifica se deve remover o PDF
+        if ($request->input('remove_pdf') == '1') {
+            if ($module->pdf_file) {
+                $oldPdfPath = storage_path('app/private/pdfs/modules/'.$module->pdf_file);
+                if (File::isFile($oldPdfPath)) {
+                    unlink($oldPdfPath);
+                }
+            }
+            $data['pdf_file'] = null;
+        }
+        // Upload do PDF se fornecido
+        elseif ($request->hasFile('pdf_file') && $request->file('pdf_file')->isValid()) {
+            // Remove PDF antigo se existir
+            if ($module->pdf_file) {
+                $oldPdfPath = storage_path('app/private/pdfs/modules/'.$module->pdf_file);
+                if (File::isFile($oldPdfPath)) {
+                    unlink($oldPdfPath);
+                }
+            }
+
+            $pdfName = Str::slug(mb_substr($data['name'], 0, 100)).'-'.time();
+            $extension = $request->pdf_file->extension();
+            $pdfFileName = "{$pdfName}.{$extension}";
+
+            $data['pdf_file'] = $pdfFileName;
+
+            $destinationPath = storage_path('app/private/pdfs/modules');
+
+            if (! file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
+            $request->pdf_file->move($destinationPath, $pdfFileName);
         }
 
         if ($request->description) {

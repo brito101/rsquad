@@ -20,6 +20,7 @@ class CourseModule extends Model
     protected $fillable = [
         'name',
         'cover',
+        'pdf_file',
         'description',
         'status',
         'order',
@@ -52,6 +53,26 @@ class CourseModule extends Model
     public function classes()
     {
         return $this->hasMany(Classroom::class, 'course_module_id');
+    }
+
+    public function pdfDownloads()
+    {
+        return $this->morphMany(PdfDownload::class, 'downloadable');
+    }
+
+    /** Helpers */
+    public function hasPdf(): bool
+    {
+        return ! empty($this->pdf_file);
+    }
+
+    public function getPdfPath(): ?string
+    {
+        if (! $this->hasPdf()) {
+            return null;
+        }
+
+        return storage_path('app/private/pdfs/modules/'.$this->pdf_file);
     }
 
     /** Accessors */

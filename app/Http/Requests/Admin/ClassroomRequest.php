@@ -32,6 +32,7 @@ class ClassroomRequest extends FormRequest
     {
         return [
             'name' => "required|max:191|unique:classrooms,name,{$this->id},id,deleted_at,NULL",
+            'pdf_file' => 'nullable|file|mimes:pdf|max:51200',
             'status' => 'required|in:Publicado,Rascunho,Suspenso,Cancelado,Arquivado',
             'course_module_id' => 'required|exists:course_modules,id',
             'order' => 'nullable|integer|min:0|max:9999',

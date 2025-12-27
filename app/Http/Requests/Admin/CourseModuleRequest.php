@@ -34,6 +34,7 @@ class CourseModuleRequest extends FormRequest
             'name' => "required|max:191|unique:classrooms,name,{$this->id},id,deleted_at,NULL",
             'description' => 'nullable|max:4294967295',
             'cover' => 'nullable|image|mimes:jpg,png,jpeg,webp|max:4096|dimensions:max_width=4000,max_height=4000',
+            'pdf_file' => 'nullable|file|mimes:pdf|max:51200',
             'order' => 'nullable|integer|min:0|max:9999',
             'status' => 'required|in:Publicado,Rascunho,Suspenso,Cancelado,Arquivado',
             'course_id' => 'required|exists:courses,id',

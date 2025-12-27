@@ -2,9 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Services\BadgeService;
 use App\Models\CourseStudent;
-use App\Models\User;
+use App\Services\BadgeService;
 use Illuminate\Console\Command;
 
 class AwardMissingBadges extends Command
@@ -46,7 +45,7 @@ class AwardMissingBadges extends Command
             $courseId = $enrollment->course_id;
 
             // Check if course has badge
-            if (!$enrollment->course->badge_name || !$enrollment->course->badge_image) {
+            if (! $enrollment->course->badge_name || ! $enrollment->course->badge_image) {
                 continue;
             }
 

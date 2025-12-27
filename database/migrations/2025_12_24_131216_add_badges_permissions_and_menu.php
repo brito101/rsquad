@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -34,14 +33,14 @@ return new class extends Migration
 
         // Get roles that should have these permissions
         $rolesToAssign = ['Programador', 'Administrador', 'Instrutor'];
-        
+
         foreach ($rolesToAssign as $roleName) {
             $role = Role::where('name', $roleName)->first();
-            
+
             if ($role) {
                 foreach ($createdPermissions as $permission) {
                     // Check if permission is already assigned to avoid duplicates
-                    if (!$role->hasPermissionTo($permission)) {
+                    if (! $role->hasPermissionTo($permission)) {
                         $role->givePermissionTo($permission);
                     }
                 }
@@ -66,10 +65,10 @@ return new class extends Migration
         ];
 
         $rolesToRemove = ['Programador', 'Administrador', 'Instrutor'];
-        
+
         foreach ($rolesToRemove as $roleName) {
             $role = Role::where('name', $roleName)->first();
-            
+
             if ($role) {
                 foreach ($permissions as $permissionName) {
                     $permission = Permission::where('name', $permissionName)->first();

@@ -203,10 +203,10 @@ class ClassroomProgressController extends Controller
                     // Award badge
                     $badgeService = new BadgeService;
                     $badgeAwarded = $badgeService->awardCourseBadge($user->id, $classroom->course_id);
-                    
+
                     if ($badgeAwarded) {
                         $badgesAwarded = [$badgeAwarded];
-                        $message .= ' Você conquistou a badge: ' . $badgeAwarded['badge_name'] . '!';
+                        $message .= ' Você conquistou a badge: '.$badgeAwarded['badge_name'].'!';
                     }
                 }
             }

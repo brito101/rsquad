@@ -22,6 +22,7 @@ class Course extends Model
         'cover',
         'badge_name',
         'badge_image',
+        'pdf_file',
         'description',
         'status',
         'active',
@@ -86,6 +87,26 @@ class Course extends Model
     public function categoriesInfo()
     {
         return $this->hasManyThrough(CategoryCourse::class, CourseCategoryPivot::class, 'course_id', 'id', 'id', 'category_course_id');
+    }
+
+    public function pdfDownloads()
+    {
+        return $this->morphMany(PdfDownload::class, 'downloadable');
+    }
+
+    /** Helpers */
+    public function hasPdf(): bool
+    {
+        return ! empty($this->pdf_file);
+    }
+
+    public function getPdfPath(): ?string
+    {
+        if (! $this->hasPdf()) {
+            return null;
+        }
+
+        return storage_path('app/private/pdfs/courses/'.$this->pdf_file);
     }
 
     /** Cascade actions */

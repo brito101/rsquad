@@ -12,8 +12,10 @@ use App\Services\VimeoService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
 
 class ClassroomController extends Controller
@@ -235,6 +237,23 @@ class ClassroomController extends Controller
             }
         }
 
+        // Upload do PDF
+        if ($request->hasFile('pdf_file') && $request->file('pdf_file')->isValid()) {
+            $pdfName = Str::slug(mb_substr($data['name'], 0, 100)).'-'.time();
+            $extension = $request->pdf_file->extension();
+            $pdfFileName = "{$pdfName}.{$extension}";
+
+            $data['pdf_file'] = $pdfFileName;
+
+            $destinationPath = storage_path('app/private/pdfs/classes');
+
+            if (! file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
+            $request->pdf_file->move($destinationPath, $pdfFileName);
+        }
+
         $classroom = Classroom::create($data);
 
         if ($classroom->save()) {
@@ -421,6 +440,41 @@ class ClassroomController extends Controller
             $thumbnail = $request->file('thumbnail');
             $thumbnailPath = $thumbnail->store('classrooms/thumbnails', 'public');
             $data['vimeo_thumbnail'] = Storage::url($thumbnailPath);
+        }
+
+        // Verifica se deve remover o PDF
+        if ($request->input('remove_pdf') == '1') {
+            if ($classroom->pdf_file) {
+                $oldPdfPath = storage_path('app/private/pdfs/classes/'.$classroom->pdf_file);
+                if (File::isFile($oldPdfPath)) {
+                    unlink($oldPdfPath);
+                }
+            }
+            $data['pdf_file'] = null;
+        }
+        // Upload do PDF se fornecido
+        elseif ($request->hasFile('pdf_file') && $request->file('pdf_file')->isValid()) {
+            // Remove PDF antigo se existir
+            if ($classroom->pdf_file) {
+                $oldPdfPath = storage_path('app/private/pdfs/classes/'.$classroom->pdf_file);
+                if (File::isFile($oldPdfPath)) {
+                    unlink($oldPdfPath);
+                }
+            }
+
+            $pdfName = Str::slug(mb_substr($data['name'], 0, 100)).'-'.time();
+            $extension = $request->pdf_file->extension();
+            $pdfFileName = "{$pdfName}.{$extension}";
+
+            $data['pdf_file'] = $pdfFileName;
+
+            $destinationPath = storage_path('app/private/pdfs/classes');
+
+            if (! file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
+            $request->pdf_file->move($destinationPath, $pdfFileName);
         }
 
         if ($classroom->update($data)) {

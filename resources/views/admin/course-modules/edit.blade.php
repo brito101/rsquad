@@ -7,6 +7,10 @@
 @section('plugins.BsCustomFileInput', true)
 @section('plugins.Summernote', true)
 
+@section('adminlte_css_pre')
+    <link rel="stylesheet" href="{{ asset('vendor/icheck-bootstrap/icheck-bootstrap.min.css') }}">
+@stop
+
 @section('content')
 
     <section class="content-header">
@@ -164,6 +168,30 @@
                                             label="Imagem (preferencialmente 860 x 490 pixels)"
                                             placeholder="Selecione uma imagem..." legend="Selecionar" />
                                     </div>
+
+                                    <div class="col-12 form-group px-0">
+                                        <x-adminlte-input-file id="pdf_file" name="pdf_file"
+                                            label="Material em PDF (máximo 50MB)"
+                                            placeholder="Selecione um arquivo PDF..." legend="Selecionar" />
+                                        <small class="form-text text-muted">Os alunos poderão baixar este PDF com marca d'água personalizada.</small>
+                                    </div>
+
+                                    @if ($module->pdf_file)
+                                        <div class='col-12 px-0'>
+                                            <div class="alert alert-light">
+                                                <i class="fas fa-file-pdf mr-2"></i>
+                                                <strong>PDF atual:</strong> {{ $module->pdf_file }}
+                                            </div>
+                                            <div class="card-body icheck-primary">
+                                                <input type="checkbox" style="cursor: pointer" id="remove_pdf"
+                                                    name="remove_pdf" value="1">
+                                                <label for="remove_pdf" class="my-0 ml-2"><i
+                                                        class="fas fa-trash text-danger"></i> Remover arquivo PDF
+                                                    atual</label>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    @endif
                                 </div>
 
                                 @if ($module->cover)

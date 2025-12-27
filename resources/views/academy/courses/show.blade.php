@@ -101,6 +101,19 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    @if($course->pdf_file)
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <a href="{{ route('academy.pdf.course.download', $course->id) }}" 
+                                                   class="btn btn-danger btn-block">
+                                                    <i class="fas fa-file-pdf mr-2"></i>
+                                                    Baixar Material do Curso (PDF)
+                                                </a>
+                                            </div>
+                                        </div>
+                                    @endif
+
                                     <div class="row">
                                         <div class="col-12">
                                             @foreach ($course->modules as $module)
@@ -135,6 +148,14 @@
                                                             @endif
                                                         </span>
                                                         <p class="mt-3 text-muted">{!! $module->description !!}</p>
+
+                                                        @if($module->pdf_file)
+                                                            <a href="{{ route('academy.pdf.module.download', $module->id) }}" 
+                                                               class="btn btn-sm btn-danger">
+                                                                <i class="fas fa-file-pdf mr-1"></i>
+                                                                Baixar Material do Módulo (PDF)
+                                                            </a>
+                                                        @endif
                                                     </div>
 
                                                     <div class="card-body">
@@ -177,6 +198,13 @@
                                                                                 <a href="{{ route('academy.classroom.show', $classroom->id) }}" 
                                                                                    class="btn btn-sm btn-primary ml-2">
                                                                                     <i class="fas fa-play"></i> Assistir
+                                                                                </a>
+                                                                            @endif
+
+                                                                            @if ($classroom->pdf_file && $isReleased)
+                                                                                <a href="{{ route('academy.pdf.classroom.download', $classroom->id) }}" 
+                                                                                   class="btn btn-sm btn-danger ml-1">
+                                                                                    <i class="fas fa-file-pdf"></i> PDF
                                                                                 </a>
                                                                             @endif
                                                                         </div>

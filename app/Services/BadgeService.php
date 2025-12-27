@@ -84,7 +84,7 @@ class BadgeService
 
         // Get course with badge
         $course = Course::find($courseId);
-        
+
         // Check if course has a badge
         if (! $course || ! $course->badge_name || ! $course->badge_image) {
             return null;
@@ -165,7 +165,7 @@ class BadgeService
                 $isEnrolled = CourseStudent::where('user_id', $userId)
                     ->where('course_id', $course->id)
                     ->exists();
-                
+
                 return [
                     'course_id' => $course->id,
                     'course_name' => $course->name,
@@ -183,13 +183,13 @@ class BadgeService
     public function getBadgeProgress(int $userId, int $courseId): ?array
     {
         $course = Course::find($courseId);
-        
+
         if (! $course || ! $course->badge_name || ! $course->badge_image) {
             return null;
         }
 
         $percentage = $this->getCompletionPercentage($userId, $courseId);
-        
+
         $earned = UserBadge::where('user_id', $userId)
             ->where('course_id', $courseId)
             ->exists();
@@ -209,7 +209,7 @@ class BadgeService
     public function getLinkedInShareText(int $userId, int $courseId): string
     {
         $course = Course::find($courseId);
-        
+
         if (! $course || ! $course->badge_name) {
             return 'Conquista desbloqueada!';
         }

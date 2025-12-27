@@ -130,6 +130,13 @@
                                             <img src="" id="thumbnail-preview" class="img-thumbnail" style="max-width: 200px;" alt="Preview">
                                         </div>
                                     </div>
+
+                                    <div class="col-12 form-group px-0 mt-3">
+                                        <x-adminlte-input-file id="pdf_file" name="pdf_file"
+                                            label="Material em PDF (máximo 50MB)"
+                                            placeholder="Selecione um arquivo PDF..." legend="Selecionar" />
+                                        <small class="form-text text-muted">Os alunos poderão baixar este PDF com marca d'água personalizada.</small>
+                                    </div>
                                 </div>
                             </div>
 
